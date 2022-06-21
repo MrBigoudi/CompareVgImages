@@ -94,7 +94,9 @@ To learn how to write an exercice for learn-ocaml, I invite you to read the [lea
 
 To learn how to correct an exercice using easy-check, I invite you to read the article <strong>Expérimentations pédagogiques en Learn-OCaml <em>(by Loïc Sylvestre and Emmanuel Chailloux)</em></strong> in the paper <strong>[proceedings-jfla-2020](https://hal.inria.fr/hal-02427360)</strong> <em>(only available in French)</em>.
 
-To test a function producing Vg.image you can use CompareVgImages. In your <strong>test.ml</strong> file, you'll have to add <strong>~equal: Compare.image_equal</strong> as an optional parameter of the Check.name function.
+To test a function producing Vg.image you can use CompareVgImages. 
+
+In your <strong>test.ml</strong> file, you'll have to add <strong>~equal: Compare.image_equal</strong> as an optional parameter of the Check.name function.
 
 For example :
 
