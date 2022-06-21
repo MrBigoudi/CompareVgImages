@@ -1,5 +1,5 @@
 # CompareVgImages
-</br>
+
 
 ## The project
 
@@ -14,7 +14,7 @@ However, it's utilisation will be more user-friendly with [easy-check](https://g
 </br>
 
 ---
-</br>
+
 
 ## Howtos
 
@@ -27,7 +27,7 @@ If you follow the instructions you'll be able to try the samples given [here](ht
 </br>
 
 ---
-</br>
+
 
 ## Author
 
