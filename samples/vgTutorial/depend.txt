@@ -37,5 +37,5 @@
 
 ## vg compare
 
-../image_vg_compare/compare.ml
-../image_vg_compare/compare.mli
+../image_vg_compare/src/compare.ml
+../image_vg_compare/src/compare.mli

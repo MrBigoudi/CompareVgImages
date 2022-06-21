@@ -128,3 +128,15 @@ let q () =
 let () =
   Result.set (Result.questions [q])
 ```
+
+You'll also have to change <strong>depend.txt</strong> files to add CompareVgImages as a dependency.
+
+```sh
+  
+  echo -e "\n\n## vg compare\n" >> depend.txt
+  echo -e "../image_vg_compare/src/compare.ml" >> depend.txt
+  echo -e "../image_vg_compare/src/compare.mli" >> depend.txt
+
+  # check if evertything is ok
+  cat depend.txt
+```
