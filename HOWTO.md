@@ -33,8 +33,6 @@ Since you'll need diferent github folder to use learn-Ocaml, easy-check and Comp
 
 ### Install learnOCaml
 
-[learn-OCaml](https://github.com/ocaml-sf/learn-ocaml) is a platform for learning the OCaml language, featuring a Web toplevel, an exercise environment, and a directory of lessons and tutorials.
-
 ```sh
     git clone https://github.com/ocaml-sf/learn-ocaml.git
     cd learn-ocaml
@@ -50,8 +48,6 @@ Since you'll need diferent github folder to use learn-Ocaml, easy-check and Comp
 ```
 
 ### Install easy-check
-
-[easy-check](https://github.com/lsylvestre/easy-check) is a tool to help you correct and grade exercices for the learn-OCaml platform.
 
 ```sh
     cd ..
@@ -75,9 +71,9 @@ Since CompareVgImages will only be used to correct easy-check exercices, it migh
 
     ## test if everything's ok
     cd CompareVgImages
-    # try sample
-    cp -r sample/vgTutorial ../.
-    cp sample/index.json ../.
+    # try samples
+    cp -r samples/vgTutorial ../.
+    cp samples/index.json ../.
     cd ../../easy-check/demo
     # need to do a first make to add images for the exercice description
     make
