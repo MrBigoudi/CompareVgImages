@@ -15,6 +15,7 @@ type tr_token =
     | Const of (float*float*float*float);;
 
   type i_tree = 
+    | Empty
     | F of i_token
     | Node of i_token * i_tree list;;
 
@@ -43,6 +44,11 @@ module ManipulateVg : sig
   val get_path_token : string -> int -> (float*float) list
   (*Get an outline_token, ie the width of the outline*)
   val get_outline_token : string -> int -> float
+
+  (*Create a tree of tokens representing an image from a string*)
+  val create_i_tree : string -> i_tree
+  (*Convert an i_tree into a string*)
+  val to_string : i_tree -> string
 
 
   (*Split string using ' ' as delimiter + remove empty component in the result array*)
@@ -91,17 +97,23 @@ end = struct
       let new_offset = (next_right_p str offset) in
         match str.[offset] with
         | 'm' -> let sub = (get_sub_string str offset new_offset) in
+                  Printf.printf "get_tr_token -> move\n";
                   let res = (Scanf.sscanf sub "move (%f %f)" (fun x y -> (x,y))) in
+                    Printf.printf "done\n";
                     let new_offset = (next_image_modif str new_offset) in
                       (Move(res),new_offset)
 
         | 'r' -> let sub = (get_sub_string str offset new_offset) in
+                  Printf.printf "get_tr_token -> rot\n";
                   let res = (Scanf.sscanf sub "rot %f" (fun x -> x)) in
+                    Printf.printf "done\n";
                     let new_offset = (next_image_modif str new_offset) in
                       (Rot(res),new_offset)
 
         | 's' -> let sub = (get_sub_string str offset new_offset) in
+                  Printf.printf "get_tr_token -> scale\n";
                   let res = (Scanf.sscanf sub "scale (%f %f)" (fun x y -> (x,y))) in
+                    Printf.printf "done\n";
                     let new_offset = (next_image_modif str new_offset) in
                       (Scale(res),new_offset)
 
@@ -125,9 +137,17 @@ end = struct
 
   let get_cut_token str offset = 
     let len = String.length str in
+      let rec print_list l = match l with
+        | [] -> ()
+        | offset::t -> Printf.printf "%d;" offset; (print_list t)
+      in
       let rec get_next_offset nb_par cur_offset =
         if cur_offset>=len then failwith "can't find end of cut" else
-          if nb_par == 0 then (next_left_p str cur_offset)+1 else
+          if nb_par == 0 then let res = (next_left_p str cur_offset)+1 in
+            begin
+              res;
+            end
+          else
             match str.[cur_offset] with
             | '(' -> (get_next_offset (nb_par+1) (cur_offset+1))
             | ')' -> (get_next_offset (nb_par-1) (cur_offset+1))
@@ -136,9 +156,13 @@ end = struct
         let rec get_offsets cur_offset acc =
           if cur_offset>=len then failwith "can't find end of cut" else
             (*end of cut*)
-            if str.[cur_offset] == 'i' then ((cur_offset+2)::acc) else
+            if str.[cur_offset] == 'i' then 
+              begin Printf.printf "\n\noffsets: ";(print_list ((cur_offset+2)::acc)); Printf.printf " -> fin offset\n\n"; ((cur_offset+2)::acc) end else
               let cur_offset = (get_next_offset 1 cur_offset) in
-                (get_offsets cur_offset (cur_offset::acc))
+                begin
+                  Printf.printf "\n\ncur offset: %s\n\n" (String.sub str cur_offset (len-cur_offset));
+                  (get_offsets cur_offset (cur_offset::acc))
+                end
         in 
           let first_offset = (next_left_p str offset)+1 in
             (get_offsets first_offset [first_offset]);;
@@ -148,7 +172,8 @@ end = struct
     let offset = (next_left_p str offset)+1 in
       let new_offset = (next_right_p str offset) in
         let sub = (get_sub_string str offset new_offset) in
-          let res = (Scanf.sscanf sub "%f %f %f %f" (fun w x y z -> (w,x,y,z))) in res;;
+          Printf.printf "get_const_token\n";
+          let res = (Scanf.sscanf sub "%f %f %f %f" (fun w x y z -> (w,x,y,z))) in Printf.printf "done\n"; res;;
 
 
   let get_path_token str offset = 
@@ -156,9 +181,11 @@ end = struct
       let get_point offset =
         let end_of_tuple = (next_right_p str offset)+1 in
           let sub = (get_sub_string str offset end_of_tuple) in
+            Printf.printf "get_path_token\n";
             let res = (Scanf.sscanf sub "(%f %f)" (fun x y -> (x,y))) in 
-              (*if end of path, ie '))'*)
-              if str.[end_of_tuple]==')' then (res,end_of_tuple)
+              Printf.printf "done\n";
+              (*if end of path, ie ') Z)'*)
+              if str.[end_of_tuple+1]=='Z' then (res,(next_right_p str end_of_tuple))
               else (res,(next_left_p str end_of_tuple))
       in
         let rec get_points cur_offset acc =
@@ -176,44 +203,85 @@ end = struct
     let offset = (next_left_p str offset)+1 in
     let new_offset = (next_right_p str offset) in
     let sub = (get_sub_string str offset new_offset) in
-      let width = (Scanf.sscanf sub "width %f" (fun x -> x)) in width;;
+      Printf.printf "get_outline_token\n"; 
+      let width = (Scanf.sscanf sub "width %f" (fun x -> x)) in Printf.printf "done\n"; width;;
 
 
   let create_i_tree str =
     let len = String.length str in
     let rec aux offset fin = 
-      if offset >= fin then []
+      if offset >= fin then Empty
       else match str.[offset] with
         (*i-tr*)
         | 't' -> let (tr,new_offset) = (get_tr_token str offset)
-                  in [(Node(Tr(tr),(aux new_offset fin)))]
+                  in (Node(Tr(tr),[(aux new_offset fin)]))
         (*i-blend*)
         | 'b' -> let (new_offset1,new_offset2) = (get_blend_token str offset)
-                  in [(Node(Blend,(aux new_offset1 new_offset2)@(aux new_offset2 fin)))]
+                  in (Node(Blend,[(aux new_offset1 new_offset2)]@[(aux new_offset2 fin)]))
         (*i-const || i-cut*)
         | 'c' -> let offset = offset+1 
                   (*i-const*)
                   in if str.[offset]=='o' then 
                     let const = (get_const_token str offset)
-                    in [F(Const(const))]
+                    in F(Const(const))
                   (*i-cut*)
                   else let new_offsets = (get_cut_token str offset) in
                     let rec aux_cut l acc = 
                       match l with
                       | [] -> (Node(Cut,acc))
-                      | h::[] -> (aux_cut [] ((aux h fin)@acc))
-                      | h1::h2::t -> (aux_cut (h2::t) ((aux h1 h2)@acc))
-                    in [(aux_cut new_offsets [])]
+                      | h::[] -> (aux_cut [] ([(aux h fin)]@acc))
+                      | h1::h2::t -> (aux_cut (h2::t) ([(aux h1 h2)]@acc))
+                    in (aux_cut new_offsets [])
         (*path*)
         | 'p' -> let path = (get_path_token str offset)
-                    in [F(Path(path))]
+                    in F(Path(path))
         (*outline*)
-        | 'o' -> let outline = (get_outline_token str offset)
-                    in [F(Outline(outline))] 
+        | 'o' -> let width = (get_outline_token str offset)
+                    in F(Outline(width)) 
         (*error*)
         | _ -> let res = Printf.sprintf "unknown token at pos: %d\n" offset 
                     in failwith res
     in (aux 3 len);;
+    
+
+  let to_string i =
+    let rec aux i =
+      match i with
+      | Empty -> ""
+      | F(Const(w,x,y,z)) -> Printf.sprintf "const (%f,%f,%f,%.f) | " w x y z
+      | F(Outline(x)) -> Printf.sprintf "outline (%f) | " x
+      | F(Path(l)) -> let rec aux l acc = match l with
+                        | [] -> acc^" | "
+                        | (x,y)::[] -> let tmp = Printf.sprintf "(%f,%f)]" x y in (aux [] (acc^tmp))
+                        | (x,y)::t -> let tmp = Printf.sprintf "(%f,%f);" x y in (aux t (acc^tmp))
+                      in (aux l "path [")
+      | Node(Tr(Move(x,y)),l) -> let rec aux2 i_list =
+                          match i_list with
+                          | [] -> ""
+                          | h::t -> (aux h)^(aux2 t)
+                        in (Printf.sprintf "tr move (%f,%f) | " x y)^(aux2 l)
+      | Node(Tr(Rot(x)),l) -> let rec aux2 i_list =
+                          match i_list with
+                          | [] -> ""
+                          | h::t -> (aux h)^(aux2 t)
+                        in (Printf.sprintf "tr rot %f | " x)^(aux2 l)
+      | Node(Tr(Scale(x,y)),l) -> let rec aux2 i_list =
+                          match i_list with
+                          | [] -> ""
+                          | h::t -> (aux h)^(aux2 t)
+                        in (Printf.sprintf "tr scale (%f,%f) | " x y)^(aux2 l)
+      | Node(Blend,l) -> let rec aux2 i_list =
+                          match i_list with
+                          | [] -> ""
+                          | h::t -> (aux h)^(aux2 t)
+                        in "blend | "^(aux2 l)
+      | Node(Cut,l) -> let rec aux2 i_list =
+                          match i_list with
+                          | [] -> ""
+                          | h::t -> (aux h)^(aux2 t)
+                        in "cut | "^(aux2 l)
+      | _ -> "\n\nerror\n\n"
+    in (aux i);;
 
 
   let split str =
@@ -290,8 +358,13 @@ end = struct
 
 end
 
+let image_equal i1 i2 =
+  let di1 = (ManipulateVg.decompose i1) in
+    let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples di1 di2);;
 
- (*(i-tr (move (0.5 0))
+
+
+let str_test = "(i-tr (move (0.5 0))
   (i-tr (rot 1.5708)
    (i-blend Over
     (i-blend Over
@@ -335,8 +408,10 @@ end
         (outline (width 0.004) (cap Butt) (join Miter) (miter-angle 0.200713))
         (path S (0.184 0.1) L (0.224 0.1) L (0.224 0.14) L (0.184 0.14) L
          (0.184 0.1) Z)
-        (i-const (0.522522 0 0 1))))))))) *)
- 
+        (i-const (0.522522 0 0 1)))))))))";;
+
+Printf.printf "%s" (ManipulateVg.to_string (ManipulateVg.create_i_tree str_test));;
+
 
 
 
