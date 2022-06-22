@@ -5,7 +5,7 @@
 
 </br>
 
-CompareVgImages is a tool to help you compare [Vg.image](https://erratique.ch/software/vg/doc/Vg/I/index.html) in a more precise way than with only the [I.equal](https://erratique.ch/software/vg/doc/Vg/I/index.html#val-equal) function.
+CompareVgImages is a tool to help you compare [Vg.image](https://erratique.ch/software/vg/doc/Vg/I/index.html) in a different way than with only the [I.equal](https://erratique.ch/software/vg/doc/Vg/I/index.html#val-equal) function.
 
 CompareVgImages is made to be used with [learn-OCaml](https://github.com/ocaml-sf/learn-ocaml), a platform for learning the OCaml language, featuring a Web toplevel, an exercise environment, and a directory of lessons and tutorials.
 
