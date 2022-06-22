@@ -72,7 +72,15 @@ end = struct
   let next_right_p str n = 
     String.index_from str n ')';;
   let next_image_modif str n = 
-    let n = String.index_from str n 'i' in n+3;;(* from 'i-abc' to abc *)
+    let len = String.length str in
+      let rec aux offset =
+        if (offset-1)>=len then failwith "can't find next image modif" else
+        let n = (String.index_from str offset 'i') in
+          match str.[n+1] with
+          | '-' -> n+2;;(* from 'i-abc' to abc *)
+          | _   -> (aux (offset+1))
+      in (aux n);;
+
   let get_sub_string str s f =
     (String.sub str s (f-1));;
   
@@ -112,7 +120,8 @@ end = struct
                 (blend1,blend2);;
 
 
-  let get_cut_token str offset = failwith "TODO";;
+  let get_cut_token str offset = 
+    (next_image_modif str offset);;
 
   let get_const_token str offset = 
     let offset = (next_left_p str offset)+1 in
