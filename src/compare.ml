@@ -25,8 +25,8 @@ module ManipulateVg : sig
   val next_left_p : string -> int -> int
   (*Get offset of next right parenthesis*)
   val next_right_p : string -> int -> int
-  (*Get offset of next letter to compare*)
-  val next_offset : int -> int
+  (*Get offset of next image modification*)
+  val next_image_modif : string -> int -> int
   (*Get a sub string with the start and end position (exclude)*)
   val get_sub_string : string -> int -> int -> string
 
@@ -43,9 +43,9 @@ module ManipulateVg : sig
   val get_path_token : string -> int -> (float*float) list
   (*Get an outline_token, ie (width float) and (miter-angle float)*)
   val get_outline_token : string -> int -> (float*float)
+
+
   (*Split string using ' ' as delimiter + remove empty component in the result array*)
-
-
   val split : string -> string list
   (*Filter list to omly keep numbers*)
   val empty_array : string list -> string list
@@ -71,33 +71,45 @@ end = struct
     String.index_from str n '(';;
   let next_right_p str n = 
     String.index_from str n ')';;
-  let next_offset n = 
-    n+3;;(* from '(i-abc' to abc *)
+  let next_image_modif str n = 
+    let n = String.index_from str n 'i' in n+3;;(* from 'i-abc' to abc *)
   let get_sub_string str s f =
     (String.sub str s (f-1));;
   
   let get_tr_token str offset = 
-    let offset = (next_left_p str offset) in
-      let new_offset = (next_left_p str offset) in
-        match str.[offset] with 
+    let offset = (next_left_p str offset)+1 in
+      let new_offset = (next_right_p str offset) in
+        match str.[offset] with
         | 'm' -> let sub = (get_sub_string str offset new_offset) in
-                  let res = (Scanf.sscanf sub "move (%f %f))\n" (fun x y -> (x,y))) in
-                    (Move(res),new_offset)
+                  let res = (Scanf.sscanf sub "move (%f %f)" (fun x y -> (x,y))) in
+                    let new_offset = (next_image_modif str new_offset) in
+                      (Move(res),new_offset)
 
         | 'r' -> let sub = (get_sub_string str offset new_offset) in
-                  let res = (Scanf.sscanf sub "rot %f)\n" (fun x -> x)) in
-                    (Rot(res),new_offset)
+                  let res = (Scanf.sscanf sub "rot %f" (fun x -> x)) in
+                    let new_offset = (next_image_modif str new_offset) in
+                      (Rot(res),new_offset)
 
         | 's' -> let sub = (get_sub_string str offset new_offset) in
-                  let res = (Scanf.sscanf sub "scale (%f %f))\n" (fun x y -> (x,y))) in
-                    (Move(res),new_offset)
+                  let res = (Scanf.sscanf sub "scale (%f %f)" (fun x y -> (x,y))) in
+                    let new_offset = (next_image_modif str new_offset) in
+                      (Scale(res),new_offset)
 
         | _ -> failwith "unknown transformation";;
 
-  let get_blend_token str offset = failwith "TODO";;
+  let get_blend_token str offset = 
+    failwith "TODO";;
+
   let get_cut_token str offset = failwith "TODO";;
-  let get_const_token str offset = failwith "TODO";;
+
+  let get_const_token str offset = 
+    let offset = (next_left_p str offset)+1 in
+      let new_offset = (next_right_p str offset) in
+        let sub = (get_sub_string str offset new_offset) in
+          let res = (Scanf.sscanf sub "%f %f %f %f" (fun w x y z -> (w,x,y,z))) in res;;
+
   let get_path_token str offset = failwith "TODO";;
+  
   let get_outline_token str offset = failwith "TODO";;
 
 
@@ -117,7 +129,7 @@ end = struct
                   (*i-const*)
                   in if str.[offset]=='o' then 
                     let const = (get_const_token str offset)
-                    in [F(const)]
+                    in [F(Const(const))]
                   (*i-cut*)
                   else let new_offsets = (get_cut_token str offset) in
                     let rec aux_cut l acc = 
