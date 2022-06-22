@@ -6,7 +6,6 @@ type tr_token =
     | Rot of float
     | Scale of (float*float);;
 
-
   type i_token = 
     | Tr of tr_token
     | Blend
@@ -15,16 +14,21 @@ type tr_token =
     | Outline of (float*float)
     | Const of (float*float*float*float);;
 
-
   type i_tree = 
     | F of i_token
     | Node of i_token * i_tree list;;
 
 module ManipulateVg : sig
+  (*Get offset of next empty space*)
+  val next_space : string -> int -> int
   (*Get offset of next left parenthesis*)
   val next_left_p : string -> int -> int
   (*Get offset of next right parenthesis*)
   val next_right_p : string -> int -> int
+  (*Get offset of next letter to compare*)
+  val next_offset : int -> int
+  (*Get a sub string with the start and end position (exclude)*)
+  val get_sub_string : string -> int -> int -> string
 
 
   (*Get a tr_token and the new offset*)
@@ -61,15 +65,35 @@ module ManipulateVg : sig
   val compare_list_tuples : (float * float) list -> (float * float) list -> bool
 
 end = struct 
+  let next_space str n = 
+    String.index_from str n ' ';;
   let next_left_p str n = 
     String.index_from str n '(';;
-  
-
   let next_right_p str n = 
     String.index_from str n ')';;
+  let next_offset n = 
+    n+3;;(* from '(i-abc' to abc *)
+  let get_sub_string str s f =
+    (String.sub str s (f-1));;
   
+  let get_tr_token str offset = 
+    let offset = (next_left_p str offset) in
+      let new_offset = (next_left_p str offset) in
+        match str.[offset] with 
+        | 'm' -> let sub = (get_sub_string str offset new_offset) in
+                  let res = (Scanf.sscanf sub "move (%f %f))\n" (fun x y -> (x,y))) in
+                    (Move(res),new_offset)
 
-  let get_tr_token str offset = failwith "TODO";;
+        | 'r' -> let sub = (get_sub_string str offset new_offset) in
+                  let res = (Scanf.sscanf sub "rot %f)\n" (fun x -> x)) in
+                    (Rot(res),new_offset)
+
+        | 's' -> let sub = (get_sub_string str offset new_offset) in
+                  let res = (Scanf.sscanf sub "scale (%f %f))\n" (fun x y -> (x,y))) in
+                    (Move(res),new_offset)
+
+        | _ -> failwith "unknown transformation";;
+
   let get_blend_token str offset = failwith "TODO";;
   let get_cut_token str offset = failwith "TODO";;
   let get_const_token str offset = failwith "TODO";;
@@ -189,7 +213,7 @@ end = struct
 end
 
 
-(* (i-tr (move (0.5 0))
+ (*(i-tr (move (0.5 0))
   (i-tr (rot 1.5708)
    (i-blend Over
     (i-blend Over
