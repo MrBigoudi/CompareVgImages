@@ -77,7 +77,7 @@ end = struct
         if (offset-1)>=len then failwith "can't find next image modif" else
         let n = (String.index_from str offset 'i') in
           match str.[n+1] with
-          | '-' -> n+2;;(* from 'i-abc' to abc *)
+          | '-' -> n+2(* from 'i-abc' to abc *)
           | _   -> (aux (offset+1))
       in (aux n);;
 
@@ -120,8 +120,7 @@ end = struct
                 (blend1,blend2);;
 
 
-  let get_cut_token str offset = 
-    (next_image_modif str offset);;
+  let get_cut_token str offset = failwith "TODO";;
 
   let get_const_token str offset = 
     let offset = (next_left_p str offset)+1 in
@@ -129,7 +128,25 @@ end = struct
         let sub = (get_sub_string str offset new_offset) in
           let res = (Scanf.sscanf sub "%f %f %f %f" (fun w x y z -> (w,x,y,z))) in res;;
 
-  let get_path_token str offset = failwith "TODO";;
+  let get_path_token str offset = 
+    let len = String.length str in
+      let get_point offset =
+        let end_of_tuple = (next_right_p str offset)+1 in
+          let sub = (get_sub_string str offset end_of_tuple) in
+            let res = (Scanf.sscanf sub "(%f %f)" (fun x y -> (x,y))) in 
+              (*if end of path, ie '))'*)
+              if str.[end_of_tuple]==')' then (res,end_of_tuple)
+              else (res,(next_left_p str end_of_tuple))
+      in
+        let rec get_points cur_offset acc =
+          if cur_offset>=len then failwith "can't find end of path" else
+            match str.[cur_offset] with
+            | ')' -> acc
+            | '(' -> let (point,next_offset) = (get_point cur_offset) in
+                      (get_points next_offset (point::acc))
+            | _   -> let msg = (Printf.sprintf "unknown charactere '%c', at pos: %d\n" str.[cur_offset] cur_offset) in
+                      failwith msg
+        in (get_points (next_left_p str offset) []);;
   
   let get_outline_token str offset = 
     let offset = (next_left_p str offset)+1 in
