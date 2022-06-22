@@ -11,7 +11,7 @@ type tr_token =
     | Blend
     | Cut
     | Path of (float*float) list
-    | Outline of (float*float)
+    | Outline of float
     | Const of (float*float*float*float);;
 
   type i_tree = 
@@ -41,8 +41,8 @@ module ManipulateVg : sig
   val get_const_token : string -> int -> (float*float*float*float)
   (*Get a path_token, ie S (float float) L (float float) ... L (float float) Z*)
   val get_path_token : string -> int -> (float*float) list
-  (*Get an outline_token, ie (width float) and (miter-angle float)*)
-  val get_outline_token : string -> int -> (float*float)
+  (*Get an outline_token, ie the width of the outline*)
+  val get_outline_token : string -> int -> float
 
 
   (*Split string using ' ' as delimiter + remove empty component in the result array*)
@@ -110,8 +110,11 @@ end = struct
 
   let get_path_token str offset = failwith "TODO";;
   
-  let get_outline_token str offset = failwith "TODO";;
-
+  let get_outline_token str offset = 
+    let offset = (next_left_p str offset)+1 in
+    let new_offset = (next_right_p str offset) in
+    let sub = (get_sub_string str offset new_offset) in
+      let width = (Scanf.sscanf sub "width %f" (fun x -> x)) in width;;
 
   let create_i_tree str =
     let len = String.length str in
@@ -140,10 +143,10 @@ end = struct
                     in [(aux_cut new_offsets [])]
         (*path*)
         | 'p' -> let path = (get_path_token str offset)
-                    in [F(path)]
+                    in [F(Path(path))]
         (*outline*)
         | 'o' -> let outline = (get_outline_token str offset)
-                    in [F(outline)] 
+                    in [F(Outline(outline))] 
         (*error*)
         | _ -> let res = Printf.sprintf "unknown token at pos: %d\n" offset 
                     in failwith res
