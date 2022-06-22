@@ -98,7 +98,19 @@ end = struct
         | _ -> failwith "unknown transformation";;
 
   let get_blend_token str offset = 
-    failwith "TODO";;
+    let len = String.length str in
+      let blend1 = (next_image_modif str offset) in
+        let rec get_next_i nb_par cur_offset =
+          if cur_offset >= len then failwith "can't find second image blended" else
+            if nb_par == 0 then (next_image_modif str cur_offset) else
+              match str.[cur_offset] with
+              | '(' -> (get_next_i (nb_par+1) (cur_offset+1))
+              | ')' -> (get_next_i (nb_par-1) (cur_offset+1))
+              | _   -> (get_next_i nb_par (cur_offset+1))
+            in 
+              let blend2 = (get_next_i 1 blend1) in
+                (blend1,blend2);;
+
 
   let get_cut_token str offset = failwith "TODO";;
 
