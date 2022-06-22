@@ -81,9 +81,11 @@ end = struct
           | _   -> (aux (offset+1))
       in (aux n);;
 
+
   let get_sub_string str s f =
     (String.sub str s (f-1));;
   
+
   let get_tr_token str offset = 
     let offset = (next_left_p str offset)+1 in
       let new_offset = (next_right_p str offset) in
@@ -105,6 +107,7 @@ end = struct
 
         | _ -> failwith "unknown transformation";;
 
+
   let get_blend_token str offset = 
     let len = String.length str in
       let blend1 = (next_image_modif str offset) in
@@ -116,17 +119,37 @@ end = struct
               | ')' -> (get_next_i (nb_par-1) (cur_offset+1))
               | _   -> (get_next_i nb_par (cur_offset+1))
             in 
-              let blend2 = (get_next_i 1 blend1) in
+              let blend2 = (get_next_i 1 ((next_left_p str blend1)+1)) in
                 (blend1,blend2);;
 
 
-  let get_cut_token str offset = failwith "TODO";;
+  let get_cut_token str offset = 
+    let len = String.length str in
+      let rec get_next_offset nb_par cur_offset =
+        if cur_offset>=len then failwith "can't find end of cut" else
+          if nb_par == 0 then (next_left_p str cur_offset)+1 else
+            match str.[cur_offset] with
+            | '(' -> (get_next_offset (nb_par+1) (cur_offset+1))
+            | ')' -> (get_next_offset (nb_par-1) (cur_offset+1))
+            | _   -> (get_next_offset nb_par (cur_offset+1))
+      in 
+        let rec get_offsets cur_offset acc =
+          if cur_offset>=len then failwith "can't find end of cut" else
+            (*end of cut*)
+            if str.[cur_offset] == 'i' then ((cur_offset+2)::acc) else
+              let cur_offset = (get_next_offset 1 cur_offset) in
+                (get_offsets cur_offset (cur_offset::acc))
+        in 
+          let first_offset = (next_left_p str offset)+1 in
+            (get_offsets first_offset [first_offset]);;
+
 
   let get_const_token str offset = 
     let offset = (next_left_p str offset)+1 in
       let new_offset = (next_right_p str offset) in
         let sub = (get_sub_string str offset new_offset) in
           let res = (Scanf.sscanf sub "%f %f %f %f" (fun w x y z -> (w,x,y,z))) in res;;
+
 
   let get_path_token str offset = 
     let len = String.length str in
@@ -148,11 +171,13 @@ end = struct
                       failwith msg
         in (get_points (next_left_p str offset) []);;
   
+
   let get_outline_token str offset = 
     let offset = (next_left_p str offset)+1 in
     let new_offset = (next_right_p str offset) in
     let sub = (get_sub_string str offset new_offset) in
       let width = (Scanf.sscanf sub "width %f" (fun x -> x)) in width;;
+
 
   let create_i_tree str =
     let len = String.length str in
