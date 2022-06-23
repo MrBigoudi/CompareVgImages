@@ -43,7 +43,7 @@ Pour passer un argument optionnel à une fonction, il faut rajouter un <strong>~
 
 
 
-# Premiers traces
+# Premiers tracés
 
 Nous allons essayer de tracer des formes simple en utilisant Vg.
 
@@ -200,7 +200,7 @@ Les composants r,g,b du contour doivent-être ceux du carré multiplié par 3/4.
 
   ```create_square_with_outline : float -> float -> float -> color -> float -> image```
 
-Il est possible de recuperer les valeurs r,g,b et a d'une couleur avec les fonctions
+Il est possible de récupérer les valeurs r,g,b et a d'une couleur avec les fonctions
 
 ```OCaml
 val r : color -> float

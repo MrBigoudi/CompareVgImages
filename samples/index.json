@@ -1,21 +1,31 @@
 { "learnocaml_version": "1",
-  "groups":
-  	{ "Exercices avec easy-check":
-	    { "title": "Exercices avec easy-check",
-	    
-	      "groups":
-		    {
-		        "Exercices avec easy-check":
-		        {
-			    "title": "Demo d'easy-check",
-			    "exercises": [
-		                "exo1", 
-						"list",
-						"vgTutorial"
-		            ]
-		        
-				}
-			}
-		}
-	}
-}
+	"groups":
+		{ "Exercices avec easy-check":
+		  { "title": "Exercices avec easy-check",
+		  
+			"groups":
+			  {
+				  "Easy-check samples":
+				  {
+				  "title": "Easy-check samples",
+				  "exercises": [
+						  "exo1", 
+						  "list"
+					  ]
+				  
+				  },
+  
+				  "Exercices using CompareVgImages":
+				  {
+				  "title": "Exercices using CompareVgImages",
+				  "exercises": [ 
+						  "CompareVgImages/samples/vgTutorial", 
+						  "CompareVgImages/samples/jfp12"
+					  ]
+				  
+				  }
+			  }
+		  }
+	  }
+  }
+  

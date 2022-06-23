@@ -72,13 +72,13 @@ Since CompareVgImages will only be used to correct easy-check exercices, it migh
     ## test if everything's ok
     cd CompareVgImages
     # try samples
-    cp -r samples/vgTutorial ../.
     cp samples/index.json ../.
     cd ../../easy-check/demo
     # need to do a first make to add images for the exercice description
     make
     # ^C
-    cp -r exercices/vgTutorial/images www/icons/.
+    cp -r exercices/CompareVgImages/vgTutorial/images www/icons/.
+    cp -r exercices/CompareVgImages/jfp12/images www/icons/.
     # the real test this time
     make
     $BROWSER localhost:8080
@@ -131,11 +131,10 @@ let () =
 
 You'll also have to change <strong>depend.txt</strong> files to add CompareVgImages as a dependency.
 
-```sh
-  
+```sh 
   echo -e "\n\n## vg compare\n" >> depend.txt
-  echo -e "../image_vg_compare/src/compare.ml" >> depend.txt
-  echo -e "../image_vg_compare/src/compare.mli" >> depend.txt
+  echo -e "../CompareVgImages/src/compare.ml" >> depend.txt
+  echo -e "../CompareVgImages/src/compare.mli" >> depend.txt
 
   # check if evertything is ok
   cat depend.txt

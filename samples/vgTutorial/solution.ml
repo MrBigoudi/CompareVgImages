@@ -1,6 +1,3 @@
-open Gg;;
-open Vg;;
-
 (*Question 1*)
 let create_color r g b a = Color.v_srgb r g b ~a;;
 
