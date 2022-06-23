@@ -28,7 +28,7 @@ Notez que l’on obtient alors un nombre dont seuls 16 bits sont significatifs.
 
 3. T est obtenue en ne gardant que les termes non nuls de Q.
 
-Realiser la fonction 
+Réaliser la fonction 
 
 ```OCaml
   val get_n_termes_T : int -> int -> int list
@@ -104,7 +104,7 @@ préalablement tournée R fois puis placer ses blocs de façon à ce que son blo
 
 Une pièce peut être posée sur le plateau seulement si tous ses blocs le peuvent. Un bloc peut être posé sur le plateau seulement si l’emplacement du plateau est un bloc vide et si le bloc n’est pas situé à l’extérieur du plateau.
 
-En utilisant le module [Array](https://v2.ocaml.org/api/Array.html) de OCaml, realiser la fonction 
+En utilisant le module [Array](https://v2.ocaml.org/api/Array.html) de OCaml, réaliser la fonction 
 
 ```OCaml
   val gen_matrice : (int*int*int*int) list -> int array array
@@ -243,3 +243,26 @@ Qui, étant donné la matrice représentant le plateau de Tetris, crée une imag
 </div>
 
 <em>Le buffer permettant d'afficher une image sur learnOCaml n'est pas illimité, votre image devra donc être efficace en terme d'espace mémoire</em>
+
+**Question 3 :** LA GRAVITÉ EST UNE LOI UNIVERSELLE
+
+On suppose dans cette question que les quatre premières lignes du plateau sont toujours vides. On dit qu’“une pièce tournée R fois est lâchée sur le plateau à la colonne C” si on la pose sur la première ligne et qu’on la déplace d’une ligne vers le bas tant que c’est possible. (Ici, un déplacement est “possible” si on peut poser la pièce au sens de la question 2)
+
+Réaliser la fonction 
+
+```OCaml
+  val gen_matrice_gravity : (int*int*int) list -> int array array
+  gen_matrice_gravity l
+```
+
+Qui étant donné une liste de quadruplet renvoie une matrice. Les quadruplets dont constitués de 4 entiers naturels. 
+
+Le premier entier P est un numéro de pièce. 
+
+Le second entier C est un numéro de colonne. 
+
+Le troisième entier R est le nombre de fois où la pièce a été tournée. 
+
+On peut supposer que l’on peut toujours poser la pièce P sur la première ligne et la colonne C en l’ayant fait tourner préalablement R fois. 
+
+(Il existe des couples (C, R) invalides mais nous ne les utilisons pas dans cette question. En d’autres termes, on suppose dans cette question que l’on peut toujours placer les pièces sur les quatre premières lignes avant de les faire descendre)

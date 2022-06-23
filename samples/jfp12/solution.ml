@@ -1,16 +1,3 @@
-let print_matrice m =
-  let l = Array.length m in
-  let c = Array.length m.(0) in
-  let rec print_line line cpt = match cpt with
-    | a when a==c -> Printf.printf "\n"
-    | _ -> (if (line.(cpt)==0) then Printf.printf "." 
-            else Printf.printf "%d" (line.(cpt))); (print_line line (cpt+1))
-  in 
-  let rec aux cpt = match cpt with
-    | a when a==l -> Printf.printf "\n"
-    | _ -> (print_line (m.(cpt)) 0); (aux (cpt+1))
-  in (aux 0);;
-
 (*Question 1*)
 let get_n_termes_T s n =
   let get_val x = x lsr 13 in
@@ -308,15 +295,49 @@ let draw_tetris m =
     let pieces = (aux 0 0 (I.const Color.white)) in
     (I.blend grille pieces);;
 
+(*Question 3*)
+let matrice_equals m1 m2 =
+  let l1 = Array.length m1 in
+  let l2 = Array.length m2 in
+  let c1 = Array.length (m1.(0)) in
+  let c2 = Array.length (m2.(0)) in
+  if (c1<>c2 || l1<>l2) then false
+  else
+    let rec aux i j = match (i,j) with
+      | (i,_) when i>=l1 -> true
+      | (_,j) when j>=c1 -> (aux (i+1) 0)
+      | _ -> if (m1.(i)).(j)<>(m2.(i)).(j) then false
+              else (aux i (j+1))
+    in (aux 0 0);;
 
-let li = [(1,5,5,0);(1,5,5,0);(1,6,5,0);(1,6,8,0);(2,7,0,0);(2,7,4,0);(2,8,0,0);(2,9,0,0);(3,11,0,0);(4,12,0,0)];;
-let m = (gen_matrice li);;
+let gen_matrice_gravity l =
+  let l_max = 24 in
+  let c_max = 12 in
+  let m = (init_matrix l_max c_max) in 
+  let rec aux list cur_l last_m acc = match list with
+    | [] -> acc
+    | (p,c,r)::t -> if cur_l>=l_max then (aux t 4 last_m last_m)
+                    else
+                      begin
+                        if (check_quadruplet p cur_l c l_max c_max) then
+                          begin 
+                            let piece = (get_piece_r p r) in 
+                            let m = (place_piece piece acc cur_l c) in
+                            print_matrice m;
+                            if (matrice_equals m last_m) then (aux t 4 last_m last_m)
+                            else (aux ((p,c,r)::t) (cur_l+1) m acc)
+                          end
+                        else begin Printf.printf "wrong quad\n"; (aux t 4 acc acc) end
+                      end
+  in (aux l 4 (copy_matrix m) (copy_matrix m));;
+
+let li = [(1,0,0);(2,1,0);(3,2,0);(4,3,0);(5,4,0);(6,5,0);(7,6,0);(1,7,0);(2,8,0);(3,9,0)];;
+let m = (gen_matrice_gravity li);;
 
 (print_matrice m);;
 let i = (draw_tetris m);;
 
 (* Printf.printf "\n\n%s\n\n" (I.to_string i);; *)
-
 
 
 
