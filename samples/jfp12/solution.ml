@@ -235,6 +235,8 @@ let z_couleur = create_color 1. 0. 0.;;
 let t_couleur = create_color 0.439 0.188 0.627;;
 let o_couleur = create_color 1. 1. 0.004;;
 
+let grid_couleur = Color.v_srgb 0. 0. 0. ~a:0.5;;
+
 
 let create_block n x y l w = 
   match n with
@@ -248,30 +250,72 @@ let create_block n x y l w =
   | _ -> failwith "unknown block";;
 
 
-let draw_grid
-  
+let line_subpath init_p xi yi xf yf =
+  let p = 
+    init_p |>
+    P.sub (P2.v xi yi) |>
+    P.line (P2.v xf yf) |>
+    P.close
+  in p;;
+
+let lines_path n len space x y =
+  let xf = x+.len in
+    let rec aux n y acc = match n with
+      | 0 -> acc 
+      | _ -> (aux (n-1) (y+.space) (line_subpath acc x y xf y))
+    in (aux n y P.empty);;
+
+let cols_path n len space x y =
+  let yf = y+.len in
+    let rec aux n x acc = match n with
+      | 0 -> acc 
+      | _ -> (aux (n-1) (x+.space) (line_subpath acc x y x yf))
+    in (aux n x P.empty);;
+
+let grid_path line col len x y =
+  let l_path = (lines_path (line+1) ((float_of_int col)*.len) len x y) in
+    let c_path = (cols_path (col+1) ((float_of_int line)*.len) len x y) in
+      (l_path,c_path);;
+
+let draw_grid line col len w x y color =
+  let area = `O { P.o with P.width = w } in
+    let (l_path,c_path) = grid_path line col len x y in
+      let draw_l = (I.const color |> I.cut ~area l_path) in
+        let draw_c = (I.const color |> I.cut ~area c_path) in
+          (I.blend draw_l draw_c);;
 
 let draw_tetris m =
   let l = Array.length m in
   let c = Array.length (m.(0)) in
   let len = 0.04 in
   let w = (len/.10.) in
+    let next_x j = (float_of_int (c/2+j-1))*.(len+.(w/.2.)) in
+    let next_y i = (float_of_int (l-i-1))*.(len+.(w/.2.)) in
+      let x0 = (next_x 0) in
+      let y0 = (next_y (l-1)) in
+  let grille = (draw_grid l c (len+.(w/.2.)) w x0 y0 grid_couleur) in
   let rec aux i j acc =
     match i,j with
     | (i,_) when i>=l -> acc
     | (_,j) when j>=c -> (aux (i+1) 0 acc)
     | _ -> let n = (m.(i)).(j) in
-        let x = (float_of_int (c/2+j+1))*.(len+.(w/.2.)) in
-        let y = (float_of_int (l-i+1))*.(len+.(w/.2.)) in
-        (aux i (j+1) (I.blend (create_block n x y len w) acc))
-  in (aux 0 0 (I.const Color.white));;
+        if n==0 then (aux i (j+1) acc)
+        else
+          let x = next_x j in
+          let y = next_y i in
+            (aux i (j+1) (I.blend (create_block n x y len w) acc))
+  in 
+    let pieces = (aux 0 0 (I.const Color.white)) in
+    (I.blend grille pieces);;
 
 
-let l = [(1,5,5,0);(1,5,5,0);(1,6,5,0);(1,6,8,0);(2,7,0,0);(2,7,4,0);(2,8,0,0);(2,9,0,0);(3,11,0,0);(4,12,0,0)];;
-let m = (gen_matrice l);;
+let li = [(1,5,5,0);(1,5,5,0);(1,6,5,0);(1,6,8,0);(2,7,0,0);(2,7,4,0);(2,8,0,0);(2,9,0,0);(3,11,0,0);(4,12,0,0)];;
+let m = (gen_matrice li);;
 
 (print_matrice m);;
-(draw_tetris m);;
+let i = (draw_tetris m);;
+
+(* Printf.printf "\n\n%s\n\n" (I.to_string i);; *)
 
 
 
