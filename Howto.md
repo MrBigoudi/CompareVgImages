@@ -77,8 +77,8 @@ Since CompareVgImages will only be used to correct easy-check exercices, it migh
     # need to do a first make to add images for the exercice description
     make
     # ^C
-    cp -r exercices/CompareVgImages/vgTutorial/images www/icons/.
-    cp -r exercices/CompareVgImages/jfp12/images www/icons/.
+    cp -r exercises/CompareVgImages/samples/vgTutorial/images/ www/icons/.
+    cp -r exercises/CompareVgImages/samples/jfp12/images/ www/icons/.
     # the real test this time
     make
     $BROWSER localhost:8080
