@@ -148,13 +148,12 @@ let place_piece piece m l c =
   let l_matrix = Array.length m in
   let c_matrix = Array.length (m.(0)) in
   let (left,right,up,down) = (get_pos piece) in
-  let rec aux i j acc =
-    match (i,j) with
-    | (a,b) when (l+a-up)>=(l_matrix) || (c+b-left)>=(c_matrix) -> m
-    | (a,_) when a>down -> acc
-    | (_,b) when b>right -> (aux (i+1) left acc)
-    | (a,b) when (piece.(a)).(b)<=0 -> (aux i (j+1) acc)
-    | (a,b) when (piece.(a)).(b)>0 && (m.(a+l-up)).(b+c-left)>0-> m
+  let rec aux i j acc =match (i,j) with
+    | (i,_) when i>down -> acc
+    | (_,j) when j>right -> (aux (i+1) left acc)
+    | (i,j) when (l+i-up)>(l_matrix) || (c+j-left)>(c_matrix) -> m 
+    | (i,j) when (piece.(i)).(j)<=0 -> (aux i (j+1) acc)
+    | (i,j) when (piece.(i)).(j)>0 && (m.(i+l-up)).(c+j-left)>0-> m
     | _ -> let cur = (piece.(i)).(j) in
         (Array.set (acc.(i+l-up)) (j+c-left) cur); 
         (aux i (j+1) acc)
@@ -247,39 +246,39 @@ let line_subpath init_p xi yi xf yf =
 
 let lines_path n len space x y =
   let xf = x+.len in
-    let rec aux n y acc = match n with
-      | 0 -> acc 
-      | _ -> (aux (n-1) (y+.space) (line_subpath acc x y xf y))
-    in (aux n y P.empty);;
+  let rec aux n y acc = match n with
+    | 0 -> acc 
+    | _ -> (aux (n-1) (y+.space) (line_subpath acc x y xf y))
+  in (aux n y P.empty);;
 
 let cols_path n len space x y =
   let yf = y+.len in
-    let rec aux n x acc = match n with
-      | 0 -> acc 
-      | _ -> (aux (n-1) (x+.space) (line_subpath acc x y x yf))
-    in (aux n x P.empty);;
+  let rec aux n x acc = match n with
+    | 0 -> acc 
+    | _ -> (aux (n-1) (x+.space) (line_subpath acc x y x yf))
+  in (aux n x P.empty);;
 
 let grid_path line col len x y =
   let l_path = (lines_path (line+1) ((float_of_int col)*.len) len x y) in
-    let c_path = (cols_path (col+1) ((float_of_int line)*.len) len x y) in
-      (l_path,c_path);;
+  let c_path = (cols_path (col+1) ((float_of_int line)*.len) len x y) in
+  (l_path,c_path);;
 
 let draw_grid line col len w x y color =
   let area = `O { P.o with P.width = w } in
-    let (l_path,c_path) = grid_path line col len x y in
-      let draw_l = (I.const color |> I.cut ~area l_path) in
-        let draw_c = (I.const color |> I.cut ~area c_path) in
-          (I.blend draw_l draw_c);;
+  let (l_path,c_path) = grid_path line col len x y in
+  let draw_l = (I.const color |> I.cut ~area l_path) in
+  let draw_c = (I.const color |> I.cut ~area c_path) in
+  (I.blend draw_l draw_c);;
 
 let draw_tetris m =
   let l = Array.length m in
   let c = Array.length (m.(0)) in
   let len = 0.04 in
   let w = (len/.10.) in
-    let next_x j = (float_of_int (c/2+j-1))*.(len+.(w/.2.)) in
-    let next_y i = (float_of_int (l-i-1))*.(len+.(w/.2.)) in
-      let x0 = (next_x 0) in
-      let y0 = (next_y (l-1)) in
+  let next_x j = (float_of_int (c/2+j-1))*.(len+.(w/.2.)) in
+  let next_y i = (float_of_int (l-i-1))*.(len+.(w/.2.)) in
+  let x0 = (next_x 0) in
+  let y0 = (next_y (l-1)) in
   let grille = (draw_grid l c (len+.(w/.2.)) w x0 y0 grid_couleur) in
   let rec aux i j acc =
     match i,j with
@@ -290,10 +289,10 @@ let draw_tetris m =
         else
           let x = next_x j in
           let y = next_y i in
-            (aux i (j+1) (I.blend (create_block n x y len w) acc))
+          (aux i (j+1) (I.blend (create_block n x y len w) acc))
   in 
-    let pieces = (aux 0 0 (I.const Color.white)) in
-    (I.blend grille pieces);;
+  let pieces = (aux 0 0 (I.const Color.white)) in
+  (I.blend grille pieces);;
 
 (*Question 3*)
 let matrice_equals m1 m2 =
@@ -307,7 +306,7 @@ let matrice_equals m1 m2 =
       | (i,_) when i>=l1 -> true
       | (_,j) when j>=c1 -> (aux (i+1) 0)
       | _ -> if (m1.(i)).(j)<>(m2.(i)).(j) then false
-              else (aux i (j+1))
+          else (aux i (j+1))
     in (aux 0 0);;
 
 let gen_matrice_gravity l =
@@ -317,27 +316,18 @@ let gen_matrice_gravity l =
   let rec aux list cur_l last_m acc = match list with
     | [] -> acc
     | (p,c,r)::t -> if cur_l>=l_max then (aux t 4 last_m last_m)
-                    else
-                      begin
-                        if (check_quadruplet p cur_l c l_max c_max) then
-                          begin 
-                            let piece = (get_piece_r p r) in 
-                            let m = (place_piece piece acc cur_l c) in
-                            print_matrice m;
-                            if (matrice_equals m last_m) then (aux t 4 last_m last_m)
-                            else (aux ((p,c,r)::t) (cur_l+1) m acc)
-                          end
-                        else begin Printf.printf "wrong quad\n"; (aux t 4 acc acc) end
-                      end
+        else
+          begin
+            if (check_quadruplet p cur_l c l_max c_max) then
+              begin 
+                let piece = (get_piece_r p r) in 
+                let m = (place_piece piece acc cur_l c) in
+                if (matrice_equals m acc) then (aux t 4 last_m last_m)
+                else (aux ((p,c,r)::t) (cur_l+1) m acc)
+              end
+            else begin Printf.printf "wrong quad\n"; (aux t 4 acc acc) end
+          end
   in (aux l 4 (copy_matrix m) (copy_matrix m));;
-
-let li = [(1,0,0);(2,1,0);(3,2,0);(4,3,0);(5,4,0);(6,5,0);(7,6,0);(1,7,0);(2,8,0);(3,9,0)];;
-let m = (gen_matrice_gravity li);;
-
-(print_matrice m);;
-let i = (draw_tetris m);;
-
-(* Printf.printf "\n\n%s\n\n" (I.to_string i);; *)
 
 
 
