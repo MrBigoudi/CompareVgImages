@@ -30,6 +30,10 @@ module ManipulateVg : sig
   val next_image_modif : string -> int -> int
   (*Get a sub string with the start and end position (exclude)*)
   val get_sub_string : string -> int -> int -> string
+  (*Print a list of offsets*)
+  val print_list_offset : int list -> unit
+  (*Print a list of float tuple*)
+  val print_list_paths : (float*float) list -> unit
 
 
   (*Get a tr_token and the new offset*)
@@ -45,11 +49,19 @@ module ManipulateVg : sig
   (*Get an outline_token, ie the width of the outline*)
   val get_outline_token : string -> int -> float
 
+  (*Move a tuple*)
+  val move : (float*float) -> (float*float) -> (float*float)
+  (*Rotate a tuple*)
+  val rot : float -> (float*float) -> (float*float)
+  (*Scale a tuple*)
+  val scale : (float*float) -> (float*float) -> (float*float)
+
   (*Create a tree of tokens representing an image from a string*)
   val create_i_tree : string -> i_tree
   (*Convert an i_tree into a string*)
   val to_string : i_tree -> string
-
+  (*Get the list of path points in a tree, after applying necessary changes on it*)
+  val get_points : i_tree -> (float*float) list
 
   (*Split string using ' ' as delimiter + remove empty component in the result array*)
   val split : string -> string list
@@ -77,6 +89,7 @@ end = struct
     String.index_from str n '(';;
   let next_right_p str n = 
     String.index_from str n ')';;
+
   let next_image_modif str n = 
     let len = String.length str in
     let rec aux offset =
@@ -86,9 +99,21 @@ end = struct
         | '-' -> n+2(* from 'i-abc' to abc *)
         | _   -> (aux (offset+1))
     in (aux n);;
-  let rec print_list l = match l with
-    | [] -> ()
-    | offset::t -> Printf.printf "%d;" offset; (print_list t);;
+
+  let print_list_offset l = 
+    let rec aux l = match l with
+      | [] -> Printf.printf "\n"
+      | offset::t -> Printf.printf "%d;" offset; (aux t)
+    in (aux l);;
+
+  let print_list_paths l = 
+    Printf.printf "\npaths: [";
+    let rec aux l = match l with
+      | [] -> Printf.printf "\n\n"
+      | (x,y)::[] -> Printf.printf "(%f,%f)]" x y; (aux [])
+      | (x,y)::t -> Printf.printf "(%f,%f);" x y; (aux t)
+    in (aux l);;
+
   let to_string i =
     let rec aux i =
       match i with
@@ -125,7 +150,7 @@ end = struct
                          | [] -> ""
                          | h::t -> (aux h)^(aux2 t)
           in "cut\n"^(aux2 l)
-      | _ -> "\n\nerror\n\n"
+      | _ -> failwith "\n\nerror to_string: unkown i_tree\n\n"
     in (aux i);;
 
 
@@ -205,7 +230,7 @@ end = struct
           end
         | a::acc -> (*begin
             Printf.printf "\n\noffsets: ";
-            (print_list ((cur_offset+2)::acc)); 
+            (print_list_offset ((cur_offset+2)::acc)); 
             Printf.printf " -> fin offset\n\n";*)
             ((cur_offset+2)::acc)
           (* end *)
@@ -296,6 +321,61 @@ end = struct
             in failwith res
     in (aux 1 len);;
 
+  (*Move a tuple*)
+  let move t1 t2 =
+    match t1 with (x1,y1) ->
+      match t2 with (x2,y2) -> ((x1+.x2),(y1+.y2));;
+  (*Rotate a tuple*)
+  let rot r t =
+    match t with (x,y) -> ((r*.x),(r*.y));;
+  (*Scale a tuple*)
+  let scale t1 t2 =
+    match t1 with (x1,y1) ->
+      match t2 with (x2,y2) -> ((x1*.x2),(y1*.y2));;
+
+  let get_points i =
+    let rec aux i = 
+      match i with
+      | Empty -> []
+      | F(Const(w,x,y,z)) -> [] (*TODO color check*)
+      | F(Outline(x)) -> [] (*TODO outline check*)
+      | F(Path(l)) -> l
+      | Node(Tr(Move(x,y)),l) -> let new_move t = (move (x,y) t) in
+                                  let rec aux2 i =
+                                   match i with
+                                   | [] -> []
+                                   | h::t -> (aux h)@(aux2 t) 
+                                  in (List.map new_move (aux2 l))
+      | Node(Tr(Rot(x)),l) -> let new_rot t = (rot x t) in
+                                let rec aux2 i =
+                                  match i with
+                                  | [] -> []
+                                  | h::t -> (aux h)@(aux2 t) 
+                                in (List.map new_rot (aux2 l)) 
+      | Node(Tr(Scale(x,y)),l) -> let new_scale t = (scale (x,y) t) in
+                                    let rec aux2 i =
+                                      match i with
+                                      | [] -> []
+                                      | h::t -> (aux h)@(aux2 t) 
+                                    in (List.map new_scale (aux2 l))
+      | Node(Blend,l) -> let rec aux2 i_list =
+                          match i_list with
+                          | [] -> []
+                          | h::t -> (aux h)@(aux2 t) in (aux2 l)
+      | Node(Cut,l) -> let rec aux2 i_list =
+                        match i_list with
+                        | [] -> []
+                        | h::t -> (aux h)@(aux2 t) in (aux2 l)
+      | _ -> failwith "\n\nerror get_points: unknown tree\n\n"
+    in (aux i);;
+
+
+
+
+
+
+
+
 
   let split str =
     str
@@ -372,19 +452,6 @@ end = struct
 end
 
 let image_equal i1 i2 =
-  let di1 = (ManipulateVg.decompose i1) in
-  let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples di1 di2);;
+let di1 = (ManipulateVg.decompose i1) in
+let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples di1 di2);;
 
-
-
-
-
-
-
-
-
-
-
-
-
-  
