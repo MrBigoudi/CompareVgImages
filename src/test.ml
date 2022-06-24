@@ -32,3 +32,10 @@ let test_create_i_tree () =
   Printf.printf "Test hard output:\n%s\n\n\n" (ManipulateVg.to_string (ManipulateVg.create_i_tree test_hard));;
 
 
+
+
+
+
+
+
+
