@@ -377,65 +377,6 @@ let image_equal i1 i2 =
 
 
 
-let test_final = "(i-tr (move (0.5 0))
-  (i-tr (rot 1.5708)
-   (i-blend Over
-    (i-blend Over
-     (i-cut anz
-      (path S (0.1 0.142) L (0.14 0.142) L (0.14 0.182) L (0.1 0.182) L
-       (0.1 0.142) Z)
-      (i-const (1 0 0 1)))
-     (i-cut
-      (outline (width 0.004) (cap Butt) (join Miter) (miter-angle 0.200713))
-      (path S (0.1 0.142) L (0.14 0.142) L (0.14 0.182) L (0.1 0.182) L
-       (0.1 0.142) Z)
-      (i-const (0.522522 0 0 1))))
-    (i-blend Over
-     (i-blend Over
-      (i-cut anz
-       (path S (0.142 0.1) L (0.182 0.1) L (0.182 0.14) L (0.142 0.14) L
-        (0.142 0.1) Z)
-       (i-const (1 0 0 1)))
-      (i-cut
-       (outline (width 0.004) (cap Butt) (join Miter) (miter-angle 0.200713))
-       (path S (0.142 0.1) L (0.182 0.1) L (0.182 0.14) L (0.142 0.14) L
-        (0.142 0.1) Z)
-       (i-const (0.522522 0 0 1))))
-     (i-blend Over
-      (i-blend Over
-       (i-cut anz
-(path S (0.142 0.142) L (0.182 0.142) L (0.182 0.182) L (0.142 0.182)
-   L (0.142 0.142) Z)
-  (i-const (1 0 0 1)))
-(i-cut
-   (outline (width 0.004) (cap Butt) (join Miter) (miter-angle 0.200713))
-   (path S (0.142 0.142) L (0.182 0.142) L (0.182 0.182) L (0.142 0.182)
-L (0.142 0.142) Z)
-(i-const (0.522522 0 0 1))))
-(i-blend Over
-   (i-cut anz
-      (path S (0.184 0.1) L (0.224 0.1) L (0.224 0.14) L (0.184 0.14) L
-         (0.184 0.1) Z)
-      (i-const (1 0 0 1)))
-   (i-cut
-      (outline (width 0.004) (cap Butt) (join Miter) (miter-angle 0.200713))
-      (path S (0.184 0.1) L (0.224 0.1) L (0.224 0.14) L (0.184 0.14) L
-         (0.184 0.1) Z)
-      (i-const (0.522522 0 0 1)))))))))";;
-
-let test_outline = "(outline (width 0.004) (cap Butt) (join Miter) (miter-angle 0.200713))";; 
-let test_path = "(path S (0.1 0.1) L (0.1 0.2) L (0.1 0.3) L (0.1 0.4) L (0.1 0.5) Z)";; 
-let test_const = "(i-const (0.522522 0 0 1))";; 
-let test_tr_move = "(i-tr (move (0.5 0))"^test_const^")";; 
-let test_tr_rot = "(i-tr (rot 0.5)"^test_const^")";;
-let test_tr_scale = "(i-tr (scale (0.5 0))"^test_const^")";; 
-let test_blend = "(i-blend "^test_tr_move^test_const^")";;
-let test_cut = "(i-cut "^test_outline^test_path^test_const^")";; 
-
-Printf.printf "%s" (ManipulateVg.to_string (ManipulateVg.create_i_tree test_cut));;
-
-
-
 
 
 
