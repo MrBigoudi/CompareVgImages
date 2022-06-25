@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link rel="Up" href="Compare.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Compare" rel="Chapter" href="Compare.html">
+<link title="Test" rel="Chapter" href="Test.html"><title>Compare.ManipulateVg</title>
+</head>
+<body>
+<div class="navbar">&nbsp;<a class="up" href="Compare.html" title="Compare">Up</a>
+&nbsp;</div>
+<h1>Module <a href="type_Compare.ManipulateVg.html">Compare.ManipulateVg</a></h1>
+
+<pre><span id="MODULEManipulateVg"><span class="keyword">module</span> ManipulateVg</span>: <code class="code"><span class="keyword">sig</span></code> <a href="Compare.ManipulateVg.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info module top">
+<div class="info-desc">
+<p>A module for all the functions used to compare images.</p>
+</div>
+</div>
+<hr width="100%">
+
+<pre><span id="VALnext_space"><span class="keyword">val</span> next_space</span> : <code class="type">string -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Get offset of next empty space.</p>
+</div>
+</div>
+
+<pre><span id="VALnext_left_p"><span class="keyword">val</span> next_left_p</span> : <code class="type">string -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Get offset of next left parenthesis.</p>
+</div>
+</div>
+
+<pre><span id="VALnext_right_p"><span class="keyword">val</span> next_right_p</span> : <code class="type">string -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Get offset of next right parenthesis.</p>
+</div>
+</div>
+
+<pre><span id="VALnext_image_modif"><span class="keyword">val</span> next_image_modif</span> : <code class="type">string -> int -> int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Get offset of next image modification.</p>
+</div>
+</div>
+
+<pre><span id="VALget_sub_string"><span class="keyword">val</span> get_sub_string</span> : <code class="type">string -> int -> int -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Get a sub string with the start and end position (exclude).</p>
+</div>
+</div>
+
+<pre><span id="VALprint_list_offset"><span class="keyword">val</span> print_list_offset</span> : <code class="type">int list -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Print a list of offsets.</p>
+</div>
+</div>
+
+<pre><span id="VALprint_list_paths"><span class="keyword">val</span> print_list_paths</span> : <code class="type">(float * float) list -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Print a list of float tuple.</p>
+</div>
+</div>
+
+<pre><span id="VALget_tr_token"><span class="keyword">val</span> get_tr_token</span> : <code class="type">string -> int -> <a href="Compare.html#TYPEtr_token">Compare.tr_token</a> * int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Get a tr_token and the new offset.</p>
+</div>
+</div>
+
+<pre><span id="VALget_blend_token"><span class="keyword">val</span> get_blend_token</span> : <code class="type">string -> int -> int * int</code></pre><div class="info ">
+<div class="info-desc">
+<p>Get the 2 new offsets to divide the next research.</p>
+</div>
+</div>
+
+<pre><span id="VALget_cut_token"><span class="keyword">val</span> get_cut_token</span> : <code class="type">string -> int -> int list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Get the list of new offsets to divide the next researches.</p>
+</div>
+</div>
+
+<pre><span id="VALget_const_token"><span class="keyword">val</span> get_const_token</span> : <code class="type">string -> int -> float * float * float * float</code></pre><div class="info ">
+<div class="info-desc">
+<p>Get a const_token, ie (float float float float).</p>
+</div>
+</div>
+
+<pre><span id="VALget_path_token"><span class="keyword">val</span> get_path_token</span> : <code class="type">string -> int -> (float * float) list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Get a path_token, ie S (float float) L (float float) ... L (float float) Z.</p>
+</div>
+</div>
+
+<pre><span id="VALget_outline_token"><span class="keyword">val</span> get_outline_token</span> : <code class="type">string -> int -> float</code></pre><div class="info ">
+<div class="info-desc">
+<p>Get an outline_token, ie the width of the outline.</p>
+</div>
+</div>
+
+<pre><span id="VALmove"><span class="keyword">val</span> move</span> : <code class="type">float * float -> float * float -> float * float</code></pre><div class="info ">
+<div class="info-desc">
+<p>Move a tuple.</p>
+</div>
+</div>
+
+<pre><span id="VALrot"><span class="keyword">val</span> rot</span> : <code class="type">float -> float * float -> float * float</code></pre><div class="info ">
+<div class="info-desc">
+<p>Rotate a tuple.</p>
+</div>
+</div>
+
+<pre><span id="VALscale"><span class="keyword">val</span> scale</span> : <code class="type">float * float -> float * float -> float * float</code></pre><div class="info ">
+<div class="info-desc">
+<p>Scale a tuple.</p>
+</div>
+</div>
+
+<pre><span id="VALcreate_i_tree"><span class="keyword">val</span> create_i_tree</span> : <code class="type">string -> <a href="Compare.html#TYPEi_tree">Compare.i_tree</a></code></pre><div class="info ">
+<div class="info-desc">
+<p>Create a tree of tokens representing an image from a string.</p>
+</div>
+</div>
+
+<pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="Compare.html#TYPEi_tree">Compare.i_tree</a> -> string</code></pre><div class="info ">
+<div class="info-desc">
+<p>Convert an i_tree into a string.</p>
+</div>
+</div>
+
+<pre><span id="VALget_points"><span class="keyword">val</span> get_points</span> : <code class="type"><a href="Compare.html#TYPEi_tree">Compare.i_tree</a> -> (float * float) list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Get the list of path points in a tree, after applying necessary changes on it.</p>
+</div>
+</div>
+
+<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">string -> string list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Split string using ' ' as delimiter + remove empty component in the result array.</p>
+</div>
+</div>
+
+<pre><span id="VALempty_array"><span class="keyword">val</span> empty_array</span> : <code class="type">string list -> string list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Filter list to omly keep numbers.</p>
+</div>
+</div>
+
+<pre><span id="VALclean_array"><span class="keyword">val</span> clean_array</span> : <code class="type">string list -> string list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Remove parentheses in a list of strings.</p>
+</div>
+</div>
+
+<pre><span id="VALfloat_of_string"><span class="keyword">val</span> float_of_string</span> : <code class="type">string -> float</code></pre><div class="info ">
+<div class="info-desc">
+<p>Cast a string to a float</p>
+</div>
+</div>
+
+<pre><span id="VALprint_arr"><span class="keyword">val</span> print_arr</span> : <code class="type">string list -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Debug tool to print a string list.</p>
+</div>
+</div>
+
+<pre><span id="VALcreate_tuple_list"><span class="keyword">val</span> create_tuple_list</span> : <code class="type">string list -> (float * float) list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Cast a string list to a tuple of float list.</p>
+</div>
+</div>
+
+<pre><span id="VALdecompose"><span class="keyword">val</span> decompose</span> : <code class="type">Vg.image -> (float * float) list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Transform a Vg image to a tuple of float list.</p>
+</div>
+</div>
+
+<pre><span id="VALremove_double"><span class="keyword">val</span> remove_double</span> : <code class="type">(float * float) list -> (float * float) list</code></pre><div class="info ">
+<div class="info-desc">
+<p>Remove copies in a tuple of float list.</p>
+</div>
+</div>
+
+<pre><span id="VALcompare_list_tuples"><span class="keyword">val</span> compare_list_tuples</span> : <code class="type">(float * float) list -> (float * float) list -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p>Compare two tuple of float list.</p>
+</div>
+</div>
+</body></html>
