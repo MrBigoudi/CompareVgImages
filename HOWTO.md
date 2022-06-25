@@ -1,4 +1,4 @@
-# HowTo 
+# HOWTO
 
 ## Setup and Installations
 
