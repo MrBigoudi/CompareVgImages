@@ -10,7 +10,11 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Compare" rel="Chapter" href="Compare.html">
-<link title="Test" rel="Chapter" href="Test.html"><title>Compare.ManipulateVg</title>
+<link title="Test" rel="Chapter" href="Test.html"><link title="Intermediate functions to manipulate a string." rel="Section" href="#2_Intermediatefunctionstomanipulateastring">
+<link title="Tokens getter from the Vg.image as a string." rel="Section" href="#2_TokensgetterfromtheVgimageasastring">
+<link title="Intermediate operations over paths." rel="Section" href="#2_Intermediateoperationsoverpaths">
+<link title="i_tree manipulation." rel="Section" href="#2_itreemanipulation">
+<title>Compare.ManipulateVg</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="Compare.html" title="Compare">Up</a>
@@ -23,120 +27,140 @@
 </div>
 </div>
 <hr width="100%">
+<h3 id="2_Intermediatefunctionstomanipulateastring">Intermediate functions to manipulate a string.</h3><p>Get offset of next empty space.</p>
 
 <pre><span id="VALnext_space"><span class="keyword">val</span> next_space</span> : <code class="type">string -> int -> int</code></pre><div class="info ">
 <div class="info-desc">
-<p>Get offset of next empty space.</p>
+<p><i>next_space s n</i> -&gt; offset of next empty space in <b>s</b> starting from <b>n</b> (include)</p>
 </div>
 </div>
+<p>Get offset of the next left parenthesis.</p>
 
 <pre><span id="VALnext_left_p"><span class="keyword">val</span> next_left_p</span> : <code class="type">string -> int -> int</code></pre><div class="info ">
 <div class="info-desc">
-<p>Get offset of next left parenthesis.</p>
+<p><i>next_left_p s n</i> -&gt; offset of next left parenthesis in <b>s</b> starting from <b>n</b> (include)</p>
 </div>
 </div>
+<p>Get offset of the next right parenthesis.</p>
 
 <pre><span id="VALnext_right_p"><span class="keyword">val</span> next_right_p</span> : <code class="type">string -> int -> int</code></pre><div class="info ">
 <div class="info-desc">
-<p>Get offset of next right parenthesis.</p>
+<p><i>next_right_p s n</i> -&gt; offset of next right parenthesis in <b>s</b> starting from <b>n</b> (include)</p>
 </div>
 </div>
+<p>Get offset of the next i_token.</p>
 
 <pre><span id="VALnext_image_modif"><span class="keyword">val</span> next_image_modif</span> : <code class="type">string -> int -> int</code></pre><div class="info ">
 <div class="info-desc">
-<p>Get offset of next image modification.</p>
+<p><i>next_image_modif s n</i> -&gt; offset of next i_token in <b>s</b> starting from <b>n</b> (include)</p>
 </div>
 </div>
+<p>Get a sub string.</p>
 
 <pre><span id="VALget_sub_string"><span class="keyword">val</span> get_sub_string</span> : <code class="type">string -> int -> int -> string</code></pre><div class="info ">
 <div class="info-desc">
-<p>Get a sub string with the start and end position (exclude).</p>
+<p><i>get_sub_string s first last</i> -&gt; sub string of <b>s</b> with the <b>first</b> and <b>end</b> position (exclude)</p>
 </div>
 </div>
+<p>Print a list of offsets.</p>
 
 <pre><span id="VALprint_list_offset"><span class="keyword">val</span> print_list_offset</span> : <code class="type">int list -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p>Print a list of offsets.</p>
+<p><i>print_list_offset l</i> -&gt; print the list <b>l</b></p>
 </div>
 </div>
+<p>Print a list of float tuple.</p>
 
 <pre><span id="VALprint_list_paths"><span class="keyword">val</span> print_list_paths</span> : <code class="type">(float * float) list -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p>Print a list of float tuple.</p>
+<p><i>print_list_paths l</i> -&gt; print the list <b>l</b></p>
 </div>
 </div>
+<h3 id="2_TokensgetterfromtheVgimageasastring">Tokens getter from the Vg.image as a string.</h3><p>Get a tr_token and the new offset.</p>
 
 <pre><span id="VALget_tr_token"><span class="keyword">val</span> get_tr_token</span> : <code class="type">string -> int -> <a href="Compare.html#TYPEtr_token">Compare.tr_token</a> * int</code></pre><div class="info ">
 <div class="info-desc">
-<p>Get a tr_token and the new offset.</p>
+<p><i>get_tr_token image_as_string current_offset</i> -&gt; (token,new_offset)</p>
 </div>
 </div>
+<p>Get the 2 new offsets to divide the next research.</p>
 
 <pre><span id="VALget_blend_token"><span class="keyword">val</span> get_blend_token</span> : <code class="type">string -> int -> int * int</code></pre><div class="info ">
 <div class="info-desc">
-<p>Get the 2 new offsets to divide the next research.</p>
+<p><i>get_blend_token image_as_string current_offset</i> -&gt; (offset_image1,offset_image2)</p>
 </div>
 </div>
+<p>Get the list of new offsets to divide the next researches.</p>
 
 <pre><span id="VALget_cut_token"><span class="keyword">val</span> get_cut_token</span> : <code class="type">string -> int -> int list</code></pre><div class="info ">
 <div class="info-desc">
-<p>Get the list of new offsets to divide the next researches.</p>
+<p><i>get_cut_token image_as_string current_offset</i> -&gt; <code class="code">offset_(image&nbsp;<span class="keywordsign">|</span>&nbsp;path&nbsp;<span class="keywordsign">|</span>&nbsp;outline);...</code></p>
 </div>
 </div>
+<p>Get a const_token, ie an r,g,b,a color.</p>
 
 <pre><span id="VALget_const_token"><span class="keyword">val</span> get_const_token</span> : <code class="type">string -> int -> float * float * float * float</code></pre><div class="info ">
 <div class="info-desc">
-<p>Get a const_token, ie (float float float float).</p>
+<p><i>get_const_token image_as_string current_offset</i> -&gt; (r,g,b,a)</p>
 </div>
 </div>
+<p>Get a path_token, ie S (float float) L (float float) ... L (float float) Z.</p>
 
 <pre><span id="VALget_path_token"><span class="keyword">val</span> get_path_token</span> : <code class="type">string -> int -> (float * float) list</code></pre><div class="info ">
 <div class="info-desc">
-<p>Get a path_token, ie S (float float) L (float float) ... L (float float) Z.</p>
+<p><i>get_path_token image_as_string current_offset</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code></p>
 </div>
 </div>
+<p>Get an outline_token <i>(only the width of the outline for the moment)</i>.</p>
 
 <pre><span id="VALget_outline_token"><span class="keyword">val</span> get_outline_token</span> : <code class="type">string -> int -> float</code></pre><div class="info ">
 <div class="info-desc">
-<p>Get an outline_token, ie the width of the outline.</p>
+<p><i>get_path_token image_as_string current_offset</i> -&gt; width</p>
 </div>
 </div>
+<h3 id="2_Intermediateoperationsoverpaths">Intermediate operations over paths.</h3><p>Move a tuple.</p>
 
 <pre><span id="VALmove"><span class="keyword">val</span> move</span> : <code class="type">float * float -> float * float -> float * float</code></pre><div class="info ">
 <div class="info-desc">
-<p>Move a tuple.</p>
+<p><i>move (x1,y1) (x2,y2)</i> -&gt; (x1+.x2,y1+.y2)</p>
 </div>
 </div>
+<p>Rotate a tuple.</p>
 
 <pre><span id="VALrot"><span class="keyword">val</span> rot</span> : <code class="type">float -> float * float -> float * float</code></pre><div class="info ">
 <div class="info-desc">
-<p>Rotate a tuple.</p>
+<p><i>rot r (x,y)</i> -&gt; (r*.x,r*.y)</p>
 </div>
 </div>
+<p>Scale a tuple.</p>
 
 <pre><span id="VALscale"><span class="keyword">val</span> scale</span> : <code class="type">float * float -> float * float -> float * float</code></pre><div class="info ">
 <div class="info-desc">
-<p>Scale a tuple.</p>
+<p><i>scale (x1,y1) (x2,y2)</i> -&gt; (x1*.x2,y1*.y2)</p>
 </div>
 </div>
+<h3 id="2_itreemanipulation">i_tree manipulation.</h3><p>Create a tree of tokens representing an image from a string.</p>
 
 <pre><span id="VALcreate_i_tree"><span class="keyword">val</span> create_i_tree</span> : <code class="type">string -> <a href="Compare.html#TYPEi_tree">Compare.i_tree</a></code></pre><div class="info ">
 <div class="info-desc">
-<p>Create a tree of tokens representing an image from a string.</p>
+<p><i>create_i_tree image_as_string</i> -&gt; i_tree representing the image as a tree of i_token</p>
 </div>
 </div>
+<p>Convert an i_tree into a string.</p>
 
 <pre><span id="VALto_string"><span class="keyword">val</span> to_string</span> : <code class="type"><a href="Compare.html#TYPEi_tree">Compare.i_tree</a> -> string</code></pre><div class="info ">
 <div class="info-desc">
-<p>Convert an i_tree into a string.</p>
+<p><i>to_string tree</i> -&gt; string to check if the create_tree function worked</p>
 </div>
 </div>
+<p>Get the list of path points in a tree, after applying necessary changes on it.</p>
 
 <pre><span id="VALget_points"><span class="keyword">val</span> get_points</span> : <code class="type"><a href="Compare.html#TYPEi_tree">Compare.i_tree</a> -> (float * float) list</code></pre><div class="info ">
 <div class="info-desc">
-<p>Get the list of path points in a tree, after applying necessary changes on it.</p>
+<p><i>get_points tree</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code></p>
 </div>
 </div>
+<p>Intermediate functions to compare i_tree</p>
 
 <pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">string -> string list</code></pre><div class="info ">
 <div class="info-desc">

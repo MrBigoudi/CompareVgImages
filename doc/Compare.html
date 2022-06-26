@@ -11,7 +11,12 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Compare" rel="Chapter" href="Compare.html">
-<link title="Test" rel="Chapter" href="Test.html"><title>Compare</title>
+<link title="Test" rel="Chapter" href="Test.html"><link title="Summary" rel="Section" href="#1_Summary">
+<link title="How it works" rel="Section" href="#1_Howitworks">
+<link title="Tokens" rel="Subsection" href="#2_Tokens">
+<link title="Intermediate module to manipulate the image." rel="Subsection" href="#2_Intermediatemoduletomanipulatetheimage">
+<link title="Main function" rel="Subsection" href="#2_Mainfunction">
+<title>Compare</title>
 </head>
 <body>
 <div class="navbar">&nbsp;<a class="up" href="index.html" title="Index">Up</a>
@@ -28,6 +33,19 @@
 </ul>
 </div>
 <hr width="100%">
+<h2 id="1_Summary">Summary</h2>
+<p>The Vg module let you use an equal function that checks if two images are exactly equals.</p>
+
+<p>However, when you look at two images, they can look alike even if they don't have the same constructors (example the image of an 'L' and the image of a 'J' which was mirrored.</p>
+
+<p>This module tries to check if two images are visually equal.</p>
+<h2 id="1_Howitworks">How it works</h2>
+<p>Vg.image constructors are hidden, in order to do pattern-matching with a Vg.image you need to reconstruct the constructors tree.</p>
+
+<p>In order to do that we use the Vg.I.to_string function to transform images to string and then, with some custom parsing, we transfom a Vg.image to an Compare.i_tree.</p>
+
+<p>Having this tree we can manipulate the images' infos to try compare them.</p>
+<h3 id="2_Tokens">Tokens</h3><p>Tokens for translation.</p>
 
 <pre><code><span id="TYPEtr_token"><span class="keyword">type</span> <code class="type"></code>tr_token</span> = </code></pre><table class="typetable">
 <tr>
@@ -67,12 +85,8 @@
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
-<div class="info ">
-<div class="info-desc">
-<p>Tokens for translation.</p>
-</div>
-</div>
 
+<p>Tokens for image.</p>
 
 <pre><code><span id="TYPEi_token"><span class="keyword">type</span> <code class="type"></code>i_token</span> = </code></pre><table class="typetable">
 <tr>
@@ -148,12 +162,8 @@
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
-<div class="info ">
-<div class="info-desc">
-<p>Tokens for image.</p>
-</div>
-</div>
 
+<p>Represents an image as a tree token.</p>
 
 <pre><code><span id="TYPEi_tree"><span class="keyword">type</span> <code class="type"></code>i_tree</span> = </code></pre><table class="typetable">
 <tr>
@@ -193,24 +203,17 @@
 </td><td class="typefieldcomment" align="left" valign="bottom" ><code>*)</code></td>
 </tr></table>
 
-<div class="info ">
-<div class="info-desc">
-<p>Represents an image as a tree token.</p>
-</div>
-</div>
 
-
+<h3 id="2_Intermediatemoduletomanipulatetheimage">Intermediate module to manipulate the image.</h3>
 <pre><span id="MODULEManipulateVg"><span class="keyword">module</span> <a href="Compare.ManipulateVg.html">ManipulateVg</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="Compare.ManipulateVg.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 <p>A module for all the functions used to compare images.</p>
 
 </div>
+<h3 id="2_Mainfunction">Main function</h3><p>Compare two images</p>
 
 <pre><span id="VALimage_equal"><span class="keyword">val</span> image_equal</span> : <code class="type">Vg.image -> Vg.image -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p>Compare 2 Vg images.</p>
+<p><i>image_equal i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal</p>
 </div>
-<ul class="info-attributes">
-<li><b>Returns</b> True if the images are equal, False otherwise.</li>
-</ul>
 </div>
 </body></html>

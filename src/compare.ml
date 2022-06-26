@@ -26,7 +26,7 @@ type i_tree =
   | Node of i_token * i_tree list (** A tree node. *)
 ;;
 
-(** A hidden module for all the functions used to compare images. *)
+(** A module for all the functions used to compare images. *)
 module ManipulateVg = struct 
   let next_space str n = 
     String.index_from str n ' ';;
@@ -396,6 +396,11 @@ module ManipulateVg = struct
 
 end
 
+(** Compare 2 Vg images.
+  @param i1 The first Vg.image to compare.
+  @param i2 The second Vg.image to compare.
+  @return True if the images are equal, False otherwise.
+*)
 let image_equal i1 i2 =
 let di1 = (ManipulateVg.decompose i1) in
 let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples di1 di2);;

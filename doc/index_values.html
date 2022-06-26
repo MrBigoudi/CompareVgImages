@@ -30,7 +30,7 @@
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALcreate_i_tree">create_i_tree</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Create a tree of tokens representing an image from a string.</p>
+<p><i>create_i_tree image_as_string</i> -&gt; i_tree representing the image as a tree of i_token</p>
 
 </div>
 </td></tr>
@@ -64,88 +64,88 @@
 <tr><td align="left"><div>G</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALget_blend_token">get_blend_token</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Get the 2 new offsets to divide the next research.</p>
+<p><i>get_blend_token image_as_string current_offset</i> -&gt; (offset_image1,offset_image2)</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALget_const_token">get_const_token</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Get a const_token, ie (float float float float).</p>
+<p><i>get_const_token image_as_string current_offset</i> -&gt; (r,g,b,a)</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALget_cut_token">get_cut_token</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Get the list of new offsets to divide the next researches.</p>
+<p><i>get_cut_token image_as_string current_offset</i> -&gt; <code class="code">offset_(image&nbsp;<span class="keywordsign">|</span>&nbsp;path&nbsp;<span class="keywordsign">|</span>&nbsp;outline);...</code></p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALget_outline_token">get_outline_token</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Get an outline_token, ie the width of the outline.</p>
+<p><i>get_path_token image_as_string current_offset</i> -&gt; width</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALget_path_token">get_path_token</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Get a path_token, ie S (float float) L (float float) ...</p>
+<p><i>get_path_token image_as_string current_offset</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code></p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALget_points">get_points</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Get the list of path points in a tree, after applying necessary changes on it.</p>
+<p><i>get_points tree</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code></p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALget_sub_string">get_sub_string</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Get a sub string with the start and end position (exclude).</p>
+<p><i>get_sub_string s first last</i> -&gt; sub string of <b>s</b> with the <b>first</b> and <b>end</b> position (exclude)</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALget_tr_token">get_tr_token</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Get a tr_token and the new offset.</p>
+<p><i>get_tr_token image_as_string current_offset</i> -&gt; (token,new_offset)</p>
 
 </div>
 </td></tr>
 <tr><td align="left"><div>I</div></td></tr>
 <tr><td><a href="Compare.html#VALimage_equal">image_equal</a> [<a href="Compare.html">Compare</a>]</td>
 <td><div class="info">
-<p>Compare 2 Vg images.</p>
+<p><i>image_equal i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal</p>
 
 </div>
 </td></tr>
 <tr><td align="left"><div>M</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALmove">move</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Move a tuple.</p>
+<p><i>move (x1,y1) (x2,y2)</i> -&gt; (x1+.x2,y1+.y2)</p>
 
 </div>
 </td></tr>
 <tr><td align="left"><div>N</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALnext_image_modif">next_image_modif</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Get offset of next image modification.</p>
+<p><i>next_image_modif s n</i> -&gt; offset of next i_token in <b>s</b> starting from <b>n</b> (include)</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALnext_left_p">next_left_p</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Get offset of next left parenthesis.</p>
+<p><i>next_left_p s n</i> -&gt; offset of next left parenthesis in <b>s</b> starting from <b>n</b> (include)</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALnext_right_p">next_right_p</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Get offset of next right parenthesis.</p>
+<p><i>next_right_p s n</i> -&gt; offset of next right parenthesis in <b>s</b> starting from <b>n</b> (include)</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALnext_space">next_space</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Get offset of next empty space.</p>
+<p><i>next_space s n</i> -&gt; offset of next empty space in <b>s</b> starting from <b>n</b> (include)</p>
 
 </div>
 </td></tr>
@@ -158,13 +158,13 @@
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALprint_list_offset">print_list_offset</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Print a list of offsets.</p>
+<p><i>print_list_offset l</i> -&gt; print the list <b>l</b></p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALprint_list_paths">print_list_paths</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Print a list of float tuple.</p>
+<p><i>print_list_paths l</i> -&gt; print the list <b>l</b></p>
 
 </div>
 </td></tr>
@@ -177,14 +177,14 @@
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALrot">rot</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Rotate a tuple.</p>
+<p><i>rot r (x,y)</i> -&gt; (r*.x,r*.y)</p>
 
 </div>
 </td></tr>
 <tr><td align="left"><div>S</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALscale">scale</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Scale a tuple.</p>
+<p><i>scale (x1,y1) (x2,y2)</i> -&gt; (x1*.x2,y1*.y2)</p>
 
 </div>
 </td></tr>
@@ -205,7 +205,7 @@
 <td></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALto_string">to_string</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Convert an i_tree into a string.</p>
+<p><i>to_string tree</i> -&gt; string to check if the create_tree function worked</p>
 
 </div>
 </td></tr>
