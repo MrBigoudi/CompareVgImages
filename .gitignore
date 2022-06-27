@@ -1,5 +1,6 @@
 # cm[io]
-obj/*.cm[io]
+obj/*.cmi
+obj/*.cmo
 
 # make targets
 bin/*.byte
