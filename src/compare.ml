@@ -377,12 +377,12 @@ module ManipulateVg = struct
 
   (** Return true if two tuple of floats are equal. *)
   let equal_float_tuple t1 t2 =
-    let epsilon = 1e6 in
+    let epsilon = 1e-5 in
       match t1 with (x1,y1) -> 
         match t2 with (x2,y2) ->
-          let comp_x = if (x1-.x2)<0. then (x2-.x1)<epsilon else (x1-.x2)<epsilon
-          in let comp_y = if (y1-.y2)<0. then (y2-.y1)<epsilon else (y1-.y2)<epsilon
-            in comp_x && comp_y;;
+          let comp_x = (if (x1-.x2)<0. then ((x2-.x1)<=epsilon) else ((x1-.x2)<=epsilon)) in
+            let comp_y = (if (y1-.y2)<0. then ((y2-.y1)<=epsilon) else ((y1-.y2)<=epsilon)) in
+              (comp_x && comp_y);;
 
   (** Return true if a tuple of float is in a list. *)
   let list_mem_bis t l = 
