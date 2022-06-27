@@ -46,7 +46,9 @@ However, it's utilisation will be more user-friendly with [easy-check](https://g
 
 To learn how to install and use all of these plateform you can check the [HOWTO.md](https://github.com/MrBigoudi/CompareVgImages/blob/main/HOWTO.md) file.
 
-If you follow the instructions you'll be able to try the samples given [here](https://github.com/MrBigoudi/CompareVgImages/tree/main/samples)
+If you follow the instructions you'll be able to try the samples given [here](https://github.com/MrBigoudi/CompareVgImages/tree/main/samples).
+
+If you need more information about [CompareVgImages](https://github.com/MrBigoudi/CompareVgImages), feel free to read the [documentation](doc/index.html) or open an issue request ^^ .
 
 </br>
 

@@ -25,6 +25,7 @@ CLEAN := clean_doc
 # default recipe
 all: doc
 
+# generate doc
 doc: clean_doc
 	@echo -e "\nGenerating doc"
 	@echo -e "$(FIND) $(DOCMKR) $(FINDFLAGS) $(DOCFLAGS) -I $(SRC_DIR) -d $(DOC_DIR) $(SRCS)"
