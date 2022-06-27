@@ -16,15 +16,9 @@
 <h1>Index of values</h1>
 <table>
 <tr><td align="left"><div>C</div></td></tr>
-<tr><td><a href="Compare.ManipulateVg.html#VALclean_array">clean_array</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
-<td><div class="info">
-<p>Remove parentheses in a list of strings.</p>
-
-</div>
-</td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALcompare_list_tuples">compare_list_tuples</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Compare two tuple of float list.</p>
+<p><i>compare_list_tuples l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa <i>(~exists: equal_float_tuple or translated)</i></p>
 
 </div>
 </td></tr>
@@ -34,30 +28,17 @@
 
 </div>
 </td></tr>
-<tr><td><a href="Compare.ManipulateVg.html#VALcreate_tuple_list">create_tuple_list</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
-<td><div class="info">
-<p>Cast a string list to a tuple of float list.</p>
-
-</div>
-</td></tr>
 <tr><td align="left"><div>D</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALdecompose">decompose</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Transform a Vg image to a tuple of float list.</p>
+<p><i>decompose i</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code></p>
 
 </div>
 </td></tr>
 <tr><td align="left"><div>E</div></td></tr>
-<tr><td><a href="Compare.ManipulateVg.html#VALempty_array">empty_array</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
+<tr><td><a href="Compare.ManipulateVg.html#VALequal_float_tuple">equal_float_tuple</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Filter list to omly keep numbers.</p>
-
-</div>
-</td></tr>
-<tr><td align="left"><div>F</div></td></tr>
-<tr><td><a href="Compare.ManipulateVg.html#VALfloat_of_string">float_of_string</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
-<td><div class="info">
-<p>Cast a string to a float</p>
+<p><i>equal_float_tuple t1 t2</i> -&gt; E(x1-x2)&lt;1e6 &amp;&amp; E(y1-y2)&lt;1e6</p>
 
 </div>
 </td></tr>
@@ -117,6 +98,13 @@
 
 </div>
 </td></tr>
+<tr><td align="left"><div>L</div></td></tr>
+<tr><td><a href="Compare.ManipulateVg.html#VALlist_mem_bis">list_mem_bis</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
+<td><div class="info">
+<p><i>list_mem_bis t l</i> -&gt; true if t in l <i>(~equal: equal_float_tuple)</i></p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>M</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALmove">move</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
@@ -150,12 +138,6 @@
 </div>
 </td></tr>
 <tr><td align="left"><div>P</div></td></tr>
-<tr><td><a href="Compare.ManipulateVg.html#VALprint_arr">print_arr</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
-<td><div class="info">
-<p>Debug tool to print a string list.</p>
-
-</div>
-</td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALprint_list_offset">print_list_offset</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
 <p><i>print_list_offset l</i> -&gt; print the list <b>l</b></p>
@@ -171,7 +153,7 @@
 <tr><td align="left"><div>R</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALremove_double">remove_double</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p>Remove copies in a tuple of float list.</p>
+<p><i>remove_double l</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code> with (x1,y1) unique <i>(~equal: equal_float_tuple)</i></p>
 
 </div>
 </td></tr>
@@ -185,12 +167,6 @@
 <tr><td><a href="Compare.ManipulateVg.html#VALscale">scale</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
 <p><i>scale (x1,y1) (x2,y2)</i> -&gt; (x1*.x2,y1*.y2)</p>
-
-</div>
-</td></tr>
-<tr><td><a href="Compare.ManipulateVg.html#VALsplit">split</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
-<td><div class="info">
-<p>Split string using ' ' as delimiter + remove empty component in the result array.</p>
 
 </div>
 </td></tr>

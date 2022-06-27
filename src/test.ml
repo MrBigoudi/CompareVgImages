@@ -7,52 +7,51 @@ let test_tr_scale = "(i-tr (scale (0 0))"^test_const^")";;
 let test_blend = "(i-blend "^test_tr_move^test_const^")";;
 let test_cut = "(i-cut "^test_outline^test_path^test_const^")";;
 let test_hard = "(i-blend "^test_blend^"(i-blend "^test_blend^test_cut^"))";;
-
 let test_super_hard = "(i-blend Over
-(i-blend Over
- (i-tr (move (1 0.5))
-  (i-cut anz
-  (path S (0.1 0.205) L (0.2 0.205) L (0.2 0.305) L (0.1 0.305) L
-    (0.1 0.205) Z)
-  (i-const (1 0 0 1))))
- (i-tr (rot 0.5)
-  (i-cut
-    (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+  (i-blend Over
+  (i-tr (move (1 0.5))
+    (i-cut anz
     (path S (0.1 0.205) L (0.2 0.205) L (0.2 0.305) L (0.1 0.305) L
-    (0.1 0.205) Z)
-    (i-const (0.522522 0 0 1)))))
-(i-blend Over
- (i-blend Over
-  (i-cut anz
-   (path S (0.205 0.1) L (0.305 0.1) L (0.305 0.2) L (0.205 0.2) L
-    (0.205 0.1) Z)
-   (i-const (1 0 0 1)))
-  (i-cut
-   (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
-   (path S (0.205 0.1) L (0.305 0.1) L (0.305 0.2) L (0.205 0.2) L
-    (0.205 0.1) Z)
-   (i-const (0.522522 0 0 1))))
- (i-blend Over
-  (i-blend Over
-   (i-cut anz
-    (path S (0.205 0.205) L (0.305 0.205) L (0.305 0.305) L (0.205 0.305) L
-     (0.205 0.205) Z)
-    (i-const (1 0 0 1)))
-   (i-cut
-    (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
-    (path S (0.205 0.205) L (0.305 0.205) L (0.305 0.305) L (0.205 0.305) L
-     (0.205 0.205) Z)
-    (i-const (0.522522 0 0 1))))
-  (i-blend Over
-   (i-cut anz
-    (path S (0.31 0.1) L (0.41 0.1) L (0.41 0.2) L (0.31 0.2) L (0.31 0.1)
-     Z)
-    (i-const (1 0 0 1)))
-   (i-cut
-    (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
-    (path S (0.31 0.1) L (0.41 0.1) L (0.41 0.2) L (0.31 0.2) L (0.31 0.1)
-     Z)
-    (i-const (0.522522 0 0 1)))))))";;
+      (0.1 0.205) Z)
+    (i-const (1 0 0 1))))
+  (i-tr (rot 0.5)
+    (i-cut
+      (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+      (path S (0.1 0.205) L (0.2 0.205) L (0.2 0.305) L (0.1 0.305) L
+      (0.1 0.205) Z)
+      (i-const (0.522522 0 0 1)))))
+    (i-blend Over
+    (i-blend Over
+      (i-cut anz
+      (path S (0.205 0.1) L (0.305 0.1) L (0.305 0.2) L (0.205 0.2) L
+        (0.205 0.1) Z)
+      (i-const (1 0 0 1)))
+      (i-cut
+      (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+      (path S (0.205 0.1) L (0.305 0.1) L (0.305 0.2) L (0.205 0.2) L
+        (0.205 0.1) Z)
+      (i-const (0.522522 0 0 1))))
+    (i-blend Over
+      (i-blend Over
+      (i-cut anz
+        (path S (0.205 0.205) L (0.305 0.205) L (0.305 0.305) L (0.205 0.305) L
+        (0.205 0.205) Z)
+        (i-const (1 0 0 1)))
+      (i-cut
+        (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+        (path S (0.205 0.205) L (0.305 0.205) L (0.305 0.305) L (0.205 0.305) L
+        (0.205 0.205) Z)
+        (i-const (0.522522 0 0 1))))
+      (i-blend Over
+      (i-cut anz
+        (path S (0.31 0.1) L (0.41 0.1) L (0.41 0.2) L (0.31 0.2) L (0.31 0.1)
+        Z)
+        (i-const (1 0 0 1)))
+      (i-cut
+        (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+        (path S (0.31 0.1) L (0.41 0.1) L (0.41 0.2) L (0.31 0.2) L (0.31 0.1)
+        Z)
+        (i-const (0.522522 0 0 1)))))))";;
 
 let test_create_i_tree () =
   Printf.printf "Tests create i-tree:\n\n\n";

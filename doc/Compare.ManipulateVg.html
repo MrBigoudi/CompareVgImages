@@ -161,58 +161,39 @@
 </div>
 </div>
 <p>Intermediate functions to compare i_tree</p>
-
-<pre><span id="VALsplit"><span class="keyword">val</span> split</span> : <code class="type">string -> string list</code></pre><div class="info ">
-<div class="info-desc">
-<p>Split string using ' ' as delimiter + remove empty component in the result array.</p>
-</div>
-</div>
-
-<pre><span id="VALempty_array"><span class="keyword">val</span> empty_array</span> : <code class="type">string list -> string list</code></pre><div class="info ">
-<div class="info-desc">
-<p>Filter list to omly keep numbers.</p>
-</div>
-</div>
-
-<pre><span id="VALclean_array"><span class="keyword">val</span> clean_array</span> : <code class="type">string list -> string list</code></pre><div class="info ">
-<div class="info-desc">
-<p>Remove parentheses in a list of strings.</p>
-</div>
-</div>
-
-<pre><span id="VALfloat_of_string"><span class="keyword">val</span> float_of_string</span> : <code class="type">string -> float</code></pre><div class="info ">
-<div class="info-desc">
-<p>Cast a string to a float</p>
-</div>
-</div>
-
-<pre><span id="VALprint_arr"><span class="keyword">val</span> print_arr</span> : <code class="type">string list -> unit</code></pre><div class="info ">
-<div class="info-desc">
-<p>Debug tool to print a string list.</p>
-</div>
-</div>
-
-<pre><span id="VALcreate_tuple_list"><span class="keyword">val</span> create_tuple_list</span> : <code class="type">string list -> (float * float) list</code></pre><div class="info ">
-<div class="info-desc">
-<p>Cast a string list to a tuple of float list.</p>
-</div>
-</div>
+<p>Transform a Vg image to a tuple of float list.</p>
 
 <pre><span id="VALdecompose"><span class="keyword">val</span> decompose</span> : <code class="type">Vg.image -> (float * float) list</code></pre><div class="info ">
 <div class="info-desc">
-<p>Transform a Vg image to a tuple of float list.</p>
+<p><i>decompose i</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code></p>
 </div>
 </div>
+<p>Return true if two tuple of floats are equal.</p>
+
+<pre><span id="VALequal_float_tuple"><span class="keyword">val</span> equal_float_tuple</span> : <code class="type">float * float -> float * float -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><i>equal_float_tuple t1 t2</i> -&gt; E(x1-x2)&lt;1e6 &amp;&amp; E(y1-y2)&lt;1e6</p>
+</div>
+</div>
+<p>Return true if a tuple of float is in a list.</p>
+
+<pre><span id="VALlist_mem_bis"><span class="keyword">val</span> list_mem_bis</span> : <code class="type">float * float -> (float * float) list -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><i>list_mem_bis t l</i> -&gt; true if t in l <i>(~equal: equal_float_tuple)</i></p>
+</div>
+</div>
+<p>Remove copies in a list of float tuple.</p>
 
 <pre><span id="VALremove_double"><span class="keyword">val</span> remove_double</span> : <code class="type">(float * float) list -> (float * float) list</code></pre><div class="info ">
 <div class="info-desc">
-<p>Remove copies in a tuple of float list.</p>
+<p><i>remove_double l</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code> with (x1,y1) unique <i>(~equal: equal_float_tuple)</i></p>
 </div>
 </div>
+<p>Compare two list of float tuple.</p>
 
 <pre><span id="VALcompare_list_tuples"><span class="keyword">val</span> compare_list_tuples</span> : <code class="type">(float * float) list -> (float * float) list -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p>Compare two tuple of float list.</p>
+<p><i>compare_list_tuples l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa <i>(~exists: equal_float_tuple or translated)</i></p>
 </div>
 </div>
 </body></html>

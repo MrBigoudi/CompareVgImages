@@ -322,14 +322,7 @@ module ManipulateVg = struct
       | _ -> failwith "\n\nerror get_points: unknown tree\n\n"
     in (aux i);;
 
-
-
-
-
-
-
-
-
+(* 
   let split str =
     str
     |> String.split_on_char ' '
@@ -377,39 +370,50 @@ module ManipulateVg = struct
       | [] -> acc
       | l::r::t -> (aux (((float_of_string l),(float_of_string r))::acc) t)
       | h::[] -> acc
-    in (aux [] arr);;
+    in (aux [] arr);; *)
 
-  let decompose i =
-    let str = I.to_string i in 
-    let arr = split str in
-    let arr = (empty_array arr) in
-    let arr = (clean_array arr) in
-    (create_tuple_list arr);;
+  (** Transform a Vg image to a tuple of float list. *)
+  let decompose i = (get_points (create_i_tree (I.to_string i)));;
 
+  (** Return true if two tuple of floats are equal. *)
+  let equal_float_tuple t1 t2 =
+    let epsilon = 1e6 in
+      match t1 with (x1,y1) -> 
+        match t2 with (x2,y2) ->
+          let comp_x = if (x1-.x2)<0. then (x2-.x1)<epsilon else (x1-.x2)<epsilon
+          in let comp_y = if (y1-.y2)<0. then (y2-.y1)<epsilon else (y1-.y2)<epsilon
+            in comp_x && comp_y;;
+
+  (** Return true if a tuple of float is in a list. *)
+  let list_mem_bis t l = 
+    let rec aux l = match l with
+      | [] -> false
+      | h::tl -> if (equal_float_tuple h t) then true
+                  else (aux tl)
+    in (aux l);;
+
+  (** Remove copies in a list of float tuple. *)
   let remove_double l =
     let rec aux acc arr = match arr with
       | [] -> acc
-      | h::t -> if (List.mem h acc) then (aux acc t)
+      | h::t -> if (list_mem_bis h acc) then (aux acc t)
           else (aux (h::acc) t)
     in (aux [] l);; 
 
+  (** Compare two list of float tuple. *)
   let compare_list_tuples l1 l2 =
     let l1_unique = (remove_double l1) in
     let l2_unique = (remove_double l2) in
-    let f1 tuple = List.mem tuple l2_unique in
-    let f2 tuple = List.mem tuple l1_unique in
+    let f1 tuple = list_mem_bis tuple l2_unique in
+    let f2 tuple = list_mem_bis tuple l1_unique in
     ((List.length l1_unique)==(List.length l2_unique)) 
     && (List.for_all f1 l1_unique)
     && (List.for_all f2 l2_unique);;
 
 end
 
-(** Compare 2 Vg images.
-  @param i1 The first Vg.image to compare.
-  @param i2 The second Vg.image to compare.
-  @return True if the images are equal, False otherwise.
-*)
+(** Compare 2 Vg images. *)
 let image_equal i1 i2 =
-let di1 = (ManipulateVg.decompose i1) in
-let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples di1 di2);;
+  let di1 = (ManipulateVg.decompose i1) in
+    let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples di1 di2);;
 

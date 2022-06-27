@@ -194,7 +194,7 @@ module ManipulateVg : sig
 
     (** Intermediate functions to compare i_tree *)
 
-
+(* 
     (** Split string using ' ' as delimiter + remove empty component in the result array. *)
     val split : string -> string list
 
@@ -211,15 +211,31 @@ module ManipulateVg : sig
     val print_arr : string list -> unit
 
     (** Cast a string list to a tuple of float list. *)
-    val create_tuple_list : string list -> (float * float) list
+    val create_tuple_list : string list -> (float * float) list *)
 
     (** Transform a Vg image to a tuple of float list. *)
+
+    (** {i decompose i} -> [(x1,y1);...;(xn,yn)] *)
     val decompose : Vg.image -> (float * float) list
 
-    (** Remove copies in a tuple of float list. *)
+    (** Return true if two tuple of floats are equal. *)
+
+    (** {i equal_float_tuple t1 t2} -> E(x1-x2)<1e6 && E(y1-y2)<1e6 *)
+    val equal_float_tuple : (float * float) -> (float * float) -> bool
+  
+    (** Return true if a tuple of float is in a list. *)
+
+    (** {i list_mem_bis t l} -> true if t in l {i (~equal: equal_float_tuple)} *)
+    val list_mem_bis : (float * float) -> (float * float) list -> bool
+
+    (** Remove copies in a list of float tuple. *)
+
+    (** {i remove_double l} -> [(x1,y1);...;(xn,yn)] with (x1,y1) unique {i (~equal: equal_float_tuple)} *)
     val remove_double : (float * float) list -> (float * float) list
 
-    (** Compare two tuple of float list. *)
+    (** Compare two list of float tuple. *)
+    
+    (** {i compare_list_tuples l1 l2} -> true if all t in l1 exists in l2 and vice-versa {i (~exists: equal_float_tuple or translated)} *)
     val compare_list_tuples : (float * float) list -> (float * float) list -> bool
 end  
 
