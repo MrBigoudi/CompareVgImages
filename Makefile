@@ -18,7 +18,7 @@ CMI = 	$(OBJ_DIR)/compare.cmi \
 CMO = 	$(OBJ_DIR)/compare.cmo \
         $(OBJ_DIR)/test.cmo
 
-TESTS := $(BIN_DIR)/tests #name your executable file
+TESTS := $(BIN_DIR)/tests.byte #name your executable file
 
 # set the compiler
 COMP := ocamlc
@@ -42,9 +42,9 @@ CLEAN := clean_obj clean_bin clean_doc
 .PHONY: all test doc clean clean_cmi clean_cmo clean_obj clean_bin clean_doc mrproper
 
 # default recipe
-all: $(CMI) test doc
+all: test doc
 
-test: obj/test.cmo obj/compare.cmo
+test: $(CMI) $(CMO)
 	@echo -e "\nGenerating test"
 	@echo "LINKING" $@
 	@echo "$(FIND) $(COMP) $(COMPFLAGS) $(FINDFLAGS) $(LFLAGS) $(THREAD) -o $(TESTS) str.cma $(CMO)"
