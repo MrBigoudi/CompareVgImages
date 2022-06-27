@@ -200,14 +200,21 @@ module ManipulateVg = struct
 
   let get_path_token str offset = 
     let len = String.length str in
+    let end_of_path n =
+      (*if end of path, ie 'Z)'*) 
+      let offset_next_z = (String.index_from str n 'Z') in
+      let offset_next_l = (try (next_left_p str n) with Not_found -> len) in 
+      if offset_next_z > offset_next_l then false
+      else if (str.[offset_next_z+1]==')') then true 
+        else false
+    in
     let get_point offset =
       let end_of_tuple = (next_right_p str offset)+1 in
       let sub = (get_sub_string str offset end_of_tuple) in
-            (* Printf.printf "get_path_token\n"; *)
+      (* Printf.printf "get_path_token\n"; *)
       let res = (Scanf.sscanf sub "(%f %f)" (fun x y -> (x,y))) in 
-              (* Printf.printf "done\n"; *)
-              (*if end of path, ie ') Z)'*)
-      if str.[end_of_tuple+2]==')' then (res,(next_right_p str end_of_tuple))
+      (* Printf.printf "done\n"; *)
+      if (end_of_path end_of_tuple) then (res,(next_right_p str end_of_tuple))
       else (res,(next_left_p str end_of_tuple))
     in
     let rec get_points cur_offset acc =
@@ -233,6 +240,7 @@ module ManipulateVg = struct
     let len = String.length str in
     let rec aux offset fin = 
       let offset = (if str.[offset]=='i' then offset+2 else offset) in
+      (* Printf.printf "\noffset: %d\n\n%s\n\n" offset (get_sub_string str offset len); *)
       if offset >= fin then Empty
       else match str.[offset] with
         (*i-tr*)

@@ -10,15 +10,17 @@ let test_hard = "(i-blend "^test_blend^"(i-blend "^test_blend^test_cut^"))";;
 
 let test_super_hard = "(i-blend Over
 (i-blend Over
- (i-cut anz
+ (i-tr (move (1 0.5))
+  (i-cut anz
   (path S (0.1 0.205) L (0.2 0.205) L (0.2 0.305) L (0.1 0.305) L
-   (0.1 0.205) Z)
-  (i-const (1 0 0 1)))
- (i-cut
-  (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
-  (path S (0.1 0.205) L (0.2 0.205) L (0.2 0.305) L (0.1 0.305) L
-   (0.1 0.205) Z)
-  (i-const (0.522522 0 0 1))))
+    (0.1 0.205) Z)
+  (i-const (1 0 0 1))))
+ (i-tr (rot 0.5)
+  (i-cut
+    (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+    (path S (0.1 0.205) L (0.2 0.205) L (0.2 0.305) L (0.1 0.305) L
+    (0.1 0.205) Z)
+    (i-const (0.522522 0 0 1)))))
 (i-blend Over
  (i-blend Over
   (i-cut anz

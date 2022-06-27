@@ -42,7 +42,7 @@ CLEAN := clean_obj clean_bin clean_doc
 .PHONY: all test doc dir clean clean_cmi clean_cmo clean_obj clean_bin clean_doc mrproper
 
 # default recipe
-all: dir dir test doc
+all: dir test doc
 
 test: $(CMI) $(CMO)
 	@echo -e "\nGenerating test"
