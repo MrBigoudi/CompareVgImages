@@ -57,11 +57,11 @@ let test_create_i_tree () =
   Printf.printf "Test outline input:\n%s\n\n" test_outline;
   Printf.printf "Test outline output:\n%s\n\n\n" (Compare.ManipulateVg.to_string (Compare.ManipulateVg.create_i_tree test_outline));
   Printf.printf "Test path input:\n%s\n\n" test_path;
-  Printf.printf "Test path output:\n%s\n\n\n" (Compare.ManipulateVg.to_string (ManipulateVg.create_i_tree test_path));
+  Printf.printf "Test path output:\n%s\n\n\n" (Compare.ManipulateVg.to_string (Compare.ManipulateVg.create_i_tree test_path));
   Printf.printf "Test const input:\n%s\n\n" test_const;
-  Printf.printf "Test const output:\n%s\n\n\n" (Compare.ManipulateVg.to_string (ManipulateVg.create_i_tree test_const));
+  Printf.printf "Test const output:\n%s\n\n\n" (Compare.ManipulateVg.to_string (Compare.ManipulateVg.create_i_tree test_const));
   Printf.printf "Test tr move input:\n%s\n\n" test_tr_move;
-  Printf.printf "Test tr move output:\n%s\n\n\n" (Compare.ManipulateVg.to_string (ManipulateVg.create_i_tree test_tr_move));
+  Printf.printf "Test tr move output:\n%s\n\n\n" (Compare.ManipulateVg.to_string (Compare.ManipulateVg.create_i_tree test_tr_move));
   Printf.printf "Test tr rot input:\n%s\n\n" test_tr_rot;
   Printf.printf "Test tr rot output:\n%s\n\n\n" (Compare.ManipulateVg.to_string (Compare.ManipulateVg.create_i_tree test_tr_rot));
   Printf.printf "Test tr scale input:\n%s\n\n" test_tr_scale;
@@ -73,7 +73,8 @@ let test_create_i_tree () =
   Printf.printf "Test hard input:\n%s\n\n" test_hard;
   Printf.printf "Test hard output:\n%s\n\n\n" (Compare.ManipulateVg.to_string (Compare.ManipulateVg.create_i_tree test_hard));
   Printf.printf "Test super hard input:\n%s\n\n" test_super_hard;
-  Printf.printf "Test super hard output:\n%s\n\n\n" (Compare.ManipulateVg.to_string (Compare.ManipulateVg.create_i_tree test_super_hard));;
+  Printf.printf "Test super hard output:\n%s\n\n\n" (Compare.ManipulateVg.to_string (Compare.ManipulateVg.create_i_tree test_super_hard));
+  Printf.printf "Fin de tests create i-tree:\n\n\n";;
 
 let test_rot_cut = "(i-tr (rot 2)"^test_cut^")";;
 
@@ -82,12 +83,14 @@ let test_get_points_i_tree () =
   Printf.printf "Test rot_cut input:\n%s\n\n" test_rot_cut;
   Compare.ManipulateVg.print_list_paths (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree test_rot_cut));
   Printf.printf "Test super hard input:\n%s\n\n" test_super_hard;
-  Compare.ManipulateVg.print_list_paths (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree test_super_hard));;
+  Compare.ManipulateVg.print_list_paths (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree test_super_hard));
+  Printf.printf "Fin de tests get points i-tree:\n\n\n";;
 
 
 
+let main () =
+  test_create_i_tree();
+  test_get_points_i_tree();;
 
 
-
-
-
+let () = main();;
