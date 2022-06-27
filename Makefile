@@ -39,10 +39,10 @@ DOCFLAGS := $(HTMLFLAGS) -warn-error -verbose
 
 CLEAN := clean_obj clean_bin clean_doc
 
-.PHONY: all test doc clean clean_cmi clean_cmo clean_obj clean_bin clean_doc mrproper
+.PHONY: all test doc dir clean clean_cmi clean_cmo clean_obj clean_bin clean_doc mrproper
 
 # default recipe
-all: test doc
+all: dir dir test doc
 
 test: $(CMI) $(CMO)
 	@echo -e "\nGenerating test"
@@ -68,6 +68,12 @@ $(CMI): $(MLI)
 	@echo "mv $(SRC_DIR)/*.cmi $(OBJ_DIR)/."
 	@mv $(SRC_DIR)/*.cmi $(OBJ_DIR)/.
 	@echo -e "Done\n"
+
+
+# create directories
+dir:
+	mkdir -p $(OBJ_DIR)
+	mkdir -p $(BIN_DIR)
 
 
 # generate doc
