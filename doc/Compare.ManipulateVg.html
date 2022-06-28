@@ -14,6 +14,7 @@
 <link title="Tokens getter from the Vg.image as a string." rel="Section" href="#2_TokensgetterfromtheVgimageasastring">
 <link title="Intermediate operations over paths." rel="Section" href="#2_Intermediateoperationsoverpaths">
 <link title="i_tree manipulation." rel="Section" href="#2_itreemanipulation">
+<link title="Intermediate functions to compare i_tree" rel="Section" href="#2_Intermediatefunctionstocompareitree">
 <title>Compare.ManipulateVg</title>
 </head>
 <body>
@@ -129,7 +130,7 @@
 
 <pre><span id="VALrot"><span class="keyword">val</span> rot</span> : <code class="type">float -> float * float -> float * float</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>rot r (x,y)</i> -&gt; (r*.x,r*.y)</p>
+<p><i>rot r (x,y)</i> -&gt; (x*cos(r)-y*sin(r),x*sin(r)+y*cos(r))</p>
 </div>
 </div>
 <p>Scale a tuple.</p>
@@ -160,8 +161,7 @@
 <p><i>get_points tree</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code></p>
 </div>
 </div>
-<p>Intermediate functions to compare i_tree</p>
-<p>Transform a Vg image to a tuple of float list.</p>
+<h3 id="2_Intermediatefunctionstocompareitree">Intermediate functions to compare i_tree</h3><p>Transform a Vg image to a tuple of float list.</p>
 
 <pre><span id="VALdecompose"><span class="keyword">val</span> decompose</span> : <code class="type">Vg.image -> (float * float) list</code></pre><div class="info ">
 <div class="info-desc">
@@ -172,7 +172,7 @@
 
 <pre><span id="VALequal_float_tuple"><span class="keyword">val</span> equal_float_tuple</span> : <code class="type">float * float -> float * float -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>equal_float_tuple t1 t2</i> -&gt; E(x1-x2)&lt;1e6 &amp;&amp; E(y1-y2)&lt;1e6</p>
+<p><i>equal_float_tuple t1 t2</i> -&gt; E(x1-x2)&lt;=1e5 &amp;&amp; E(y1-y2)&lt;=1e5</p>
 </div>
 </div>
 <p>Return true if a tuple of float is in a list.</p>

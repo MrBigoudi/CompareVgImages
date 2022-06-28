@@ -280,7 +280,10 @@ module ManipulateVg = struct
       match t2 with (x2,y2) -> ((x1+.x2),(y1+.y2));;
   (*Rotate a tuple*)
   let rot r t =
-    match t with (x,y) -> ((r*.x),(r*.y));;
+    match t with (x,y) -> 
+      let new_x = (x*.(Stdlib.cos r))-.(y*.(Stdlib.sin r)) in
+      let new_y = (x*.(Stdlib.sin r))+.(y*.(Stdlib.cos r)) in
+        (new_x,new_y);; 
   (*Scale a tuple*)
   let scale t1 t2 =
     match t1 with (x1,y1) ->
@@ -397,7 +400,7 @@ module ManipulateVg = struct
     let rec aux acc arr = match arr with
       | [] -> acc
       | h::t -> if (list_mem_bis h acc) then (aux acc t)
-          else (aux (h::acc) t)
+          else (aux (acc@[h]) t)
     in (aux [] l);; 
 
   (** Compare two list of float tuple. *)
@@ -406,6 +409,8 @@ module ManipulateVg = struct
     let l2_unique = (remove_double l2) in
     let f1 tuple = list_mem_bis tuple l2_unique in
     let f2 tuple = list_mem_bis tuple l1_unique in
+    (* print_list_paths l1_unique;
+    print_list_paths l2_unique; *)
     ((List.length l1_unique)==(List.length l2_unique)) 
     && (List.for_all f1 l1_unique)
     && (List.for_all f2 l2_unique);;

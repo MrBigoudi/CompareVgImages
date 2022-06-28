@@ -160,7 +160,7 @@ module ManipulateVg : sig
 
     (** Rotate a tuple. *)
 
-    (** {i rot r (x,y)} -> (r*.x,r*.y) *)
+    (** {i rot r (x,y)} -> (x*cos(r)-y*sin(r),x*sin(r)+y*cos(r)) *)
     val rot : float -> (float*float) -> (float*float)
 
     (** Scale a tuple. *)
@@ -192,7 +192,7 @@ module ManipulateVg : sig
   
 
 
-    (** Intermediate functions to compare i_tree *)
+    (** {2 Intermediate functions to compare i_tree} *)
 
 (* 
     (** Split string using ' ' as delimiter + remove empty component in the result array. *)
@@ -220,7 +220,7 @@ module ManipulateVg : sig
 
     (** Return true if two tuple of floats are equal. *)
 
-    (** {i equal_float_tuple t1 t2} -> E(x1-x2)<1e6 && E(y1-y2)<1e6 *)
+    (** {i equal_float_tuple t1 t2} -> E(x1-x2)<=1e5 && E(y1-y2)<=1e5 *)
     val equal_float_tuple : (float * float) -> (float * float) -> bool
   
     (** Return true if a tuple of float is in a list. *)

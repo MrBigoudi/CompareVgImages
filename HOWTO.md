@@ -139,3 +139,22 @@ You'll also have to change <strong>depend.txt</strong> files to add CompareVgIma
   # check if evertything is ok
   cat depend.txt
 ```
+
+
+## Tests and documentation
+
+To test the code of CompareVgImage you can compile the test.ml file using the makefile.
+
+```bash
+  # clean all doc and objs then compile test in bin/tests.byte + generate doc
+  make
+
+  # only generate doc
+  make doc
+
+  # only compile test
+  make tests
+
+  # use test
+  ./bin/tests.byte
+```

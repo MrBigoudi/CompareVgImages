@@ -38,7 +38,7 @@
 <tr><td align="left"><div>E</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALequal_float_tuple">equal_float_tuple</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>equal_float_tuple t1 t2</i> -&gt; E(x1-x2)&lt;1e6 &amp;&amp; E(y1-y2)&lt;1e6</p>
+<p><i>equal_float_tuple t1 t2</i> -&gt; E(x1-x2)&lt;=1e5 &amp;&amp; E(y1-y2)&lt;=1e5</p>
 
 </div>
 </td></tr>
@@ -106,6 +106,8 @@
 </div>
 </td></tr>
 <tr><td align="left"><div>M</div></td></tr>
+<tr><td><a href="Test.html#VALmain">main</a> [<a href="Test.html">Test</a>]</td>
+<td></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALmove">move</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
 <p><i>move (x1,y1) (x2,y2)</i> -&gt; (x1+.x2,y1+.y2)</p>
@@ -159,7 +161,7 @@
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALrot">rot</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>rot r (x,y)</i> -&gt; (r*.x,r*.y)</p>
+<p><i>rot r (x,y)</i> -&gt; (x*cos(r)-y*sin(r),x*sin(r)+y*cos(r))</p>
 
 </div>
 </td></tr>
@@ -183,15 +185,123 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Test.html#VALtest_get_blend_token">test_get_blend_token</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests to get a blend_token.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtest_get_const_token">test_get_const_token</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests to get a const_token.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtest_get_cut_token">test_get_cut_token</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests to get a cut_token.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtest_get_outline_token">test_get_outline_token</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests to get an outline_token.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtest_get_path_token">test_get_path_token</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests to get a path_token.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Test.html#VALtest_get_points_i_tree">test_get_points_i_tree</a> [<a href="Test.html">Test</a>]</td>
 <td><div class="info">
 <p>Tests for getting the paths point of a tree, (it prints the input and the output of the ManipulateVg.get_paths function).</p>
 
 </div>
 </td></tr>
+<tr><td><a href="Test.html#VALtest_get_sub_string">test_get_sub_string</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests to get a sub string.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtest_get_tr_token">test_get_tr_token</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests to get a tr_token.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Test.html#VALtest_list_mem_bis">test_list_mem_bis</a> [<a href="Test.html">Test</a>]</td>
 <td><div class="info">
 <p>Tests tuple exists in list.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtest_move">test_move</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests to move a tuple.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtest_next_image_modif">test_next_image_modif</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests index of the next right i-token.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtest_next_left_p">test_next_left_p</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests index to the next left parenthesis.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtest_next_right_p">test_next_right_p</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests index to the next right parenthesis.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtest_next_space">test_next_space</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests index to the next space.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtest_remove_double">test_remove_double</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests remove tuple repetitions in list.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtests_i_tree_manipulation">tests_i_tree_manipulation</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests for i_tree manipulation.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtests_intermediate_i_tree_manipulation">tests_intermediate_i_tree_manipulation</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests for intermediate functions to compare i_tree.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtests_intermediate_paths_manipulation">tests_intermediate_paths_manipulation</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>ests for intermediate operations over paths.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtests_intermediate_string_manipulation">tests_intermediate_string_manipulation</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests for intermediate string manipulation.</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Test.html#VALtests_token_getters">tests_token_getters</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests for tokens getter from the Vg.image as a string.</p>
 
 </div>
 </td></tr>

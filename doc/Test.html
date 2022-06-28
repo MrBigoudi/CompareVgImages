@@ -11,7 +11,14 @@
 <link title="Index of values" rel=Appendix href="index_values.html">
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Compare" rel="Chapter" href="Compare.html">
-<link title="Test" rel="Chapter" href="Test.html"><title>Test</title>
+<link title="Test" rel="Chapter" href="Test.html"><link title="Summary" rel="Section" href="#1_Summary">
+<link title="Do all the tests at once" rel="Subsection" href="#2_Doallthetestsatonce">
+<link title="Tests for intermediate functions to manipulate a string." rel="Subsection" href="#2_Testsforintermediatefunctionstomanipulateastring">
+<link title="Tests for tokens getter from the Vg.image as a string." rel="Subsection" href="#2_TestsfortokensgetterfromtheVgimageasastring">
+<link title="Tests for intermediate operations over paths." rel="Subsection" href="#2_Testsforintermediateoperationsoverpaths">
+<link title="i_tree manipulation." rel="Subsection" href="#2_itreemanipulation">
+<link title="Intermediate functions to compare i_tree" rel="Subsection" href="#2_Intermediatefunctionstocompareitree">
+<title>Test</title>
 </head>
 <body>
 <div class="navbar"><a class="pre" href="Compare.html" title="Compare">Previous</a>
@@ -28,6 +35,105 @@
 </ul>
 </div>
 <hr width="100%">
+<h2 id="1_Summary">Summary</h2>
+<p>This module checks if all the functions defined in compare.mli work as expected.</p>
+<h3 id="2_Doallthetestsatonce">Do all the tests at once</h3>
+<pre><span id="VALmain"><span class="keyword">val</span> main</span> : <code class="type">unit -> unit</code></pre><h3 id="2_Testsforintermediatefunctionstomanipulateastring">Tests for intermediate functions to manipulate a string.</h3>
+<pre><span id="VALtests_intermediate_string_manipulation"><span class="keyword">val</span> tests_intermediate_string_manipulation</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests for intermediate string manipulation.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_next_space"><span class="keyword">val</span> test_next_space</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests index to the next space.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_next_left_p"><span class="keyword">val</span> test_next_left_p</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests index to the next left parenthesis.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_next_right_p"><span class="keyword">val</span> test_next_right_p</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests index to the next right parenthesis.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_next_image_modif"><span class="keyword">val</span> test_next_image_modif</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests index of the next right i-token.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_get_sub_string"><span class="keyword">val</span> test_get_sub_string</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests to get a sub string.</p>
+</div>
+</div>
+<h3 id="2_TestsfortokensgetterfromtheVgimageasastring">Tests for tokens getter from the Vg.image as a string.</h3>
+<pre><span id="VALtests_token_getters"><span class="keyword">val</span> tests_token_getters</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests for tokens getter from the Vg.image as a string.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_get_tr_token"><span class="keyword">val</span> test_get_tr_token</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests to get a tr_token.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_get_blend_token"><span class="keyword">val</span> test_get_blend_token</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests to get a blend_token.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_get_cut_token"><span class="keyword">val</span> test_get_cut_token</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests to get a cut_token.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_get_const_token"><span class="keyword">val</span> test_get_const_token</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests to get a const_token.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_get_path_token"><span class="keyword">val</span> test_get_path_token</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests to get a path_token.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_get_outline_token"><span class="keyword">val</span> test_get_outline_token</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests to get an outline_token.</p>
+</div>
+</div>
+<h3 id="2_Testsforintermediateoperationsoverpaths">Tests for intermediate operations over paths.</h3>
+<pre><span id="VALtests_intermediate_paths_manipulation"><span class="keyword">val</span> tests_intermediate_paths_manipulation</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>ests for intermediate operations over paths.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_move"><span class="keyword">val</span> test_move</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests to move a tuple.</p>
+</div>
+</div>
+<h3 id="2_itreemanipulation">i_tree manipulation.</h3>
+<pre><span id="VALtests_i_tree_manipulation"><span class="keyword">val</span> tests_i_tree_manipulation</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests for i_tree manipulation.</p>
+</div>
+</div>
 
 <pre><span id="VALtest_create_i_tree"><span class="keyword">val</span> test_create_i_tree</span> : <code class="type">unit -> unit</code></pre><div class="info ">
 <div class="info-desc">
@@ -40,6 +146,12 @@
 <p>Tests for getting the paths point of a tree, (it prints the input and the output of the ManipulateVg.get_paths function).</p>
 </div>
 </div>
+<h3 id="2_Intermediatefunctionstocompareitree">Intermediate functions to compare i_tree</h3>
+<pre><span id="VALtests_intermediate_i_tree_manipulation"><span class="keyword">val</span> tests_intermediate_i_tree_manipulation</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests for intermediate functions to compare i_tree.</p>
+</div>
+</div>
 
 <pre><span id="VALtest_equal_tuples"><span class="keyword">val</span> test_equal_tuples</span> : <code class="type">unit -> unit</code></pre><div class="info ">
 <div class="info-desc">
@@ -50,6 +162,12 @@
 <pre><span id="VALtest_list_mem_bis"><span class="keyword">val</span> test_list_mem_bis</span> : <code class="type">unit -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Tests tuple exists in list.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_remove_double"><span class="keyword">val</span> test_remove_double</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests remove tuple repetitions in list.</p>
 </div>
 </div>
 </body></html>
