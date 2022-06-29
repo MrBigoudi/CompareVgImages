@@ -7,13 +7,21 @@
   This module checks if all the functions defined in compare.mli work as expected. 
 *)
 
+  
 
-(** {2 Do all the tests at once} *)
+(** {2 Main tests} *)
 
+
+(** Do all the tests at once. *)
 val main : unit -> unit
+
+(** Tests for image_equal, the main function of the Compare module. *)
+val test_image_equal : unit -> unit
+
 
 
 (** {2 Tests for intermediate functions to manipulate a string.} *)
+
 
 (** Tests for intermediate string manipulation. *)
 val tests_intermediate_string_manipulation : unit -> unit
@@ -36,6 +44,10 @@ val test_get_sub_string : unit -> unit
 
 
 (** {2 Tests for tokens getter from the Vg.image as a string.} *)
+
+
+(** Tests for tokens getter from the Vg.image as a string. *)
+val tests_token_getters : unit -> unit
 
 (** Tests for tokens getter from the Vg.image as a string. *)
 val tests_token_getters : unit -> unit
@@ -62,33 +74,23 @@ val test_get_outline_token : unit -> unit
 
 (** {2 Tests for intermediate operations over paths.} *)
 
+
 (** ests for intermediate operations over paths. *)
 val tests_intermediate_paths_manipulation : unit -> unit
 
 (** Tests to move a tuple. *)
 val test_move : unit -> unit
-(* 
+
 (** Tests to rotate a tuple. *)
 val test_rot : unit -> unit
 
 (** Tests to scale a tuple. *)
-val test_scale : unit -> unit *)
-
-
-(** {2 i_tree manipulation.}*)
-
-(** Tests for i_tree manipulation. *)
-val tests_i_tree_manipulation : unit -> unit
-
-(** Tests for creating a tree, (it only prints the input and the output of the ManipulateVg.create_i_tree function). *)
-val test_create_i_tree : unit -> unit
-
-(** Tests for getting the paths point of a tree, (it prints the input and the output of the ManipulateVg.get_paths function). *)
-val test_get_points_i_tree : unit -> unit
+val test_scale : unit -> unit
 
 
 
 (** {2 Intermediate functions to compare i_tree} *)
+
 
 (** Tests for intermediate functions to compare i_tree. *)
 val tests_intermediate_i_tree_manipulation : unit -> unit
@@ -102,4 +104,19 @@ val test_list_mem_bis : unit -> unit
 (** Tests remove tuple repetitions in list. *)
 val test_remove_double : unit -> unit
 
+(** Tests compare two list of float tuple. *)
+val test_compare_list_tuples : unit -> unit
 
+
+
+(** {2 i_tree manipulation.}*)
+
+
+(** Tests for i_tree manipulation. *)
+val tests_i_tree_manipulation : unit -> unit
+
+(** Tests for creating a tree, (it only prints the input and the output of the ManipulateVg.create_i_tree function). *)
+val test_create_i_tree : unit -> unit
+
+(** Tests for getting the paths point of a tree, (it prints the input and the output of the ManipulateVg.get_paths function). *)
+val test_get_points_i_tree : unit -> unit

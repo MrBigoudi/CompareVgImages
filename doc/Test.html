@@ -12,12 +12,12 @@
 <link title="Index of modules" rel=Appendix href="index_modules.html">
 <link title="Compare" rel="Chapter" href="Compare.html">
 <link title="Test" rel="Chapter" href="Test.html"><link title="Summary" rel="Section" href="#1_Summary">
-<link title="Do all the tests at once" rel="Subsection" href="#2_Doallthetestsatonce">
+<link title="Main tests" rel="Subsection" href="#2_Maintests">
 <link title="Tests for intermediate functions to manipulate a string." rel="Subsection" href="#2_Testsforintermediatefunctionstomanipulateastring">
 <link title="Tests for tokens getter from the Vg.image as a string." rel="Subsection" href="#2_TestsfortokensgetterfromtheVgimageasastring">
 <link title="Tests for intermediate operations over paths." rel="Subsection" href="#2_Testsforintermediateoperationsoverpaths">
-<link title="i_tree manipulation." rel="Subsection" href="#2_itreemanipulation">
 <link title="Intermediate functions to compare i_tree" rel="Subsection" href="#2_Intermediatefunctionstocompareitree">
+<link title="i_tree manipulation." rel="Subsection" href="#2_itreemanipulation">
 <title>Test</title>
 </head>
 <body>
@@ -37,8 +37,19 @@
 <hr width="100%">
 <h2 id="1_Summary">Summary</h2>
 <p>This module checks if all the functions defined in compare.mli work as expected.</p>
-<h3 id="2_Doallthetestsatonce">Do all the tests at once</h3>
-<pre><span id="VALmain"><span class="keyword">val</span> main</span> : <code class="type">unit -> unit</code></pre><h3 id="2_Testsforintermediatefunctionstomanipulateastring">Tests for intermediate functions to manipulate a string.</h3>
+<h3 id="2_Maintests">Main tests</h3>
+<pre><span id="VALmain"><span class="keyword">val</span> main</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Do all the tests at once.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_image_equal"><span class="keyword">val</span> test_image_equal</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests for image_equal, the main function of the Compare module.</p>
+</div>
+</div>
+<h3 id="2_Testsforintermediatefunctionstomanipulateastring">Tests for intermediate functions to manipulate a string.</h3>
 <pre><span id="VALtests_intermediate_string_manipulation"><span class="keyword">val</span> tests_intermediate_string_manipulation</span> : <code class="type">unit -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Tests for intermediate string manipulation.</p>
@@ -75,6 +86,12 @@
 </div>
 </div>
 <h3 id="2_TestsfortokensgetterfromtheVgimageasastring">Tests for tokens getter from the Vg.image as a string.</h3>
+<pre><span id="VALtests_token_getters"><span class="keyword">val</span> tests_token_getters</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests for tokens getter from the Vg.image as a string.</p>
+</div>
+</div>
+
 <pre><span id="VALtests_token_getters"><span class="keyword">val</span> tests_token_getters</span> : <code class="type">unit -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Tests for tokens getter from the Vg.image as a string.</p>
@@ -128,22 +145,16 @@
 <p>Tests to move a tuple.</p>
 </div>
 </div>
-<h3 id="2_itreemanipulation">i_tree manipulation.</h3>
-<pre><span id="VALtests_i_tree_manipulation"><span class="keyword">val</span> tests_i_tree_manipulation</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+
+<pre><span id="VALtest_rot"><span class="keyword">val</span> test_rot</span> : <code class="type">unit -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p>Tests for i_tree manipulation.</p>
+<p>Tests to rotate a tuple.</p>
 </div>
 </div>
 
-<pre><span id="VALtest_create_i_tree"><span class="keyword">val</span> test_create_i_tree</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<pre><span id="VALtest_scale"><span class="keyword">val</span> test_scale</span> : <code class="type">unit -> unit</code></pre><div class="info ">
 <div class="info-desc">
-<p>Tests for creating a tree, (it only prints the input and the output of the ManipulateVg.create_i_tree function).</p>
-</div>
-</div>
-
-<pre><span id="VALtest_get_points_i_tree"><span class="keyword">val</span> test_get_points_i_tree</span> : <code class="type">unit -> unit</code></pre><div class="info ">
-<div class="info-desc">
-<p>Tests for getting the paths point of a tree, (it prints the input and the output of the ManipulateVg.get_paths function).</p>
+<p>Tests to scale a tuple.</p>
 </div>
 </div>
 <h3 id="2_Intermediatefunctionstocompareitree">Intermediate functions to compare i_tree</h3>
@@ -168,6 +179,30 @@
 <pre><span id="VALtest_remove_double"><span class="keyword">val</span> test_remove_double</span> : <code class="type">unit -> unit</code></pre><div class="info ">
 <div class="info-desc">
 <p>Tests remove tuple repetitions in list.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_compare_list_tuples"><span class="keyword">val</span> test_compare_list_tuples</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests compare two list of float tuple.</p>
+</div>
+</div>
+<h3 id="2_itreemanipulation">i_tree manipulation.</h3>
+<pre><span id="VALtests_i_tree_manipulation"><span class="keyword">val</span> tests_i_tree_manipulation</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests for i_tree manipulation.</p>
+</div>
+</div>
+
+<pre><span id="VALtest_create_i_tree"><span class="keyword">val</span> test_create_i_tree</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests for creating a tree, (it only prints the input and the output of the ManipulateVg.create_i_tree function).</p>
+</div>
+</div>
+
+<pre><span id="VALtest_get_points_i_tree"><span class="keyword">val</span> test_get_points_i_tree</span> : <code class="type">unit -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p>Tests for getting the paths point of a tree, (it prints the input and the output of the ManipulateVg.get_paths function).</p>
 </div>
 </div>
 </body></html>
