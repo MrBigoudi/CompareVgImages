@@ -880,18 +880,18 @@ let test_get_points_color_i_tree () =
 
   let test_cut = "(i-cut "^test_outline^test_path^test_const^")" in
   let test_cut_bis = "(i-cut "^test_outline^test_path^test_const_bis^")" in
-  let res_cut = [(0.,4.,0.,0.,0.,0.);(0.,3.,0.,0.,0.,0.);(0.,2.,0.,0.,0.,0.);(0.,1.,0.,0.,0.,0.)] in
-  let res_cut_bis = [(0.,4.,1.,1.,1.,1.);(0.,3.,1.,1.,1.,1.);(0.,2.,1.,1.,1.,1.);(0.,1.,1.,1.,1.,1.)] in
+  let res_cut = [(0.,1.,0.,0.,0.,0.);(0.,2.,0.,0.,0.,0.);(0.,3.,0.,0.,0.,0.);(0.,4.,0.,0.,0.,0.)] in
+  let res_cut_bis = [(0.,1.,1.,1.,1.,1.);(0.,2.,1.,1.,1.,1.);(0.,3.,1.,1.,1.,1.);(0.,4.,1.,1.,1.,1.)] in
 
   let test_tr_move = "(i-tr (move (1 0))"^test_cut^")" in
-  let res_tr_move = [(1.,4.,0.,0.,0.,0.);(1.,3.,0.,0.,0.,0.);(1.,2.,0.,0.,0.,0.);(1.,1.,0.,0.,0.,0.)] in
+  let res_tr_move = [(1.,1.,0.,0.,0.,0.);(1.,2.,0.,0.,0.,0.);(1.,3.,0.,0.,0.,0.);(1.,4.,0.,0.,0.,0.)] in
 
   let pi_string = Printf.sprintf "%f" (Float.pi/.2.) in
   let test_tr_rot = "(i-tr (rot "^pi_string^")"^test_cut^")" in
-  let res_tr_rot = [((-4.),0.,0.,0.,0.,0.);((-3.),0.,0.,0.,0.,0.);((-2.),0.,0.,0.,0.,0.);((-1.),0.,0.,0.,0.,0.)] in
+  let res_tr_rot = [((-1.),0.,0.,0.,0.,0.);((-2.),0.,0.,0.,0.,0.);((-3.),0.,0.,0.,0.,0.);((-4.),0.,0.,0.,0.,0.)] in
 
   let test_tr_scale = "(i-tr (scale (1 2))"^test_cut^")" in 
-  let res_tr_scale = [(0.,8.,0.,0.,0.,0.);(0.,6.,0.,0.,0.,0.);(0.,4.,0.,0.,0.,0.);(0.,2.,0.,0.,0.,0.)] in
+  let res_tr_scale = [(0.,2.,0.,0.,0.,0.);(0.,4.,0.,0.,0.,0.);(0.,6.,0.,0.,0.,0.);(0.,8.,0.,0.,0.,0.)] in
 
   let test_blend = "(i-blend "^test_tr_move^test_cut_bis^")" in
   let res_blend = res_tr_move@res_cut_bis in
@@ -944,7 +944,46 @@ let test_get_points_color_i_tree () =
           (path S (0.31 0.1) L (0.41 0.1) L (0.41 0.2) L (0.31 0.2) L (0.31 0.1)
           Z)
           (i-const (0.522522 0 0 1)))))))" in
-  (* let res_super_hard = [] in *)
+  let res_super_hard = [(1.100000,0.705000,1.000000,0.000000,0.000000,1.000000);
+                        (1.200000,0.705000,1.000000,0.000000,0.000000,1.000000);
+                        (1.200000,0.805000,1.000000,0.000000,0.000000,1.000000);
+                        (1.100000,0.805000,1.000000,0.000000,0.000000,1.000000);
+                        (1.100000,0.705000,1.000000,0.000000,0.000000,1.000000);
+                        (-0.010524,0.227847,0.522522,0.000000,0.000000,1.000000);
+                        (0.077234,0.275790,0.522522,0.000000,0.000000,1.000000);
+                        (0.029292,0.363548,0.522522,0.000000,0.000000,1.000000);
+                        (-0.058467,0.315605,0.522522,0.000000,0.000000,1.000000);
+                        (-0.010524,0.227847,0.522522,0.000000,0.000000,1.000000);
+                        (0.205000,0.100000,1.000000,0.000000,0.000000,1.000000);
+                        (0.305000,0.100000,1.000000,0.000000,0.000000,1.000000);
+                        (0.305000,0.200000,1.000000,0.000000,0.000000,1.000000);
+                        (0.205000,0.200000,1.000000,0.000000,0.000000,1.000000);
+                        (0.205000,0.100000,1.000000,0.000000,0.000000,1.000000);
+                        (0.205000,0.100000,0.522522,0.000000,0.000000,1.000000);
+                        (0.305000,0.100000,0.522522,0.000000,0.000000,1.000000);
+                        (0.305000,0.200000,0.522522,0.000000,0.000000,1.000000);
+                        (0.205000,0.200000,0.522522,0.000000,0.000000,1.000000);
+                        (0.205000,0.100000,0.522522,0.000000,0.000000,1.000000);
+                        (0.205000,0.205000,1.000000,0.000000,0.000000,1.000000);
+                        (0.305000,0.205000,1.000000,0.000000,0.000000,1.000000);
+                        (0.305000,0.305000,1.000000,0.000000,0.000000,1.000000);
+                        (0.205000,0.305000,1.000000,0.000000,0.000000,1.000000);
+                        (0.205000,0.205000,1.000000,0.000000,0.000000,1.000000);
+                        (0.205000,0.205000,0.522522,0.000000,0.000000,1.000000);
+                        (0.305000,0.205000,0.522522,0.000000,0.000000,1.000000);
+                        (0.305000,0.305000,0.522522,0.000000,0.000000,1.000000);
+                        (0.205000,0.305000,0.522522,0.000000,0.000000,1.000000);
+                        (0.205000,0.205000,0.522522,0.000000,0.000000,1.000000);
+                        (0.310000,0.100000,1.000000,0.000000,0.000000,1.000000);
+                        (0.410000,0.100000,1.000000,0.000000,0.000000,1.000000);
+                        (0.410000,0.200000,1.000000,0.000000,0.000000,1.000000);
+                        (0.310000,0.200000,1.000000,0.000000,0.000000,1.000000);
+                        (0.310000,0.100000,1.000000,0.000000,0.000000,1.000000);
+                        (0.310000,0.100000,0.522522,0.000000,0.000000,1.000000);
+                        (0.410000,0.100000,0.522522,0.000000,0.000000,1.000000);
+                        (0.410000,0.200000,0.522522,0.000000,0.000000,1.000000);
+                        (0.310000,0.200000,0.522522,0.000000,0.000000,1.000000);
+                        (0.310000,0.100000,0.522522,0.000000,0.000000,1.000000)] in 
 
   Printf.printf "Tests get points color i-tree:\n\n\n";
 
@@ -955,7 +994,7 @@ let test_get_points_color_i_tree () =
         (assert (compare_list_paths_color l res_cut));
           Printf.printf "Done\n";
 
-  Printf.printf "Test cut-bis input:\n%s\n\n" test_cut;
+  Printf.printf "Test cut-bis input:\n%s\n\n" test_cut_bis;
     let l = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree test_cut_bis)) in
       Printf.printf "Test cut-bis output:\n";
       Compare.ManipulateVg.print_list_paths_color l;
@@ -963,14 +1002,18 @@ let test_get_points_color_i_tree () =
           Printf.printf "Done\n";
 
   Printf.printf "Test tr_move input:\n%s\n\n" test_tr_move;
-    let l = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree test_tr_move)) in
+    let i = (Compare.ManipulateVg.create_i_tree test_tr_move) in
+      (* Printf.printf "image move:\n%s\n\n" (Compare.ManipulateVg.to_string i); *)
+    let l = (Compare.ManipulateVg.get_points_color i) in
       Printf.printf "Test tr_move output:\n";
       Compare.ManipulateVg.print_list_paths_color l;
         (assert (compare_list_paths_color l res_tr_move));
           Printf.printf "Done\n";
         
   Printf.printf "Test tr_rot input:\n%s\n\n" test_tr_rot;
-    let l = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree test_tr_rot)) in
+    let i = (Compare.ManipulateVg.create_i_tree test_tr_rot) in
+      (* Printf.printf "image rot:\n%s\n\n" (Compare.ManipulateVg.to_string i); *)
+    let l = (Compare.ManipulateVg.get_points_color i) in
       Printf.printf "Test tr_rot output:\n";
       Compare.ManipulateVg.print_list_paths_color l;
         (assert (compare_list_paths_color l res_tr_rot));
@@ -1001,7 +1044,7 @@ let test_get_points_color_i_tree () =
     let l = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree test_super_hard)) in
       Printf.printf "Test super_hard output:\n";
       Compare.ManipulateVg.print_list_paths_color l;
-        (* (assert (compare_list_paths_color l res_super_hard)); *)
+        (assert (compare_list_paths_color l res_super_hard));
           Printf.printf "Done\n";
 
   Printf.printf "End of tests get points color i-tree.\n\n\n";;

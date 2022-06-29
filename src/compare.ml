@@ -299,10 +299,11 @@ module ManipulateVg = struct
         (new_x,new_y);; 
   (*Rotate with color*)
   let rot_color r t =
-    match t with (x,y,r,g,b,a) -> 
+    match t with (x,y,r1,g,b,a) -> 
       let new_x = (x*.(Stdlib.cos r))-.(y*.(Stdlib.sin r)) in
       let new_y = (x*.(Stdlib.sin r))+.(y*.(Stdlib.cos r)) in
-        (new_x,new_y,r,g,b,a);;
+        (* Printf.printf "r:%f, old:(%f,%f), new:(%f,%f)\n" r x y new_x new_y; *)
+        (new_x,new_y,r1,g,b,a);;
 
   (*Scale a tuple*)
   let scale s t =
@@ -313,6 +314,7 @@ module ManipulateVg = struct
     match s with (x1,y1) ->
       match t with (x2,y2,r,g,b,a) -> ((x1*.x2),(y1*.y2),r,g,b,a);;
 
+  (** Get the list of path points in a tree, after applying necessary changes on it. *)
   let get_points i =
     let rec aux i = 
       match i with
@@ -349,51 +351,53 @@ module ManipulateVg = struct
       | _ -> failwith "\n\nerror get_points: unknown tree\n\n"
     in (aux i);;
 
-    let get_points_color i =
-      let map_color list r g b a =
-        let rec aux l acc = match l with
-          | [] -> acc
-          | (x,y,-1.,-1.,-1.,-1.)::t -> (aux t ([(x,y,r,g,b,a)]@acc)) (* unmodified points *)
-          | _::t -> (aux t acc)
-        in (aux list [])
-      in
-      let rec aux i acc = 
-        match i with
-        | Empty -> acc
-        | F(Const(r,g,b,a)) -> (map_color acc r g b a)
-        | F(Outline(x)) -> acc (*TODO outline check*)
-        | F(Path(l)) -> let tuple_to_color_tuple t = match t with (x,y)
-                          -> (x,y,-1.,-1.,-1.,-1.) in
-                          let new_l = List.map tuple_to_color_tuple l in
-                            acc@new_l
-        | Node(Tr(Move(x,y)),l) -> let new_move t = (move_color (x,y) t) in
+  (** Get the list of path points with their color in a tree, after applying necessary changes on it. *)
+  let get_points_color i =
+    let map_color list r g b a =
+      let rec aux l acc = match l with
+        | [] -> acc
+        | (x,y,-1.,-1.,-1.,-1.)::t -> (aux t ([(x,y,r,g,b,a)]@acc)) (* unmodified points *)
+        | _::t -> (aux t acc)
+      in (aux list [])
+    in
+    let rec aux i acc = 
+      match i with
+      | Empty -> acc
+      | F(Const(r,g,b,a)) -> (map_color acc r g b a)
+      | F(Outline(x)) -> acc (*TODO outline check*)
+      | F(Path(l)) -> let tuple_to_color_tuple t = match t with (x,y)
+                        -> (x,y,-1.,-1.,-1.,-1.) in
+                        let new_l = List.map tuple_to_color_tuple l in
+                          acc@new_l
+      | Node(Tr(Move(x,y)),l) -> let new_move t = (move_color (x,y) t) in
+                                  let rec aux2 i =
+                                    match i with
+                                    | [] -> []
+                                    | h::t -> (aux h (acc@(aux2 t))) 
+                                  in (List.map new_move (aux2 l))
+      | Node(Tr(Rot(x)),l) -> (*Printf.printf "r:%f\n" x;*)
+                              let new_rot t = (rot_color x t) in
+                                let rec aux2 i =
+                                    match i with
+                                    | [] -> []
+                                    | h::t -> (aux h (acc@(aux2 t)))
+                                in (List.map new_rot (aux2 l)) 
+      | Node(Tr(Scale(x,y)),l) -> let new_scale t = (scale_color (x,y) t) in
                                     let rec aux2 i =
                                       match i with
                                       | [] -> []
-                                      | h::t -> (aux h (acc@(aux2 t))) 
-                                    in (List.map new_move (aux2 l))
-        | Node(Tr(Rot(x)),l) -> let new_rot t = (rot_color x t) in
-                                  let rec aux2 i =
-                                     match i with
-                                     | [] -> []
-                                     | h::t -> (aux h (acc@(aux2 t)))
-                                  in (List.map new_rot (aux2 l)) 
-        | Node(Tr(Scale(x,y)),l) -> let new_scale t = (scale_color (x,y) t) in
-                                      let rec aux2 i =
-                                        match i with
-                                        | [] -> []
-                                        | h::t -> (aux h (acc@(aux2 t)))
-                                      in (List.map new_scale (aux2 l))
-        | Node(Blend,l) -> let rec aux2 i_list =
-                            match i_list with
-                            | [] -> []
-                            | h::t -> (aux h (acc@(aux2 t))) in (aux2 l)
-        | Node(Cut,l) -> let rec aux2 i_list =
+                                      | h::t -> (aux h (acc@(aux2 t)))
+                                    in (List.map new_scale (aux2 l))
+      | Node(Blend,l) -> let rec aux2 i_list =
                           match i_list with
                           | [] -> []
-                          | h::t -> (aux h (acc@(aux2 t))) in (aux2 l)
-        | _ -> failwith "\n\nerror get_points_with_color: unknown tree\n\n"
-      in (aux i []);;
+                          | h::t -> (aux h acc)@(aux2 t) in (aux2 l)
+      | Node(Cut,l) -> let rec aux2 i_list =
+                        match i_list with
+                        | [] -> []
+                        | h::t -> (aux h (acc@(aux2 t))) in (aux2 l)
+      | _ -> failwith "\n\nerror get_points_with_color: unknown tree\n\n"
+    in (aux i []);;
 
 (* 
   let split str =
