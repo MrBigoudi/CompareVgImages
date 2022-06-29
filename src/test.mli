@@ -115,8 +115,11 @@ val test_compare_list_tuples : unit -> unit
 (** Tests for i_tree manipulation. *)
 val tests_i_tree_manipulation : unit -> unit
 
-(** Tests for creating a tree, (it only prints the input and the output of the ManipulateVg.create_i_tree function). *)
+(** Tests for creating a tree. *)
 val test_create_i_tree : unit -> unit
 
-(** Tests for getting the paths point of a tree, (it prints the input and the output of the ManipulateVg.get_paths function). *)
+(** Tests for getting the paths point of a tree. *)
 val test_get_points_i_tree : unit -> unit
+
+(** Tests for getting the paths point (with their color) of a tree. *)
+val test_get_points_color_i_tree : unit -> unit

@@ -715,7 +715,7 @@ let test_create_i_tree () =
   Printf.printf "End of tests create i-tree.\n\n\n";;
 
 
-(** Tests for getting the paths point of a tree, (it prints the input and the output of the ManipulateVg.get_paths function). *)
+(** Tests for getting the paths point of a tree. *)
 let test_get_points_i_tree () =
   let rec compare_list_paths l1 l2 = match (l1,l2) with
     | ([],[]) -> true
@@ -857,6 +857,154 @@ let test_get_points_i_tree () =
           Printf.printf "Done\n";
 
   Printf.printf "End of tests get points i-tree.\n\n\n";;
+
+
+(** Tests for getting the paths point (with their color) of a tree. *)
+let test_get_points_color_i_tree () =
+  let rec compare_list_paths_color l1 l2 = match (l1,l2) with
+    | ([],[]) -> true
+    | ([],_) -> false
+    | (_,[]) -> false
+    | ((x1,y1,r1,g1,b1,a1)::t1, (x2,y2,r2,g2,b2,a2)::t2) -> 
+        if Compare.ManipulateVg.equal_float_tuple (x1,y1) (x2,y2) 
+          && Compare.ManipulateVg.equal_float_tuple (r1,g1) (r2,g2)
+            && Compare.ManipulateVg.equal_float_tuple (b1,a1) (b2,a2)
+        then (compare_list_paths_color t1 t2)
+          else false
+  in
+
+  let test_outline = "(outline (width 0) (cap Butt) (join Miter) (miter-angle 0))" in 
+  let test_path = "(path S (0 1) L (0 2) L (0 3) L (0 4) Z)" in 
+  let test_const = "(i-const (0 0 0 0))" in
+  let test_const_bis = "(i-const (1 1 1 1))" in  
+
+  let test_cut = "(i-cut "^test_outline^test_path^test_const^")" in
+  let test_cut_bis = "(i-cut "^test_outline^test_path^test_const_bis^")" in
+  let res_cut = [(0.,4.,0.,0.,0.,0.);(0.,3.,0.,0.,0.,0.);(0.,2.,0.,0.,0.,0.);(0.,1.,0.,0.,0.,0.)] in
+  let res_cut_bis = [(0.,4.,1.,1.,1.,1.);(0.,3.,1.,1.,1.,1.);(0.,2.,1.,1.,1.,1.);(0.,1.,1.,1.,1.,1.)] in
+
+  let test_tr_move = "(i-tr (move (1 0))"^test_cut^")" in
+  let res_tr_move = [(1.,4.,0.,0.,0.,0.);(1.,3.,0.,0.,0.,0.);(1.,2.,0.,0.,0.,0.);(1.,1.,0.,0.,0.,0.)] in
+
+  let pi_string = Printf.sprintf "%f" (Float.pi/.2.) in
+  let test_tr_rot = "(i-tr (rot "^pi_string^")"^test_cut^")" in
+  let res_tr_rot = [((-4.),0.,0.,0.,0.,0.);((-3.),0.,0.,0.,0.,0.);((-2.),0.,0.,0.,0.,0.);((-1.),0.,0.,0.,0.,0.)] in
+
+  let test_tr_scale = "(i-tr (scale (1 2))"^test_cut^")" in 
+  let res_tr_scale = [(0.,8.,0.,0.,0.,0.);(0.,6.,0.,0.,0.,0.);(0.,4.,0.,0.,0.,0.);(0.,2.,0.,0.,0.,0.)] in
+
+  let test_blend = "(i-blend "^test_tr_move^test_cut_bis^")" in
+  let res_blend = res_tr_move@res_cut_bis in
+
+  let test_hard = "(i-blend "^test_blend^"(i-blend "^test_blend^test_cut^"))" in
+  let res_hard = res_blend@res_blend@res_cut in
+
+  let test_super_hard = "(i-blend Over
+    (i-blend Over
+    (i-tr (move (1 0.5))
+      (i-cut anz
+      (path S (0.1 0.205) L (0.2 0.205) L (0.2 0.305) L (0.1 0.305) L
+        (0.1 0.205) Z)
+      (i-const (1 0 0 1))))
+    (i-tr (rot 0.5)
+      (i-cut
+        (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+        (path S (0.1 0.205) L (0.2 0.205) L (0.2 0.305) L (0.1 0.305) L
+        (0.1 0.205) Z)
+        (i-const (0.522522 0 0 1)))))
+      (i-blend Over
+      (i-blend Over
+        (i-cut anz
+        (path S (0.205 0.1) L (0.305 0.1) L (0.305 0.2) L (0.205 0.2) L
+          (0.205 0.1) Z)
+        (i-const (1 0 0 1)))
+        (i-cut
+        (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+        (path S (0.205 0.1) L (0.305 0.1) L (0.305 0.2) L (0.205 0.2) L
+          (0.205 0.1) Z)
+        (i-const (0.522522 0 0 1))))
+      (i-blend Over
+        (i-blend Over
+        (i-cut anz
+          (path S (0.205 0.205) L (0.305 0.205) L (0.305 0.305) L (0.205 0.305) L
+          (0.205 0.205) Z)
+          (i-const (1 0 0 1)))
+        (i-cut
+          (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+          (path S (0.205 0.205) L (0.305 0.205) L (0.305 0.305) L (0.205 0.305) L
+          (0.205 0.205) Z)
+          (i-const (0.522522 0 0 1))))
+        (i-blend Over
+        (i-cut anz
+          (path S (0.31 0.1) L (0.41 0.1) L (0.41 0.2) L (0.31 0.2) L (0.31 0.1)
+          Z)
+          (i-const (1 0 0 1)))
+        (i-cut
+          (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+          (path S (0.31 0.1) L (0.41 0.1) L (0.41 0.2) L (0.31 0.2) L (0.31 0.1)
+          Z)
+          (i-const (0.522522 0 0 1)))))))" in
+  (* let res_super_hard = [] in *)
+
+  Printf.printf "Tests get points color i-tree:\n\n\n";
+
+  Printf.printf "Test cut input:\n%s\n\n" test_cut;
+    let l = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree test_cut)) in
+      Printf.printf "Test cut output:\n";
+      Compare.ManipulateVg.print_list_paths_color l;
+        (assert (compare_list_paths_color l res_cut));
+          Printf.printf "Done\n";
+
+  Printf.printf "Test cut-bis input:\n%s\n\n" test_cut;
+    let l = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree test_cut_bis)) in
+      Printf.printf "Test cut-bis output:\n";
+      Compare.ManipulateVg.print_list_paths_color l;
+        (assert (compare_list_paths_color l res_cut_bis));
+          Printf.printf "Done\n";
+
+  Printf.printf "Test tr_move input:\n%s\n\n" test_tr_move;
+    let l = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree test_tr_move)) in
+      Printf.printf "Test tr_move output:\n";
+      Compare.ManipulateVg.print_list_paths_color l;
+        (assert (compare_list_paths_color l res_tr_move));
+          Printf.printf "Done\n";
+        
+  Printf.printf "Test tr_rot input:\n%s\n\n" test_tr_rot;
+    let l = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree test_tr_rot)) in
+      Printf.printf "Test tr_rot output:\n";
+      Compare.ManipulateVg.print_list_paths_color l;
+        (assert (compare_list_paths_color l res_tr_rot));
+          Printf.printf "Done\n";
+        
+  Printf.printf "Test tr_scale input:\n%s\n\n" test_tr_scale;
+    let l = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree test_tr_scale)) in
+      Printf.printf "Test tr_scale output:\n";
+      Compare.ManipulateVg.print_list_paths_color l;
+        (assert (compare_list_paths_color l res_tr_scale));
+          Printf.printf "Done\n";
+        
+  Printf.printf "Test blend input:\n%s\n\n" test_blend;
+    let l = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree test_blend)) in
+      Printf.printf "Test blend output:\n";
+      Compare.ManipulateVg.print_list_paths_color l;
+        (assert (compare_list_paths_color l res_blend));
+          Printf.printf "Done\n";
+        
+  Printf.printf "Test hard input:\n%s\n\n" test_hard;
+    let l = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree test_hard)) in
+      Printf.printf "Test hard output:\n";
+      Compare.ManipulateVg.print_list_paths_color l;
+        (assert (compare_list_paths_color l res_hard));
+          Printf.printf "Done\n";
+        
+  Printf.printf "Test super_hard input:\n%s\n\n" test_hard;
+    let l = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree test_super_hard)) in
+      Printf.printf "Test super_hard output:\n";
+      Compare.ManipulateVg.print_list_paths_color l;
+        (* (assert (compare_list_paths_color l res_super_hard)); *)
+          Printf.printf "Done\n";
+
+  Printf.printf "End of tests get points color i-tree.\n\n\n";;
 
 
 (** Tests for comparing tuples. *)
@@ -1102,8 +1250,9 @@ let tests_intermediate_i_tree_manipulation () =
 (** Tests for i_tree manipulation. *)
 let tests_i_tree_manipulation () =
   Printf.printf "Starting tests for i_tree manipulation\n\n\n";
-  test_create_i_tree();
-  test_get_points_i_tree();
+  (* test_create_i_tree();
+  test_get_points_i_tree(); *)
+  test_get_points_color_i_tree();
   Printf.printf "\nEnd of tests for i_tree manipulation, everything's okay\n\n";;
 
 
@@ -1220,12 +1369,12 @@ let test_image_equal () =
 (** Do all the tests at once. *)
 let main () =
   Printf.printf "Starting tests\n\n\n";
-  tests_intermediate_string_manipulation();
+  (* tests_intermediate_string_manipulation();
   tests_token_getters();
   tests_intermediate_paths_manipulation();
-  tests_intermediate_i_tree_manipulation();
+  tests_intermediate_i_tree_manipulation(); *)
   tests_i_tree_manipulation();
-  test_image_equal();
+  (* test_image_equal(); *)
   Printf.printf "\nEnd of tests, everything's okay\n\n";;
 
 

@@ -77,6 +77,13 @@
 <p><i>print_list_paths l</i> -&gt; print the list <b>l</b></p>
 </div>
 </div>
+<p>Print a list of 5-uplet.</p>
+
+<pre><span id="VALprint_list_paths_color"><span class="keyword">val</span> print_list_paths_color</span> : <code class="type">(float * float * float * float * float * float) list -> unit</code></pre><div class="info ">
+<div class="info-desc">
+<p><i>print_list_paths_color l</i> -&gt; print the list <b>l</b></p>
+</div>
+</div>
 <h3 id="2_TokensgetterfromtheVgimageasastring">Tokens getter from the Vg.image as a string.</h3><p>Get a tr_token and the new offset.</p>
 
 <pre><span id="VALget_tr_token"><span class="keyword">val</span> get_tr_token</span> : <code class="type">string -> int -> <a href="Compare.html#TYPEtr_token">Compare.tr_token</a> * int</code></pre><div class="info ">
@@ -140,6 +147,27 @@
 <p><i>scale (x1,y1) (x2,y2)</i> -&gt; (x1*.x2,y1*.y2)</p>
 </div>
 </div>
+<p>Move a tuple with color.</p>
+
+<pre><span id="VALmove_color"><span class="keyword">val</span> move_color</span> : <code class="type">float * float -><br>       float * float * float * float * float * float -><br>       float * float * float * float * float * float</code></pre><div class="info ">
+<div class="info-desc">
+<p><i>move_color (x1,y1) (x2,y2,r,g,b,a)</i> -&gt; (x1+.x2,y1+.y2,r,g,b,a)</p>
+</div>
+</div>
+<p>Rotate a tuple with color.</p>
+
+<pre><span id="VALrot_color"><span class="keyword">val</span> rot_color</span> : <code class="type">float -><br>       float * float * float * float * float * float -><br>       float * float * float * float * float * float</code></pre><div class="info ">
+<div class="info-desc">
+<p><i>rot_color r (x,y,r,g,b,a)</i> -&gt; (x*cos(r)-y*sin(r),x*sin(r)+y*cos(r),r,g,b,a)</p>
+</div>
+</div>
+<p>Scale a tuple with color.</p>
+
+<pre><span id="VALscale_color"><span class="keyword">val</span> scale_color</span> : <code class="type">float * float -><br>       float * float * float * float * float * float -><br>       float * float * float * float * float * float</code></pre><div class="info ">
+<div class="info-desc">
+<p><i>scale_color (x1,y1) (x2,y2,r,g,b,a)</i> -&gt; (x1*.x2,y1*.y2,r,g,b,a)</p>
+</div>
+</div>
 <h3 id="2_itreemanipulation">i_tree manipulation.</h3><p>Create a tree of tokens representing an image from a string.</p>
 
 <pre><span id="VALcreate_i_tree"><span class="keyword">val</span> create_i_tree</span> : <code class="type">string -> <a href="Compare.html#TYPEi_tree">Compare.i_tree</a></code></pre><div class="info ">
@@ -159,6 +187,13 @@
 <pre><span id="VALget_points"><span class="keyword">val</span> get_points</span> : <code class="type"><a href="Compare.html#TYPEi_tree">Compare.i_tree</a> -> (float * float) list</code></pre><div class="info ">
 <div class="info-desc">
 <p><i>get_points tree</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code></p>
+</div>
+</div>
+<p>Get the list of path points with their color in a tree, after applying necessary changes on it.</p>
+
+<pre><span id="VALget_points_color"><span class="keyword">val</span> get_points_color</span> : <code class="type"><a href="Compare.html#TYPEi_tree">Compare.i_tree</a> -> (float * float * float * float * float * float) list</code></pre><div class="info ">
+<div class="info-desc">
+<p><i>get_points_color tree</i> -&gt; <code class="code">(x1,y1,r1,g1,b1,a1);...;(xn,yn,rn,gn,bn,an)</code></p>
 </div>
 </div>
 <h3 id="2_Intermediatefunctionstocompareitree">Intermediate functions to compare i_tree</h3><p>Transform a Vg image to a tuple of float list.</p>

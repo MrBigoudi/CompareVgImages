@@ -107,6 +107,12 @@ module ManipulateVg : sig
 
     (** {i print_list_paths l} -> print the list {b l} *)
     val print_list_paths : (float*float) list -> unit
+
+
+    (** Print a list of 5-uplet. *)
+
+    (** {i print_list_paths_color l} -> print the list {b l} *)
+    val print_list_paths_color : (float*float*float*float*float*float) list -> unit
   
 
 
@@ -167,6 +173,21 @@ module ManipulateVg : sig
 
     (** {i scale (x1,y1) (x2,y2)} -> (x1*.x2,y1*.y2) *)
     val scale : (float*float) -> (float*float) -> (float*float)
+
+    (** Move a tuple with color. *)
+
+    (** {i move_color (x1,y1) (x2,y2,r,g,b,a)} -> (x1+.x2,y1+.y2,r,g,b,a) *)
+    val move_color : (float*float) -> (float*float*float*float*float*float) -> (float*float*float*float*float*float)
+
+    (** Rotate a tuple with color. *)
+
+    (** {i rot_color r (x,y,r,g,b,a)} -> (x*cos(r)-y*sin(r),x*sin(r)+y*cos(r),r,g,b,a) *)
+    val rot_color : float -> (float*float*float*float*float*float) -> (float*float*float*float*float*float)
+
+    (** Scale a tuple with color. *)
+
+    (** {i scale_color (x1,y1) (x2,y2,r,g,b,a)} -> (x1*.x2,y1*.y2,r,g,b,a) *)
+    val scale_color : (float*float) -> (float*float*float*float*float*float) -> (float*float*float*float*float*float)
   
 
 
@@ -189,6 +210,12 @@ module ManipulateVg : sig
 
     (** {i get_points tree} -> [(x1,y1);...;(xn,yn)]*)
     val get_points : i_tree -> (float*float) list
+
+
+    (** Get the list of path points with their color in a tree, after applying necessary changes on it. *)
+
+    (** {i get_points_color tree} -> [(x1,y1,r1,g1,b1,a1);...;(xn,yn,rn,gn,bn,an)]*)
+    val get_points_color : i_tree -> (float*float*float*float*float*float) list
   
 
 

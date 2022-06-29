@@ -18,6 +18,8 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_sub_string&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_list_offset&nbsp;:&nbsp;int&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_list_paths&nbsp;:&nbsp;(float&nbsp;*&nbsp;float)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;print_list_paths_color&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;(float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;unit<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_tr_token&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Compare</span>.tr_token&nbsp;*&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_blend_token&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;*&nbsp;int<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_cut_token&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;int&nbsp;list<br>
@@ -27,9 +29,23 @@
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;move&nbsp;:&nbsp;float&nbsp;*&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;*&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;*&nbsp;float<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;rot&nbsp;:&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;*&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;*&nbsp;float<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;scale&nbsp;:&nbsp;float&nbsp;*&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;*&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;*&nbsp;float<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;move_color&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;float&nbsp;*&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;rot_color&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;scale_color&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;float&nbsp;*&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;create_i_tree&nbsp;:&nbsp;string&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">Compare</span>.i_tree<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;to_string&nbsp;:&nbsp;<span class="constructor">Compare</span>.i_tree&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;string<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_points&nbsp;:&nbsp;<span class="constructor">Compare</span>.i_tree&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(float&nbsp;*&nbsp;float)&nbsp;list<br>
+&nbsp;&nbsp;<span class="keyword">val</span>&nbsp;get_points_color&nbsp;:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Compare</span>.i_tree&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float&nbsp;*&nbsp;float)&nbsp;list<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;decompose&nbsp;:&nbsp;<span class="constructor">Vg</span>.image&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(float&nbsp;*&nbsp;float)&nbsp;list<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;equal_float_tuple&nbsp;:&nbsp;float&nbsp;*&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;float&nbsp;*&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>
 &nbsp;&nbsp;<span class="keyword">val</span>&nbsp;list_mem_bis&nbsp;:&nbsp;float&nbsp;*&nbsp;float&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;(float&nbsp;*&nbsp;float)&nbsp;list&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;bool<br>

@@ -79,6 +79,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Compare.ManipulateVg.html#VALget_points_color">get_points_color</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
+<td><div class="info">
+<p><i>get_points_color tree</i> -&gt; <code class="code">(x1,y1,r1,g1,b1,a1);...;(xn,yn,rn,gn,bn,an)</code></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALget_sub_string">get_sub_string</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
 <p><i>get_sub_string s first last</i> -&gt; sub string of <b>s</b> with the <b>first</b> and <b>end</b> position (exclude)</p>
@@ -115,6 +121,12 @@
 <tr><td><a href="Compare.ManipulateVg.html#VALmove">move</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
 <p><i>move (x1,y1) (x2,y2)</i> -&gt; (x1+.x2,y1+.y2)</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Compare.ManipulateVg.html#VALmove_color">move_color</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
+<td><div class="info">
+<p><i>move_color (x1,y1) (x2,y2,r,g,b,a)</i> -&gt; (x1+.x2,y1+.y2,r,g,b,a)</p>
 
 </div>
 </td></tr>
@@ -156,6 +168,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Compare.ManipulateVg.html#VALprint_list_paths_color">print_list_paths_color</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
+<td><div class="info">
+<p><i>print_list_paths_color l</i> -&gt; print the list <b>l</b></p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>R</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALremove_double">remove_double</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
@@ -169,10 +187,22 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Compare.ManipulateVg.html#VALrot_color">rot_color</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
+<td><div class="info">
+<p><i>rot_color r (x,y,r,g,b,a)</i> -&gt; (x*cos(r)-y*sin(r),x*sin(r)+y*cos(r),r,g,b,a)</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>S</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALscale">scale</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
 <p><i>scale (x1,y1) (x2,y2)</i> -&gt; (x1*.x2,y1*.y2)</p>
+
+</div>
+</td></tr>
+<tr><td><a href="Compare.ManipulateVg.html#VALscale_color">scale_color</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
+<td><div class="info">
+<p><i>scale_color (x1,y1) (x2,y2,r,g,b,a)</i> -&gt; (x1*.x2,y1*.y2,r,g,b,a)</p>
 
 </div>
 </td></tr>
@@ -185,7 +215,7 @@
 </td></tr>
 <tr><td><a href="Test.html#VALtest_create_i_tree">test_create_i_tree</a> [<a href="Test.html">Test</a>]</td>
 <td><div class="info">
-<p>Tests for creating a tree, (it only prints the input and the output of the ManipulateVg.create_i_tree function).</p>
+<p>Tests for creating a tree.</p>
 
 </div>
 </td></tr>
@@ -225,9 +255,15 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Test.html#VALtest_get_points_color_i_tree">test_get_points_color_i_tree</a> [<a href="Test.html">Test</a>]</td>
+<td><div class="info">
+<p>Tests for getting the paths point (with their color) of a tree.</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Test.html#VALtest_get_points_i_tree">test_get_points_i_tree</a> [<a href="Test.html">Test</a>]</td>
 <td><div class="info">
-<p>Tests for getting the paths point of a tree, (it prints the input and the output of the ManipulateVg.get_paths function).</p>
+<p>Tests for getting the paths point of a tree.</p>
 
 </div>
 </td></tr>
