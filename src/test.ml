@@ -578,6 +578,103 @@ module Intermediate_paths_manipulation = struct
     end;
     Printf.printf "End of tests scale tuples.\n\n\n";;
 
+  (** Tests to move a path with its color. *)
+  let test_move_color () =
+    Printf.printf "Tests move_color:\n\n";
+    let nuplet_to_string t = match t with (x,y,r,g,b,a) -> (Printf.sprintf "(%f,%f,%f,%f,%f,%f)" x y r g b a) in
+    let tuple_to_string t = match t with (x,y) -> (Printf.sprintf "(%f,%f)" x y) in
+    let t = (1.,1.,1.,1.,1.,1.) in
+    let m1 = (1.,(-1.)) in
+    let m2 = (0.,0.) in
+    begin
+      Printf.printf "Assert t:%s m:%s\n" (nuplet_to_string t) (tuple_to_string m1);
+      let (x,y,r,g,b,a) = Compare.ManipulateVg.move_color m1 t in
+        let t2_pos = (2.,0.) in
+        let t2_color = (1.,1.,1.,1.) in
+          (assert (Compare.ManipulateVg.equal_float_tuple (x,y) t2_pos));
+          (assert (Compare.ManipulateVg.equal_colors (r,g,b,a) t2_color));
+      Printf.printf "Done\n";
+      Printf.printf "Assert t:%s m:%s\n" (nuplet_to_string t) (tuple_to_string m2);
+      let (x,y,r,g,b,a) = Compare.ManipulateVg.move_color m2 t in
+        let t2_pos = (1.,1.) in
+        let t2_color = (1.,1.,1.,1.) in
+          (assert (Compare.ManipulateVg.equal_float_tuple (x,y) t2_pos));
+          (assert (Compare.ManipulateVg.equal_colors (r,g,b,a) t2_color));
+      Printf.printf "Done\n";
+    end;
+    Printf.printf "End of tests move_color.\n\n\n";;
+
+
+  (** Tests to rotate a path with its color. *)
+  let test_rot_color () =
+    Printf.printf "Tests rot_color:\n\n";
+    let nuplet_to_string t = match t with (x,y,r,g,b,a) -> (Printf.sprintf "(%f,%f,%f,%f,%f,%f)" x y r g b a) in
+    let t = (1.,1.,1.,1.,1.,1.) in
+    let pi = Float.pi in
+    let r1 = pi/.2. in
+    let r2 = pi in
+    let r3 = 0. in
+    begin
+      Printf.printf "Assert t:%s r:%f\n" (nuplet_to_string t) r1;
+      let (x,y,r,g,b,a) = Compare.ManipulateVg.rot_color r1 t in
+        let t2_pos = ((-1.),1.) in
+        let t2_color = (1.,1.,1.,1.) in
+          (assert (Compare.ManipulateVg.equal_float_tuple (x,y) t2_pos));
+          (assert (Compare.ManipulateVg.equal_colors (r,g,b,a) t2_color));
+      Printf.printf "Done\n";
+      Printf.printf "Assert t:%s r:%f\n" (nuplet_to_string t) r2;
+      let (x,y,r,g,b,a) = Compare.ManipulateVg.rot_color r2 t in
+        let t2_pos = ((-1.),(-1.)) in
+        let t2_color = (1.,1.,1.,1.) in
+          (* Printf.printf "Res t:%s\n" (nuplet_to_string (x,y,r,g,b,a)); *)
+          (assert (Compare.ManipulateVg.equal_float_tuple (x,y) t2_pos));
+          (assert (Compare.ManipulateVg.equal_colors (r,g,b,a) t2_color));
+      Printf.printf "Done\n";
+      Printf.printf "Assert t:%s r:%f\n" (nuplet_to_string t) r3;
+      let (x,y,r,g,b,a) = Compare.ManipulateVg.rot_color r3 t in
+        let t2_pos = (1.,1.) in
+        let t2_color = (1.,1.,1.,1.) in
+          (assert (Compare.ManipulateVg.equal_float_tuple (x,y) t2_pos));
+          (assert (Compare.ManipulateVg.equal_colors (r,g,b,a) t2_color));
+      Printf.printf "Done\n";
+    end;
+    Printf.printf "End of tests rot_color.\n\n\n";;
+
+
+  (** Tests to scale a path with its color. *)
+  let test_scale_color () =
+    Printf.printf "Tests scale_color:\n\n";
+    let nuplet_to_string t = match t with (x,y,r,g,b,a) -> (Printf.sprintf "(%f,%f,%f,%f,%f,%f)" x y r g b a) in
+    let tuple_to_string t = match t with (x,y) -> (Printf.sprintf "(%f,%f)" x y) in
+    let t = (0.5,1.,1.,1.,1.,1.) in
+    let s1 = (1.,(-1.)) in
+    let s2 = (0.5,0.2) in
+    let s3 = (0.,0.) in
+    begin
+      Printf.printf "Assert t:%s m:%s\n" (nuplet_to_string t) (tuple_to_string s1);
+      let (x,y,r,g,b,a) = Compare.ManipulateVg.scale_color s1 t in
+        let t2_pos = (0.5,(-1.)) in
+        let t2_color = (1.,1.,1.,1.) in
+          (assert (Compare.ManipulateVg.equal_float_tuple (x,y) t2_pos));
+          (assert (Compare.ManipulateVg.equal_colors (r,g,b,a) t2_color));
+      Printf.printf "Done\n";
+      Printf.printf "Assert t:%s m:%s\n" (nuplet_to_string t) (tuple_to_string s2);
+      let (x,y,r,g,b,a) = Compare.ManipulateVg.scale_color s2 t in
+        let t2_pos = (0.25,0.2) in
+        let t2_color = (1.,1.,1.,1.) in
+          (assert (Compare.ManipulateVg.equal_float_tuple (x,y) t2_pos));
+          (assert (Compare.ManipulateVg.equal_colors (r,g,b,a) t2_color));
+      Printf.printf "Done\n";
+      Printf.printf "Assert t:%s m:%s\n" (nuplet_to_string t) (tuple_to_string s3);
+      let (x,y,r,g,b,a) = Compare.ManipulateVg.scale_color s3 t in
+        let t2_pos = (0.,0.) in
+        let t2_color = (1.,1.,1.,1.) in
+          (assert (Compare.ManipulateVg.equal_float_tuple (x,y) t2_pos));
+          (assert (Compare.ManipulateVg.equal_colors (r,g,b,a) t2_color));
+      Printf.printf "Done\n";
+    end;
+    Printf.printf "End of tests scale_color.\n\n\n";;
+
 
   (** Tests for intermediate operations over paths. *)
   let tests_intermediate_paths_manipulation () =
@@ -585,6 +682,9 @@ module Intermediate_paths_manipulation = struct
     test_move();
     test_rot();
     test_scale();
+    test_move_color();
+    test_rot_color();
+    test_scale_color();
     Printf.printf "\nEnd of tests for intermediate operations over paths\n\n";;
 
 end;;
@@ -792,6 +892,142 @@ module Intermediate_i_tree_manipulation = struct
       Printf.printf "End of tests compare list tuples.\n\n\n";;
 
 
+  (** Tests for comparing colors. *)
+  let test_equal_colors () = 
+    Printf.printf "Tests equal_colors:\n\n";
+    let nuplet_to_string t = match t with (r,g,b,a) -> (Printf.sprintf "(%f,%f,%f,%f)" r g b a) in
+      let t1 = (0.5,0.3,0.4,0.2) in
+      let t2 = (0.3,0.5,0.4,0.2) in
+      let t3 = (0.50001,0.30001,0.40001,0.20001) in
+      let t4 = (0.49999,0.29999,0.39999,0.19999) in
+      let t5 = (0.5000001,0.3000001,0.4000001,0.2000001) in
+      let t6 = (0.499999,0.299999,0.399999,0.199999) in
+      let t7 = (0.234,0.432,0.456,0.777777) in
+      let t8 = (0.234,0.432,0.456,0.777778) in
+      begin
+        Printf.printf "Assert %s %s\n" (nuplet_to_string t1) (nuplet_to_string t1);
+        (assert ((Compare.ManipulateVg.equal_colors t1 t1) == true));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s\n" (nuplet_to_string t1) (nuplet_to_string t2);
+        (assert ((Compare.ManipulateVg.equal_colors t1 t2) == false));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s\n" (nuplet_to_string t2) (nuplet_to_string t1);
+        (assert ((Compare.ManipulateVg.equal_colors t2 t1) == false));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s\n" (nuplet_to_string t1) (nuplet_to_string t1);
+        (assert ((Compare.ManipulateVg.equal_colors t1 t3) == false));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s\n" (nuplet_to_string t3) (nuplet_to_string t1);
+        (assert ((Compare.ManipulateVg.equal_colors t3 t1) == false));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s\n" (nuplet_to_string t1) (nuplet_to_string t4);
+        (assert ((Compare.ManipulateVg.equal_colors t1 t4) == false));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s\n" (nuplet_to_string t4) (nuplet_to_string t1);
+        (assert ((Compare.ManipulateVg.equal_colors t4 t1) == false));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s\n" (nuplet_to_string t1) (nuplet_to_string t5);
+        (assert ((Compare.ManipulateVg.equal_colors t1 t5) == true));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s\n" (nuplet_to_string t5) (nuplet_to_string t1);
+        (assert ((Compare.ManipulateVg.equal_colors t5 t1) == true));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s\n" (nuplet_to_string t1) (nuplet_to_string t6);
+        (assert ((Compare.ManipulateVg.equal_colors t1 t6) == true));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s\n" (nuplet_to_string t6) (nuplet_to_string t1);
+        (assert ((Compare.ManipulateVg.equal_colors t6 t1) == true));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s\n" (nuplet_to_string t7) (nuplet_to_string t8);
+        (assert ((Compare.ManipulateVg.equal_colors t7 t8) == true));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s\n" (nuplet_to_string t8) (nuplet_to_string t7);
+        (assert ((Compare.ManipulateVg.equal_colors t8 t7) == true));
+        Printf.printf "Done\n";
+      end;
+      Printf.printf "End of tests equalcolors.\n\n\n";;
+
+
+  (** Tests if an element is in a list of paths with their colors. *)
+  let list_mem_color () =
+    Printf.printf "Tests list mem color:\n\n";
+    let t_to_string t = 
+      match t with ((x,y),list) -> 
+        let str = (Printf.sprintf "((%f,%f),[" x y) in
+          let rec aux list acc = match list with 
+            | [] -> acc^(Printf.sprintf "])")
+            | (r,g,b,a)::[] -> let newAcc = acc^(Printf.sprintf "(%f,%f,%f,%f)" r g b a)
+                                in (aux [] newAcc)
+            | (r,g,b,a)::t -> let newAcc = acc^(Printf.sprintf "(%f,%f,%f,%f);" r g b a)
+                                in (aux t newAcc)
+          in str^(aux list "")
+    in
+    let print_list l =
+        let rec aux l acc = match l with
+          | [] -> acc^(Printf.sprintf "]\n")
+          | t::[] -> let newAcc = acc^(t_to_string t)
+                      in (aux [] newAcc)
+          | h::t -> let newAcc = acc^(t_to_string h)^";"
+                      in (aux t newAcc)
+        in Printf.printf "%s" (aux l "")
+    in
+      let t = ((1.563789,0.235),[(1.,0.3,0.4,0.5)]) in
+      let t1 = ((1.563789,0.235),[]) in
+      let t2 = ((1.563789,0.235),[(1.,0.3,0.4,0.5);(0.4,0.2,0.5,0.4)]) in
+      let l1 = [] in
+      let l2 = [((1.563789,0.235000),[(1.,0.3,0.4,0.5)])] in
+      let l3 = [((0.3,2.34),[(1.,0.3,0.4,0.5)]);((0.5,0.3281),[(1.,0.3,0.4,0.5)])] in
+      let l4 = [((0.454,0.233),[(0.,0.,0.,0.)]);((1.563788,0.235),[(1.,0.3,0.4,0.5)]);((0.5,0.3281),[(0.,0.,0.,0.)])] in
+      let l5 = [((1.563789,0.235000),[(0.,0.,0.,0.)])] in
+      let l6 = [((1.563789,0.235000),[(0.,0.,0.,0.);(1.,0.3,0.4,0.5)])] in
+        begin
+          Printf.printf "Assert t:%s, l: " (t_to_string t);
+          print_list l1;
+          (assert ((Compare.ManipulateVg.list_mem_color t l1) == false));
+          Printf.printf "Done\n";
+          Printf.printf "Assert t:%s, l: " (t_to_string t); 
+          print_list l2;
+          (assert ((Compare.ManipulateVg.list_mem_color t l2) == true));
+          Printf.printf "Done\n";
+          Printf.printf "Assert t:%s, l: " (t_to_string t); 
+          print_list l3;
+          (assert ((Compare.ManipulateVg.list_mem_color t l3) == false));
+          Printf.printf "Done\n";
+          Printf.printf "Assert t:%s, l: " (t_to_string t); 
+          print_list l4;
+          (assert ((Compare.ManipulateVg.list_mem_color t l4) == true));
+          Printf.printf "Done\n";
+          Printf.printf "Assert t:%s, l: " (t_to_string t); 
+          print_list l5;
+          (assert ((Compare.ManipulateVg.list_mem_color t l5) == false));
+          Printf.printf "Done\n";
+          Printf.printf "Assert t:%s, l: " (t_to_string t); 
+          print_list l6;
+          (assert ((Compare.ManipulateVg.list_mem_color t l6) == true));
+          Printf.printf "Done\n";
+          Printf.printf "Assert t:%s, l: " (t_to_string t1); 
+          print_list l1;
+        end;
+          try 
+            begin 
+              Printf.printf "Error: %b\n" (Compare.ManipulateVg.list_mem_color t1 l1); 
+              assert false;
+            end
+          with 
+            _ -> assert true; 
+            Printf.printf "Done\n";
+            Printf.printf "Assert t:%s, l: " (t_to_string t2); 
+            print_list l1;
+            try 
+              begin 
+                Printf.printf "Error: %b\n" (Compare.ManipulateVg.list_mem_color t2 l1); 
+                assert false;
+              end
+            with 
+              _ -> assert true; 
+              Printf.printf "Done\n";
+              Printf.printf "End of tests list mem color.\n\n\n";;
+
   
   (** Tests for intermediate functions to compare i_tree. *)
   let tests_intermediate_i_tree_manipulation () =
@@ -800,6 +1036,8 @@ module Intermediate_i_tree_manipulation = struct
     test_list_mem_bis();
     test_remove_double();
     test_compare_list_tuples();
+    test_equal_colors();
+    list_mem_color();
     Printf.printf "\nEnd of tests for intermediate functions to compare i_tree\n\n";;
 
 end;;

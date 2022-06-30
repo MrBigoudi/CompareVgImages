@@ -96,7 +96,7 @@ To learn how to correct an exercice using easy-check, I invite you to read the a
 
 To test a function producing Vg.image you can use CompareVgImages. 
 
-In your <strong>test.ml</strong> file, you'll have to add <strong>~equal: Compare.image_equal</strong> as an optional parameter of the Check.name function.
+In your <strong>test.ml</strong> file, you'll have to add <strong>~equal: Compare.image_equal</strong> or <strong>~equal: Compare.image_equal_color</strong> as an optional parameter of the Check.name function.
 
 For example :
 
@@ -112,6 +112,9 @@ let create_circle x y color r =
   in I.const color |> I.cut p;;
 ```
 
+
+If you don't care about the color you can use this syntax :
+
 ```OCaml
 (*test.ml*)
 let red = Color.red;;
@@ -122,6 +125,25 @@ let q () =
   Assume.compatible "create_circle" [%ty : float -> float -> color -> float -> image];
   Check.name4 "create_circle" [%ty : float -> float -> color -> float -> image]
     ~equal: Compare.image_equal
+    ~testers: [ Autotest.(tester (tuple4 (float 0 1) (float 0 1) (oneof [red; green; blue]) (float 0 1)))]
+    [];;
+
+let () =
+  Result.set (Result.questions [q])
+```
+
+Otherwise, you can use this syntax :
+
+```OCaml
+(*test.ml*)
+let red = Color.red;;
+let green = Color.green;;
+let blue = Color.blue;;
+
+let q () = 
+  Assume.compatible "create_circle" [%ty : float -> float -> color -> float -> image];
+  Check.name4 "create_circle" [%ty : float -> float -> color -> float -> image]
+    ~equal: Compare.image_equal_color
     ~testers: [ Autotest.(tester (tuple4 (float 0 1) (float 0 1) (oneof [red; green; blue]) (float 0 1)))]
     [];;
 

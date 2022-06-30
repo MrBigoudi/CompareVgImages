@@ -537,19 +537,30 @@ module ManipulateVg = struct
   let compare_list_colors l1 l2 =
     let l1_unique = (remove_double_color l1) in
     let l2_unique = (remove_double_color l2) in
-    let f1 p = list_mem_color p l2_unique in
-    let f2 p = list_mem_color p l1_unique in
-    ((List.length l1_unique)==(List.length l2_unique)) 
-    && (List.for_all f1 l1_unique)
-    && (List.for_all f2 l2_unique);;
+    let at_least_one_color p list = 
+      match p with ((x,y),colors) ->
+        let rec aux colors = match colors with
+          | [] -> false
+          | (r,g,b,a)::tl -> let c = ((x,y),[(r,g,b,a)]) in
+                              if (list_mem_color c list) then true
+                                else (aux tl)
+        in (aux colors)
+    in
+      let f1 p = at_least_one_color p l2_unique in
+      let f2 p = at_least_one_color p l1_unique in
+      ((List.length l1_unique)==(List.length l2_unique)) 
+      && (List.for_all f1 l1_unique)
+      && (List.for_all f2 l2_unique);;
 
 end
 
 (** Compare 2 Vg images. *)
-let image_equal ?(color=false) i1 i2 =
-  if color then 
-    let di1 = (ManipulateVg.decompose_color i1) in
+let image_equal i1 i2 =
+  let di1 = (ManipulateVg.decompose i1) in
+    let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples di1 di2);;
+
+
+(** Compare 2 Vg images and taking into account their colors. *)
+let image_equal_color i1 i2 =
+  let di1 = (ManipulateVg.decompose_color i1) in
       let di2 = (ManipulateVg.decompose_color i2) in (ManipulateVg.compare_list_colors di1 di2)
-  else
-    let di1 = (ManipulateVg.decompose i1) in
-      let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples di1 di2);;

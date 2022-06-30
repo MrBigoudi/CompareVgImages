@@ -27,11 +27,13 @@
 
 (** Compare two images *)
 
-(** {i image_equal i1 i2} -> true if {b i1} and {b i2} are visually equal but they can have different colors.
-  
-    {i image_equal true i1 i2} -> true if {b i1} and {b i2} are visually equal and have the same colors. 
-    *)
-    val image_equal : ?color:bool -> Vg.image -> Vg.image -> bool
+(** {i image_equal i1 i2} -> true if {b i1} and {b i2} are visually equal but they can have different colors. *)
+val image_equal : Vg.image -> Vg.image -> bool
+
+(** Compare 2 Vg images and taking into account their colors. *)
+
+(** {i image_equal true i1 i2} -> true if {b i1} and {b i2} are visually equal and have the same colors. *)
+val image_equal_color : Vg.image -> Vg.image -> bool  
 
 
 
@@ -277,7 +279,7 @@ module ManipulateVg : sig
     (** {i list_mem_bis t l} -> true if t in l {i (~equal: equal_float_tuple)} *)
     val list_mem_bis : (float * float) -> (float * float) list -> bool
 
-    (** Return true if a tuple of float is in a list of paths with their colors. *)
+    (** Return true if an element is in a list of paths with their colors. *)
 
     (** {i list_mem_color p l} -> true if p in l {i (~equal: equal_float_tuple)} *)
     val list_mem_color : ((float * float) * (float*float*float*float) list) -> ((float * float) * (float*float*float*float) list) list -> bool
