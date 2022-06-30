@@ -15,10 +15,23 @@
 &nbsp;</div>
 <h1>Index of values</h1>
 <table>
+<tr><td align="left"><div>A</div></td></tr>
+<tr><td><a href="Compare.ManipulateVg.html#VALadd_color">add_color</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
+<td><div class="info">
+<p><i>add_color (t,c1) l</i> -&gt; replace (t,c1) in l by (t,c1'@'c)</p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>C</div></td></tr>
+<tr><td><a href="Compare.ManipulateVg.html#VALcompare_list_colors">compare_list_colors</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
+<td><div class="info">
+<p><i>compare_list_colors l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALcompare_list_tuples">compare_list_tuples</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>compare_list_tuples l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa <i>(~exists: equal_float_tuple or translated)</i></p>
+<p><i>compare_list_tuples l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa <i>(~exists: equal_float_tuple (or translated not yet implemented))</i></p>
 
 </div>
 </td></tr>
@@ -35,7 +48,19 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Compare.ManipulateVg.html#VALdecompose_color">decompose_color</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
+<td><div class="info">
+<p><i>decompose_color i</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code></p>
+
+</div>
+</td></tr>
 <tr><td align="left"><div>E</div></td></tr>
+<tr><td><a href="Compare.ManipulateVg.html#VALequal_colors">equal_colors</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
+<td><div class="info">
+<p><i>equal_colors c1 c2</i> -&gt; E(r1-r2)&lt;=1e5 &amp;&amp; E(g1-g2)&lt;=1e5 ...</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALequal_float_tuple">equal_float_tuple</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
 <p><i>equal_float_tuple t1 t2</i> -&gt; E(x1-x2)&lt;=1e5 &amp;&amp; E(y1-y2)&lt;=1e5</p>
@@ -100,7 +125,7 @@
 <tr><td align="left"><div>I</div></td></tr>
 <tr><td><a href="Compare.html#VALimage_equal">image_equal</a> [<a href="Compare.html">Compare</a>]</td>
 <td><div class="info">
-<p><i>image_equal i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal</p>
+<p><i>image_equal i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal but they can have different colors.</p>
 
 </div>
 </td></tr>
@@ -108,6 +133,12 @@
 <tr><td><a href="Compare.ManipulateVg.html#VALlist_mem_bis">list_mem_bis</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
 <p><i>list_mem_bis t l</i> -&gt; true if t in l <i>(~equal: equal_float_tuple)</i></p>
+
+</div>
+</td></tr>
+<tr><td><a href="Compare.ManipulateVg.html#VALlist_mem_color">list_mem_color</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
+<td><div class="info">
+<p><i>list_mem_color p l</i> -&gt; true if p in l <i>(~equal: equal_float_tuple)</i></p>
 
 </div>
 </td></tr>
@@ -181,6 +212,12 @@
 
 </div>
 </td></tr>
+<tr><td><a href="Compare.ManipulateVg.html#VALremove_double_color">remove_double_color</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
+<td><div class="info">
+<p><i>remove_double_color l</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code> with (x1,y1) unique <i>(~equal: equal_float_tuple)</i></p>
+
+</div>
+</td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALrot">rot</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
 <p><i>rot r (x,y)</i> -&gt; (x*cos(r)-y*sin(r),x*sin(r)+y*cos(r))</p>
@@ -207,73 +244,73 @@
 </div>
 </td></tr>
 <tr><td align="left"><div>T</div></td></tr>
-<tr><td><a href="Test.html#VALtest_compare_list_tuples">test_compare_list_tuples</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_i_tree_manipulation.html#VALtest_compare_list_tuples">test_compare_list_tuples</a> [<a href="Test.Intermediate_i_tree_manipulation.html">Test.Intermediate_i_tree_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests compare two list of float tuple.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_create_i_tree">test_create_i_tree</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.I_tree_manipulation.html#VALtest_create_i_tree">test_create_i_tree</a> [<a href="Test.I_tree_manipulation.html">Test.I_tree_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests for creating a tree.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_equal_tuples">test_equal_tuples</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_i_tree_manipulation.html#VALtest_equal_tuples">test_equal_tuples</a> [<a href="Test.Intermediate_i_tree_manipulation.html">Test.Intermediate_i_tree_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests for comparing tuples.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_get_blend_token">test_get_blend_token</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Token_getters.html#VALtest_get_blend_token">test_get_blend_token</a> [<a href="Test.Token_getters.html">Test.Token_getters</a>]</td>
 <td><div class="info">
 <p>Tests to get a blend_token.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_get_const_token">test_get_const_token</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Token_getters.html#VALtest_get_const_token">test_get_const_token</a> [<a href="Test.Token_getters.html">Test.Token_getters</a>]</td>
 <td><div class="info">
 <p>Tests to get a const_token.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_get_cut_token">test_get_cut_token</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Token_getters.html#VALtest_get_cut_token">test_get_cut_token</a> [<a href="Test.Token_getters.html">Test.Token_getters</a>]</td>
 <td><div class="info">
 <p>Tests to get a cut_token.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_get_outline_token">test_get_outline_token</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Token_getters.html#VALtest_get_outline_token">test_get_outline_token</a> [<a href="Test.Token_getters.html">Test.Token_getters</a>]</td>
 <td><div class="info">
 <p>Tests to get an outline_token.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_get_path_token">test_get_path_token</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Token_getters.html#VALtest_get_path_token">test_get_path_token</a> [<a href="Test.Token_getters.html">Test.Token_getters</a>]</td>
 <td><div class="info">
 <p>Tests to get a path_token.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_get_points_color_i_tree">test_get_points_color_i_tree</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.I_tree_manipulation.html#VALtest_get_points_color_i_tree">test_get_points_color_i_tree</a> [<a href="Test.I_tree_manipulation.html">Test.I_tree_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests for getting the paths point (with their color) of a tree.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_get_points_i_tree">test_get_points_i_tree</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.I_tree_manipulation.html#VALtest_get_points_i_tree">test_get_points_i_tree</a> [<a href="Test.I_tree_manipulation.html">Test.I_tree_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests for getting the paths point of a tree.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_get_sub_string">test_get_sub_string</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_string_manipulation.html#VALtest_get_sub_string">test_get_sub_string</a> [<a href="Test.Intermediate_string_manipulation.html">Test.Intermediate_string_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests to get a sub string.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_get_tr_token">test_get_tr_token</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Token_getters.html#VALtest_get_tr_token">test_get_tr_token</a> [<a href="Test.Token_getters.html">Test.Token_getters</a>]</td>
 <td><div class="info">
 <p>Tests to get a tr_token.</p>
 
@@ -285,85 +322,85 @@
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_list_mem_bis">test_list_mem_bis</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_i_tree_manipulation.html#VALtest_list_mem_bis">test_list_mem_bis</a> [<a href="Test.Intermediate_i_tree_manipulation.html">Test.Intermediate_i_tree_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests tuple exists in list.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_move">test_move</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_paths_manipulation.html#VALtest_move">test_move</a> [<a href="Test.Intermediate_paths_manipulation.html">Test.Intermediate_paths_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests to move a tuple.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_next_image_modif">test_next_image_modif</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_string_manipulation.html#VALtest_next_image_modif">test_next_image_modif</a> [<a href="Test.Intermediate_string_manipulation.html">Test.Intermediate_string_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests index of the next right i-token.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_next_left_p">test_next_left_p</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_string_manipulation.html#VALtest_next_left_p">test_next_left_p</a> [<a href="Test.Intermediate_string_manipulation.html">Test.Intermediate_string_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests index to the next left parenthesis.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_next_right_p">test_next_right_p</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_string_manipulation.html#VALtest_next_right_p">test_next_right_p</a> [<a href="Test.Intermediate_string_manipulation.html">Test.Intermediate_string_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests index to the next right parenthesis.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_next_space">test_next_space</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_string_manipulation.html#VALtest_next_space">test_next_space</a> [<a href="Test.Intermediate_string_manipulation.html">Test.Intermediate_string_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests index to the next space.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_remove_double">test_remove_double</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_i_tree_manipulation.html#VALtest_remove_double">test_remove_double</a> [<a href="Test.Intermediate_i_tree_manipulation.html">Test.Intermediate_i_tree_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests remove tuple repetitions in list.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_rot">test_rot</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_paths_manipulation.html#VALtest_rot">test_rot</a> [<a href="Test.Intermediate_paths_manipulation.html">Test.Intermediate_paths_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests to rotate a tuple.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtest_scale">test_scale</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_paths_manipulation.html#VALtest_scale">test_scale</a> [<a href="Test.Intermediate_paths_manipulation.html">Test.Intermediate_paths_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests to scale a tuple.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtests_i_tree_manipulation">tests_i_tree_manipulation</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.I_tree_manipulation.html#VALtests_i_tree_manipulation">tests_i_tree_manipulation</a> [<a href="Test.I_tree_manipulation.html">Test.I_tree_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests for i_tree manipulation.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtests_intermediate_i_tree_manipulation">tests_intermediate_i_tree_manipulation</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_i_tree_manipulation.html#VALtests_intermediate_i_tree_manipulation">tests_intermediate_i_tree_manipulation</a> [<a href="Test.Intermediate_i_tree_manipulation.html">Test.Intermediate_i_tree_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests for intermediate functions to compare i_tree.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtests_intermediate_paths_manipulation">tests_intermediate_paths_manipulation</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_paths_manipulation.html#VALtests_intermediate_paths_manipulation">tests_intermediate_paths_manipulation</a> [<a href="Test.Intermediate_paths_manipulation.html">Test.Intermediate_paths_manipulation</a>]</td>
 <td><div class="info">
-<p>ests for intermediate operations over paths.</p>
+<p>Tests for intermediate operations over paths.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtests_intermediate_string_manipulation">tests_intermediate_string_manipulation</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Intermediate_string_manipulation.html#VALtests_intermediate_string_manipulation">tests_intermediate_string_manipulation</a> [<a href="Test.Intermediate_string_manipulation.html">Test.Intermediate_string_manipulation</a>]</td>
 <td><div class="info">
 <p>Tests for intermediate string manipulation.</p>
 
 </div>
 </td></tr>
-<tr><td><a href="Test.html#VALtests_token_getters">tests_token_getters</a> [<a href="Test.html">Test</a>]</td>
+<tr><td><a href="Test.Token_getters.html#VALtests_token_getters">tests_token_getters</a> [<a href="Test.Token_getters.html">Test.Token_getters</a>]</td>
 <td><div class="info">
 <p>Tests for tokens getter from the Vg.image as a string.</p>
 

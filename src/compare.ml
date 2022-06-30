@@ -452,6 +452,9 @@ module ManipulateVg = struct
   (** Transform a Vg image to a tuple of float list. *)
   let decompose i = (get_points (create_i_tree (I.to_string i)));;
 
+  (** Transform a Vg image to a 6-uplet of float list. *)
+  let decompose_color i = (get_points_color (create_i_tree (I.to_string i)));;
+
   (** Return true if two tuple of floats are equal. *)
   let equal_float_tuple t1 t2 =
     let epsilon = 1e-5 in
@@ -461,6 +464,12 @@ module ManipulateVg = struct
             let comp_y = (if (y1-.y2)<0. then ((y2-.y1)<=epsilon) else ((y1-.y2)<=epsilon)) in
               (comp_x && comp_y);;
 
+  (** Return true if two colors are equal. *)
+  let equal_colors c1 c2 =
+    match c1 with (r1,g1,b1,a1) ->
+      match c2 with (r2,g2,b2,a2) ->
+        (equal_float_tuple (r1,g1) (r2,g2)) && (equal_float_tuple (b1,a1) (b2,a2));;
+
   (** Return true if a tuple of float is in a list. *)
   let list_mem_bis t l = 
     let rec aux l = match l with
@@ -469,6 +478,33 @@ module ManipulateVg = struct
                   else (aux tl)
     in (aux l);;
 
+  (** Return true if a path with its color is in a list of paths with their colors. *)
+  let list_mem_color (p : ((float * float) * (float*float*float*float) list)) (l : ((float * float) * (float*float*float*float) list) list) =
+    match p with (t,c) ->
+      let rec in_color_list lc = match lc with
+        | [] -> false
+        | c1::tl -> match c with 
+                    | [] -> failwith "This path doesn't have a color"
+                    | c::[] -> if (equal_colors c1 c) then true
+                                else (in_color_list tl)
+                    | _ -> failwith "This path as more than one color"
+      in
+      let rec aux l = match l with
+        | [] -> false
+        | (h,c1)::tl -> if ((equal_float_tuple h t)&&(in_color_list c1)) then true
+                        else (aux tl)
+      in (aux l);;
+
+  (** Add a given path with its color in a list of path with their colors (without duplicate tuple). *)
+  let add_color (p : ((float * float) * (float*float*float*float) list)) (l : ((float * float) * (float*float*float*float) list) list) =
+    match p with (t,c) ->
+      let rec aux l acc = match l with
+        | [] -> (t,c)::acc
+        | (t1,c1)::tl when (equal_float_tuple t1 t) -> 
+            let newTuple = (t1,c@c1) in (acc@[newTuple]@tl)
+        | h::tl -> (aux tl (acc@[h]))
+      in (aux l []);;
+
   (** Remove copies in a list of float tuple. *)
   let remove_double l =
     let rec aux acc arr = match arr with
@@ -476,6 +512,14 @@ module ManipulateVg = struct
       | h::t -> if (list_mem_bis h acc) then (aux acc t)
           else (aux (acc@[h]) t)
     in (aux [] l);; 
+
+  (** Remove copies in a list of float 6-uplet and transfor them into a (float tuple * (float*float*float) list) tuple *)
+  let remove_double_color l =
+    let rec aux acc arr = match arr with 
+      | [] -> acc
+      | (x,y,r,g,b,a)::t -> let newAcc = (add_color ((x,y),[(r,g,b,a)]) acc)
+                              in (aux newAcc t)
+    in (aux [] l);;
 
   (** Compare two list of float tuple. *)
   let compare_list_tuples l1 l2 =
@@ -489,10 +533,23 @@ module ManipulateVg = struct
     && (List.for_all f1 l1_unique)
     && (List.for_all f2 l2_unique);;
 
+  (** Compare two list of path with their colors. *)
+  let compare_list_colors l1 l2 =
+    let l1_unique = (remove_double_color l1) in
+    let l2_unique = (remove_double_color l2) in
+    let f1 p = list_mem_color p l2_unique in
+    let f2 p = list_mem_color p l1_unique in
+    ((List.length l1_unique)==(List.length l2_unique)) 
+    && (List.for_all f1 l1_unique)
+    && (List.for_all f2 l2_unique);;
+
 end
 
 (** Compare 2 Vg images. *)
-let image_equal i1 i2 =
-  let di1 = (ManipulateVg.decompose i1) in
-    let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples di1 di2);;
-
+let image_equal ?(color=false) i1 i2 =
+  if color then 
+    let di1 = (ManipulateVg.decompose_color i1) in
+      let di2 = (ManipulateVg.decompose_color i2) in (ManipulateVg.compare_list_colors di1 di2)
+  else
+    let di1 = (ManipulateVg.decompose i1) in
+      let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples di1 di2);;

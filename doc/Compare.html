@@ -13,9 +13,9 @@
 <link title="Compare" rel="Chapter" href="Compare.html">
 <link title="Test" rel="Chapter" href="Test.html"><link title="Summary" rel="Section" href="#1_Summary">
 <link title="How it works" rel="Section" href="#1_Howitworks">
+<link title="Main function" rel="Subsection" href="#2_Mainfunction">
 <link title="Tokens" rel="Subsection" href="#2_Tokens">
 <link title="Intermediate module to manipulate the image." rel="Subsection" href="#2_Intermediatemoduletomanipulatetheimage">
-<link title="Main function" rel="Subsection" href="#2_Mainfunction">
 <title>Compare</title>
 </head>
 <body>
@@ -45,6 +45,15 @@
 <p>In order to do that we use the Vg.I.to_string function to transform images to string and then, with some custom parsing, we transfom a Vg.image to an Compare.i_tree.</p>
 
 <p>Having this tree we can manipulate the images' infos to try compare them.</p>
+<h3 id="2_Mainfunction">Main function</h3><p>Compare two images</p>
+
+<pre><span id="VALimage_equal"><span class="keyword">val</span> image_equal</span> : <code class="type">?color:bool -> Vg.image -> Vg.image -> bool</code></pre><div class="info ">
+<div class="info-desc">
+<p><i>image_equal i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal but they can have different colors.</p>
+
+<p><i>image_equal true i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal and have the same colors.</p>
+</div>
+</div>
 <h3 id="2_Tokens">Tokens</h3><p>Tokens for translation.</p>
 
 <pre><code><span id="TYPEtr_token"><span class="keyword">type</span> <code class="type"></code>tr_token</span> = </code></pre><table class="typetable">
@@ -208,12 +217,5 @@
 <pre><span id="MODULEManipulateVg"><span class="keyword">module</span> <a href="Compare.ManipulateVg.html">ManipulateVg</a></span>: <code class="code"><span class="keyword">sig</span></code> <a href="Compare.ManipulateVg.html">..</a> <code class="code"><span class="keyword">end</span></code></pre><div class="info">
 <p>A module for all the functions used to compare images.</p>
 
-</div>
-<h3 id="2_Mainfunction">Main function</h3><p>Compare two images</p>
-
-<pre><span id="VALimage_equal"><span class="keyword">val</span> image_equal</span> : <code class="type">Vg.image -> Vg.image -> bool</code></pre><div class="info ">
-<div class="info-desc">
-<p><i>image_equal i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal</p>
-</div>
 </div>
 </body></html>

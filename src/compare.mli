@@ -22,6 +22,18 @@
 *)
 
 
+(** {2 Main function} *)
+
+
+(** Compare two images *)
+
+(** {i image_equal i1 i2} -> true if {b i1} and {b i2} are visually equal but they can have different colors.
+  
+    {i image_equal true i1 i2} -> true if {b i1} and {b i2} are visually equal and have the same colors. 
+    *)
+    val image_equal : ?color:bool -> Vg.image -> Vg.image -> bool
+
+
 
 (** {2 Tokens}*)
 
@@ -109,7 +121,7 @@ module ManipulateVg : sig
     val print_list_paths : (float*float) list -> unit
 
 
-    (** Print a list of 5-uplet. *)
+    (** Print a list of 6-uplet. *)
 
     (** {i print_list_paths_color l} -> print the list {b l} *)
     val print_list_paths_color : (float*float*float*float*float*float) list -> unit
@@ -245,33 +257,54 @@ module ManipulateVg : sig
     (** {i decompose i} -> [(x1,y1);...;(xn,yn)] *)
     val decompose : Vg.image -> (float * float) list
 
+    (** Transform a Vg image to a 6-uplet of float list. *)
+
+    (** {i decompose_color i} -> [(x1,y1);...;(xn,yn)] *)
+    val decompose_color : Vg.image -> (float * float * float * float * float * float) list
+
     (** Return true if two tuple of floats are equal. *)
 
     (** {i equal_float_tuple t1 t2} -> E(x1-x2)<=1e5 && E(y1-y2)<=1e5 *)
     val equal_float_tuple : (float * float) -> (float * float) -> bool
+
+    (** Return true if two colors are equal. *)
+
+    (** {i equal_colors c1 c2} -> E(r1-r2)<=1e5 && E(g1-g2)<=1e5 ... *)
+    val equal_colors : (float * float * float * float) -> (float * float * float * float) -> bool
   
     (** Return true if a tuple of float is in a list. *)
 
     (** {i list_mem_bis t l} -> true if t in l {i (~equal: equal_float_tuple)} *)
     val list_mem_bis : (float * float) -> (float * float) list -> bool
 
+    (** Return true if a tuple of float is in a list of paths with their colors. *)
+
+    (** {i list_mem_color p l} -> true if p in l {i (~equal: equal_float_tuple)} *)
+    val list_mem_color : ((float * float) * (float*float*float*float) list) -> ((float * float) * (float*float*float*float) list) list -> bool
+
+    (** Add a given path with its color in a list of path with their colors (without duplicate tuple). *)
+  
+    (** {i add_color (t,c1) l} -> replace (t,c1) in l by (t,c1'@'c) *)
+    val add_color : ((float * float) * (float*float*float*float)list) -> ((float * float) * (float*float*float*float) list) list -> ((float * float) * (float*float*float*float) list) list
+
     (** Remove copies in a list of float tuple. *)
 
     (** {i remove_double l} -> [(x1,y1);...;(xn,yn)] with (x1,y1) unique {i (~equal: equal_float_tuple)} *)
     val remove_double : (float * float) list -> (float * float) list
 
+    (** Remove copies in a list of float 6-uplet and transfor them into a (float tuple * (float*float*float*float) list) tuple *)
+
+    (** {i remove_double_color l} -> [(x1,y1);...;(xn,yn)] with (x1,y1) unique {i (~equal: equal_float_tuple)} *)
+    val remove_double_color : (float * float * float * float * float * float) list -> ((float * float) * (float*float*float*float) list) list
+
     (** Compare two list of float tuple. *)
     
-    (** {i compare_list_tuples l1 l2} -> true if all t in l1 exists in l2 and vice-versa {i (~exists: equal_float_tuple or translated)} *)
+    (** {i compare_list_tuples l1 l2} -> true if all t in l1 exists in l2 and vice-versa {i (~exists: equal_float_tuple (or translated not yet implemented))} *)
     val compare_list_tuples : (float * float) list -> (float * float) list -> bool
+
+    (** Compare two list of path with their colors. *)
+    
+    (** {i compare_list_colors l1 l2} -> true if all t in l1 exists in l2 and vice-versa *)
+    val compare_list_colors : (float * float * float * float * float * float) list -> (float * float * float * float * float * float) list -> bool
+
 end  
-
-
-
-(** {2 Main function} *)
-
-
-(** Compare two images *)
-
-(** {i image_equal i1 i2} -> true if {b i1} and {b i2} are visually equal *)
-val image_equal : Vg.image -> Vg.image -> bool
