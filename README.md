@@ -11,7 +11,7 @@ CompareVgImages is a tool to help you compare [Vg.image](https://erratique.ch/so
 
 <strong>Summary</strong>
 
-The [Vg](https://erratique.ch/software/vg/doc/Vg/index.html) module let you use an [I.equal](https://erratique.ch/software/vg/doc/Vg/I/index.html#val-equal) function that checks if two images are exactly equals.
+The [Vg](https://erratique.ch/software/vg/doc/Vg/index.html) module let you use an I.equal function that checks if two images are exactly equals.
 
 However, when you look at two images, they can look alike even if they don't have the same constructors (example the image of an 'L' and the image of a 'J' which was mirrored.
     
@@ -21,11 +21,11 @@ The [Compare](src/compare.mli) module tries to check if two images are visually 
 
 <strong>How it works</strong> 
 
-[Vg.image](https://erratique.ch/software/vg/doc/Vg/I/index.html) constructors are hidden, in order to do pattern-matching with a [Vg.image](https://erratique.ch/software/vg/doc/Vg/I/index.html) you need to reconstruct the constructors tree.
+Vg.image constructors are hidden, in order to do pattern-matching with a Vg.image you need to reconstruct the constructors tree.
 
-In order to do that we use the [Vg.I.to_string](https://erratique.ch/software/vg/doc/Vg/I/index.html#val-to_string) function to transform images to string and then, with some custom parsing, we transfom a [Vg.image](https://erratique.ch/software/vg/doc/Vg/I/index.html) to a [Compare.i_tree](src/compare.mli).
+In order to do that we use the [Vg.I.to_string](https://erratique.ch/software/vg/doc/Vg/I/index.html#val-to_string) function to transform images to string and then, with some custom parsing, we transfom a Vg.image to a [Compare.i_tree](src/compare.mli).
 
-Having this tree we can manipulate the [Vg.image](https://erratique.ch/software/vg/doc/Vg/I/index.html)' infos to try compare them. 
+Having this tree we can manipulate the Vg.image infos to try compare them. 
 
 </br>
 
