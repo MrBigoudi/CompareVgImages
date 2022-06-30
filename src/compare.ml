@@ -28,13 +28,23 @@ type i_tree =
 
 (** A module for all the functions used to compare images. *)
 module ManipulateVg = struct 
+
+  (** Get offset of next empty space. *)
   let next_space str n = 
     String.index_from str n ' ';;
+
+
+  (** Get offset of the next left parenthesis. *)
   let next_left_p str n = 
     String.index_from str n '(';;
+
+
+  (** Get offset of the next right parenthesis. *)
   let next_right_p str n = 
     String.index_from str n ')';;
 
+
+  (** Get offset of the next i_token. *)
   let next_image_modif str n = 
     let len = String.length str in
     let rec aux offset =
@@ -45,12 +55,20 @@ module ManipulateVg = struct
         | _   -> (aux (offset+1))
     in (aux n);;
 
+
+  (** Get a sub string. *)
+  let get_sub_string str s f = (String.sub str s (f-s));;
+
+
+  (** Print a list of offsets. *)
   let print_list_offset l = 
     let rec aux l = match l with
       | [] -> Printf.printf "\n"
       | offset::t -> Printf.printf "%d;" offset; (aux t)
     in (aux l);;
 
+
+  (** Print a list of float tuple. *)
   let print_list_paths l = 
     Printf.printf "\npaths: [";
     let rec aux l = match l with
@@ -59,6 +77,8 @@ module ManipulateVg = struct
       | (x,y)::t -> Printf.printf "(%f,%f);" x y; (aux t)
     in (aux l);;
 
+
+  (** Print a list of 6-uplet. *)
   let print_list_paths_color l = 
     Printf.printf "\npaths: [";
     let rec aux l = match l with
@@ -67,49 +87,8 @@ module ManipulateVg = struct
       | (x,y,r,g,b,a)::t -> Printf.printf "(%f,%f,%f,%f,%f,%f);" x y r g b a; (aux t)
     in (aux l);;
 
-  let to_string i =
-    let rec aux i =
-      match i with
-      | Empty -> ""
-      | F(Const(w,x,y,z)) -> Printf.sprintf "const (%f,%f,%f,%.f)\n" w x y z
-      | F(Outline(x)) -> Printf.sprintf "outline (%f)\n" x
-      | F(Path(l)) -> let rec aux l acc = match l with
-          | [] -> acc^"\n"
-          | (x,y)::[] -> let tmp = Printf.sprintf "(%f,%f)]" x y in (aux [] (acc^tmp))
-          | (x,y)::t -> let tmp = Printf.sprintf "(%f,%f);" x y in (aux t (acc^tmp))
-          in (aux l "path [")
-      | Node(Tr(Move(x,y)),l) -> let rec aux2 i_list =
-                                   match i_list with
-                                   | [] -> ""
-                                   | h::t -> (aux h)^(aux2 t)
-          in (Printf.sprintf "tr move (%f,%f)\n" x y)^(aux2 l)
-      | Node(Tr(Rot(x)),l) -> let rec aux2 i_list =
-                                match i_list with
-                                | [] -> ""
-                                | h::t -> (aux h)^(aux2 t)
-          in (Printf.sprintf "tr rot %f\n" x)^(aux2 l)
-      | Node(Tr(Scale(x,y)),l) -> let rec aux2 i_list =
-                                    match i_list with
-                                    | [] -> ""
-                                    | h::t -> (aux h)^(aux2 t)
-          in (Printf.sprintf "tr scale (%f,%f)\n" x y)^(aux2 l)
-      | Node(Blend,l) -> let rec aux2 i_list =
-                           match i_list with
-                           | [] -> ""
-                           | h::t -> (aux h)^(aux2 t)
-          in "blend\n"^(aux2 l)
-      | Node(Cut,l) -> let rec aux2 i_list =
-                         match i_list with
-                         | [] -> ""
-                         | h::t -> (aux h)^(aux2 t)
-          in "cut\n"^(aux2 l)
-      | _ -> failwith "\n\nerror to_string: unkown i_tree\n\n"
-    in (aux i);;
 
-
-  let get_sub_string str s f = (String.sub str s (f-s));;
-  
-
+  (** Get a tr_token and the new offset. *)
   let get_tr_token str offset = 
     let offset = (next_left_p str offset)+1 in
     let new_offset = (next_right_p str offset) in
@@ -140,6 +119,7 @@ module ManipulateVg = struct
     | _ -> failwith "unknown transformation";;
 
 
+  (** Get the 2 new offsets to divide the next research. *)
   let get_blend_token str offset = 
     let len = String.length str in
     let blend1 = (next_image_modif str offset) in
@@ -158,6 +138,7 @@ module ManipulateVg = struct
     (blend1,blend2);;
 
 
+  (** Get the list of new offsets to divide the next researches. *)
   let get_cut_token str offset = 
     let len = String.length str in
     let rec get_next_offset nb_par cur_offset =
@@ -198,6 +179,7 @@ module ManipulateVg = struct
     (get_offsets first_offset [first_offset]);;
 
 
+  (** Get a const_token, ie an r,g,b,a color. *)
   let get_const_token str offset = 
     let offset = (next_left_p str offset)+1 in 
     let new_offset = (next_right_p str offset) in
@@ -206,6 +188,7 @@ module ManipulateVg = struct
     let res = (Scanf.sscanf sub "%f %f %f %f" (fun w x y z -> (w,x,y,z))) in (*Printf.printf "done\n";*) res;;
 
 
+  (** Get a path_token, ie S (float float) L (float float) ... L (float float) Z. *)
   let get_path_token str offset = 
     let len = String.length str in
     let end_of_path n =
@@ -236,6 +219,7 @@ module ManipulateVg = struct
     in (get_points (next_left_p str offset) []);;
   
 
+  (** Get an outline_token {i (only the width of the outline for the moment)}. *)
   let get_outline_token str offset = 
     let offset = (next_left_p str offset)+1 in
     let new_offset = (next_right_p str offset) in
@@ -244,6 +228,40 @@ module ManipulateVg = struct
     let width = (Scanf.sscanf sub "width %f" (fun x -> x)) in (*Printf.printf "done\n";*) width;;
 
 
+  (*Move a tuple*)
+  let move m t =
+    match m with (x1,y1) ->
+      match t with (x2,y2) -> ((x1+.x2),(y1+.y2));;
+  (*Move with color*)
+  let move_color m t =
+    match m with (x1,y1) ->
+      match t with (x2,y2,r,g,b,a) -> ((x1+.x2),(y1+.y2),r,g,b,a);;
+
+  (*Rotate a tuple*)
+  let rot r t =
+    match t with (x,y) -> 
+      let new_x = (x*.(Stdlib.cos r))-.(y*.(Stdlib.sin r)) in
+      let new_y = (x*.(Stdlib.sin r))+.(y*.(Stdlib.cos r)) in
+        (new_x,new_y);; 
+  (*Rotate with color*)
+  let rot_color r t =
+    match t with (x,y,r1,g,b,a) -> 
+      let new_x = (x*.(Stdlib.cos r))-.(y*.(Stdlib.sin r)) in
+      let new_y = (x*.(Stdlib.sin r))+.(y*.(Stdlib.cos r)) in
+        (* Printf.printf "r:%f, old:(%f,%f), new:(%f,%f)\n" r x y new_x new_y; *)
+        (new_x,new_y,r1,g,b,a);;
+
+  (*Scale a tuple*)
+  let scale s t =
+    match s with (x1,y1) ->
+      match t with (x2,y2) -> ((x1*.x2),(y1*.y2));;
+  (*Scale with color*)
+  let scale_color s t =
+    match s with (x1,y1) ->
+      match t with (x2,y2,r,g,b,a) -> ((x1*.x2),(y1*.y2),r,g,b,a);;
+
+
+  (** Create a tree of tokens representing an image from a string. *)
   let create_i_tree str =
     let len = String.length str in
     let rec aux offset fin = 
@@ -282,38 +300,48 @@ module ManipulateVg = struct
             in failwith res
     in (aux 1 len);;
 
-  (*Move a tuple*)
-  let move m t =
-    match m with (x1,y1) ->
-      match t with (x2,y2) -> ((x1+.x2),(y1+.y2));;
-  (*Move with color*)
-  let move_color m t =
-    match m with (x1,y1) ->
-      match t with (x2,y2,r,g,b,a) -> ((x1+.x2),(y1+.y2),r,g,b,a);;
+  
+  (** Convert an i_tree into a string. *)
+  let to_string i =
+    let rec aux i =
+      match i with
+      | Empty -> ""
+      | F(Const(w,x,y,z)) -> Printf.sprintf "const (%f,%f,%f,%.f)\n" w x y z
+      | F(Outline(x)) -> Printf.sprintf "outline (%f)\n" x
+      | F(Path(l)) -> let rec aux l acc = match l with
+          | [] -> acc^"\n"
+          | (x,y)::[] -> let tmp = Printf.sprintf "(%f,%f)]" x y in (aux [] (acc^tmp))
+          | (x,y)::t -> let tmp = Printf.sprintf "(%f,%f);" x y in (aux t (acc^tmp))
+          in (aux l "path [")
+      | Node(Tr(Move(x,y)),l) -> let rec aux2 i_list =
+                                   match i_list with
+                                   | [] -> ""
+                                   | h::t -> (aux h)^(aux2 t)
+          in (Printf.sprintf "tr move (%f,%f)\n" x y)^(aux2 l)
+      | Node(Tr(Rot(x)),l) -> let rec aux2 i_list =
+                                match i_list with
+                                | [] -> ""
+                                | h::t -> (aux h)^(aux2 t)
+          in (Printf.sprintf "tr rot %f\n" x)^(aux2 l)
+      | Node(Tr(Scale(x,y)),l) -> let rec aux2 i_list =
+                                    match i_list with
+                                    | [] -> ""
+                                    | h::t -> (aux h)^(aux2 t)
+          in (Printf.sprintf "tr scale (%f,%f)\n" x y)^(aux2 l)
+      | Node(Blend,l) -> let rec aux2 i_list =
+                           match i_list with
+                           | [] -> ""
+                           | h::t -> (aux h)^(aux2 t)
+          in "blend\n"^(aux2 l)
+      | Node(Cut,l) -> let rec aux2 i_list =
+                         match i_list with
+                         | [] -> ""
+                         | h::t -> (aux h)^(aux2 t)
+          in "cut\n"^(aux2 l)
+      | _ -> failwith "\n\nerror to_string: unkown i_tree\n\n"
+    in (aux i);;
 
-  (*Rotate a tuple*)
-  let rot r t =
-    match t with (x,y) -> 
-      let new_x = (x*.(Stdlib.cos r))-.(y*.(Stdlib.sin r)) in
-      let new_y = (x*.(Stdlib.sin r))+.(y*.(Stdlib.cos r)) in
-        (new_x,new_y);; 
-  (*Rotate with color*)
-  let rot_color r t =
-    match t with (x,y,r1,g,b,a) -> 
-      let new_x = (x*.(Stdlib.cos r))-.(y*.(Stdlib.sin r)) in
-      let new_y = (x*.(Stdlib.sin r))+.(y*.(Stdlib.cos r)) in
-        (* Printf.printf "r:%f, old:(%f,%f), new:(%f,%f)\n" r x y new_x new_y; *)
-        (new_x,new_y,r1,g,b,a);;
-
-  (*Scale a tuple*)
-  let scale s t =
-    match s with (x1,y1) ->
-      match t with (x2,y2) -> ((x1*.x2),(y1*.y2));;
-  (*Scale with color*)
-  let scale_color s t =
-    match s with (x1,y1) ->
-      match t with (x2,y2,r,g,b,a) -> ((x1*.x2),(y1*.y2),r,g,b,a);;
-
+  
   (** Get the list of path points in a tree, after applying necessary changes on it. *)
   let get_points i =
     let rec aux i = 
@@ -350,6 +378,7 @@ module ManipulateVg = struct
                         | h::t -> (aux h)@(aux2 t) in (aux2 l)
       | _ -> failwith "\n\nerror get_points: unknown tree\n\n"
     in (aux i);;
+
 
   (** Get the list of path points with their color in a tree, after applying necessary changes on it. *)
   let get_points_color i =
@@ -399,61 +428,14 @@ module ManipulateVg = struct
       | _ -> failwith "\n\nerror get_points_with_color: unknown tree\n\n"
     in (aux i []);;
 
-(* 
-  let split str =
-    str
-    |> String.split_on_char ' '
-    |> List.filter (fun s -> s <> "");;
-
-  let empty_array arr = 
-    let is_int c = 
-      let code = (Char.code c) 
-      in ((code>=(Char.code '0'))&&(code<=(Char.code '9')))
-    in 
-    let f s = match s.[0] with
-      | '(' -> (is_int s.[1])
-      | a -> (is_int a) && ((String.length s)>1)
-    in (List.filter f arr);;
-
-  let clean_array arr = 
-    let f s = 
-      (*remove right parentheses*)
-      let rec f1 s = 
-        let len = (String.length s) in
-        match s.[len-1] with
-        | '\n' -> f1 (String.sub s 0 (len-1))
-        | ')' -> f1 (String.sub s 0 (len-1))
-        | _ -> s 
-      in 
-      (*remove left parentheses*)
-      let rec f2 s = 
-        let len = (String.length s) in
-        match s.[0] with
-        | '(' -> f2 (String.sub s 1 (len-1)) 
-        | _ -> s
-      in (f2 (f1 s))
-    (*remove all parentheses*)
-    in (List.map f arr);;
-
-  let float_of_string s =
-    let t = (Scanf.sscanf s "%f" (fun x -> x)) in t;;
-
-  let rec print_arr arr = match arr with
-    | [] -> Printf.printf "\n\n\n"
-    | h::t -> Printf.printf "%s" (h^"  ");(print_arr t);;
-
-  let create_tuple_list arr =
-    let rec aux acc arr = match arr with
-      | [] -> acc
-      | l::r::t -> (aux (((float_of_string l),(float_of_string r))::acc) t)
-      | h::[] -> acc
-    in (aux [] arr);; *)
 
   (** Transform a Vg image to a tuple of float list. *)
   let decompose i = (get_points (create_i_tree (I.to_string i)));;
 
+
   (** Transform a Vg image to a 6-uplet of float list. *)
   let decompose_color i = (get_points_color (create_i_tree (I.to_string i)));;
+
 
   (** Return true if two tuple of floats are equal. *)
   let equal_float_tuple t1 t2 =
@@ -464,11 +446,13 @@ module ManipulateVg = struct
             let comp_y = (if (y1-.y2)<0. then ((y2-.y1)<=epsilon) else ((y1-.y2)<=epsilon)) in
               (comp_x && comp_y);;
 
+
   (** Return true if two colors are equal. *)
   let equal_colors c1 c2 =
     match c1 with (r1,g1,b1,a1) ->
       match c2 with (r2,g2,b2,a2) ->
         (equal_float_tuple (r1,g1) (r2,g2)) && (equal_float_tuple (b1,a1) (b2,a2));;
+
 
   (** Return true if a tuple of float is in a list. *)
   let list_mem_bis t l = 
@@ -477,6 +461,7 @@ module ManipulateVg = struct
       | h::tl -> if (equal_float_tuple h t) then true
                   else (aux tl)
     in (aux l);;
+
 
   (** Return true if a path with its color is in a list of paths with their colors. *)
   let list_mem_color (p : ((float * float) * (float*float*float*float) list)) (l : ((float * float) * (float*float*float*float) list) list) =
@@ -495,6 +480,7 @@ module ManipulateVg = struct
                         else (aux tl)
       in (aux l);;
 
+      
   (** Add a given path with its color in a list of path with their colors (without duplicate tuple). *)
   let add_color (p : ((float * float) * (float*float*float*float) list)) (l : ((float * float) * (float*float*float*float) list) list) =
     match p with (t,c) ->
@@ -505,6 +491,7 @@ module ManipulateVg = struct
         | h::tl -> (aux tl (acc@[h]))
       in (aux l []);;
 
+
   (** Remove copies in a list of float tuple. *)
   let remove_double l =
     let rec aux acc arr = match arr with
@@ -513,6 +500,7 @@ module ManipulateVg = struct
           else (aux (acc@[h]) t)
     in (aux [] l);; 
 
+
   (** Remove copies in a list of float 6-uplet and transfor them into a (float tuple * (float*float*float) list) tuple *)
   let remove_double_color l =
     let rec aux acc arr = match arr with 
@@ -520,6 +508,7 @@ module ManipulateVg = struct
       | (x,y,r,g,b,a)::t -> let newAcc = (add_color ((x,y),[(r,g,b,a)]) acc)
                               in (aux newAcc t)
     in (aux [] l);;
+
 
   (** Compare two list of float tuple. *)
   let compare_list_tuples l1 l2 =
@@ -532,6 +521,7 @@ module ManipulateVg = struct
     ((List.length l1_unique)==(List.length l2_unique)) 
     && (List.for_all f1 l1_unique)
     && (List.for_all f2 l2_unique);;
+
 
   (** Compare two list of path with their colors. *)
   let compare_list_colors l1 l2 =
@@ -563,4 +553,4 @@ let image_equal i1 i2 =
 (** Compare 2 Vg images and taking into account their colors. *)
 let image_equal_color i1 i2 =
   let di1 = (ManipulateVg.decompose_color i1) in
-      let di2 = (ManipulateVg.decompose_color i2) in (ManipulateVg.compare_list_colors di1 di2)
+      let di2 = (ManipulateVg.decompose_color i2) in (ManipulateVg.compare_list_colors di1 di2);;

@@ -178,25 +178,25 @@ module ManipulateVg : sig
     (** {i move (x1,y1) (x2,y2)} -> (x1+.x2,y1+.y2) *)
     val move : (float*float) -> (float*float) -> (float*float)
 
-    (** Rotate a tuple. *)
-
-    (** {i rot r (x,y)} -> (x*cos(r)-y*sin(r),x*sin(r)+y*cos(r)) *)
-    val rot : float -> (float*float) -> (float*float)
-
-    (** Scale a tuple. *)
-
-    (** {i scale (x1,y1) (x2,y2)} -> (x1*.x2,y1*.y2) *)
-    val scale : (float*float) -> (float*float) -> (float*float)
-
     (** Move a tuple with color. *)
 
     (** {i move_color (x1,y1) (x2,y2,r,g,b,a)} -> (x1+.x2,y1+.y2,r,g,b,a) *)
     val move_color : (float*float) -> (float*float*float*float*float*float) -> (float*float*float*float*float*float)
 
+    (** Rotate a tuple. *)
+
+    (** {i rot r (x,y)} -> (x*cos(r)-y*sin(r),x*sin(r)+y*cos(r)) *)
+    val rot : float -> (float*float) -> (float*float)
+
     (** Rotate a tuple with color. *)
 
     (** {i rot_color r (x,y,r,g,b,a)} -> (x*cos(r)-y*sin(r),x*sin(r)+y*cos(r),r,g,b,a) *)
     val rot_color : float -> (float*float*float*float*float*float) -> (float*float*float*float*float*float)
+
+    (** Scale a tuple. *)
+
+    (** {i scale (x1,y1) (x2,y2)} -> (x1*.x2,y1*.y2) *)
+    val scale : (float*float) -> (float*float) -> (float*float)
 
     (** Scale a tuple with color. *)
 

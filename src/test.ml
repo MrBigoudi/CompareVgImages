@@ -1551,8 +1551,8 @@ module I_tree_manipulation = struct
   (** Tests for i_tree manipulation. *)
   let tests_i_tree_manipulation () =
     Printf.printf "Starting tests for i_tree manipulation\n\n\n";
-    (* test_create_i_tree();
-    test_get_points_i_tree(); *)
+    test_create_i_tree();
+    test_get_points_i_tree();
     test_get_points_color_i_tree();
     Printf.printf "\nEnd of tests for i_tree manipulation, everything's okay\n\n";;
 

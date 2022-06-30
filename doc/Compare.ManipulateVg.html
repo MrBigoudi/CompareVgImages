@@ -133,20 +133,6 @@
 <p><i>move (x1,y1) (x2,y2)</i> -&gt; (x1+.x2,y1+.y2)</p>
 </div>
 </div>
-<p>Rotate a tuple.</p>
-
-<pre><span id="VALrot"><span class="keyword">val</span> rot</span> : <code class="type">float -> float * float -> float * float</code></pre><div class="info ">
-<div class="info-desc">
-<p><i>rot r (x,y)</i> -&gt; (x*cos(r)-y*sin(r),x*sin(r)+y*cos(r))</p>
-</div>
-</div>
-<p>Scale a tuple.</p>
-
-<pre><span id="VALscale"><span class="keyword">val</span> scale</span> : <code class="type">float * float -> float * float -> float * float</code></pre><div class="info ">
-<div class="info-desc">
-<p><i>scale (x1,y1) (x2,y2)</i> -&gt; (x1*.x2,y1*.y2)</p>
-</div>
-</div>
 <p>Move a tuple with color.</p>
 
 <pre><span id="VALmove_color"><span class="keyword">val</span> move_color</span> : <code class="type">float * float -><br>       float * float * float * float * float * float -><br>       float * float * float * float * float * float</code></pre><div class="info ">
@@ -154,11 +140,25 @@
 <p><i>move_color (x1,y1) (x2,y2,r,g,b,a)</i> -&gt; (x1+.x2,y1+.y2,r,g,b,a)</p>
 </div>
 </div>
+<p>Rotate a tuple.</p>
+
+<pre><span id="VALrot"><span class="keyword">val</span> rot</span> : <code class="type">float -> float * float -> float * float</code></pre><div class="info ">
+<div class="info-desc">
+<p><i>rot r (x,y)</i> -&gt; (x*cos(r)-y*sin(r),x*sin(r)+y*cos(r))</p>
+</div>
+</div>
 <p>Rotate a tuple with color.</p>
 
 <pre><span id="VALrot_color"><span class="keyword">val</span> rot_color</span> : <code class="type">float -><br>       float * float * float * float * float * float -><br>       float * float * float * float * float * float</code></pre><div class="info ">
 <div class="info-desc">
 <p><i>rot_color r (x,y,r,g,b,a)</i> -&gt; (x*cos(r)-y*sin(r),x*sin(r)+y*cos(r),r,g,b,a)</p>
+</div>
+</div>
+<p>Scale a tuple.</p>
+
+<pre><span id="VALscale"><span class="keyword">val</span> scale</span> : <code class="type">float * float -> float * float -> float * float</code></pre><div class="info ">
+<div class="info-desc">
+<p><i>scale (x1,y1) (x2,y2)</i> -&gt; (x1*.x2,y1*.y2)</p>
 </div>
 </div>
 <p>Scale a tuple with color.</p>
