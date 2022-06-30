@@ -16,3 +16,10 @@
 - Try to implement a different version of the comparator that transform the Vg images to compare into two bitmaps that we'll compare later.
 
 - Use this new comparison technique to implement a <strong>compareGraphicsImages</strong> which compares two images from the Graphics module.
+
+<br>
+
+
+## Outside this module
+
+- Try to update learnOcaml to show the student the expected image and their image after the correctiono instead of just writting '<abstr>'
