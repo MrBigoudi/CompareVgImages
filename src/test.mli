@@ -130,7 +130,16 @@ module Intermediate_i_tree_manipulation : sig
   val test_equal_colors : unit -> unit
 
   (** Tests if an element is in a list of paths with their colors. *)
-  val list_mem_color : unit -> unit
+  val test_list_mem_color : unit -> unit
+
+  (** Tests adding a given path with its color in a list of path with their colors (without duplicate tuple). *)
+  val test_add_color : unit -> unit
+
+  (** Tests remove copies in a list of float 6-uplet and transfor them into a (float tuple * (float*float*float*float) list) tuple *)
+  val test_remove_double_color : unit -> unit
+
+  (** Tests compare two list of path with their colors. *)
+  val test_compare_list_colors : unit -> unit
 
   (** Tests for intermediate functions to compare i_tree. *)
   val tests_intermediate_i_tree_manipulation : unit -> unit

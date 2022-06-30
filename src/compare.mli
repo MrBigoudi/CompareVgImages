@@ -234,25 +234,7 @@ module ManipulateVg : sig
 
 
     (** {2 Intermediate functions to compare i_tree} *)
-
-(* 
-    (** Split string using ' ' as delimiter + remove empty component in the result array. *)
-    val split : string -> string list
-
-    (** Filter list to omly keep numbers. *)
-    val empty_array : string list -> string list
-
-    (** Remove parentheses in a list of strings. *)
-    val clean_array : string list -> string list
-
-    (** Cast a string to a float*)
-    val float_of_string : string -> float
-
-    (** Debug tool to print a string list. *)
-    val print_arr : string list -> unit
-
-    (** Cast a string list to a tuple of float list. *)
-    val create_tuple_list : string list -> (float * float) list *)
+    
 
     (** Transform a Vg image to a tuple of float list. *)
 

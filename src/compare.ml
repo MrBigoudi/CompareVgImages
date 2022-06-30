@@ -485,9 +485,9 @@ module ManipulateVg = struct
   let add_color (p : ((float * float) * (float*float*float*float) list)) (l : ((float * float) * (float*float*float*float) list) list) =
     match p with (t,c) ->
       let rec aux l acc = match l with
-        | [] -> (t,c)::acc
+        | [] -> acc@[(t,c)]
         | (t1,c1)::tl when (equal_float_tuple t1 t) -> 
-            let newTuple = (t1,c@c1) in (acc@[newTuple]@tl)
+            let newTuple = (t1,c1@c) in (acc@[newTuple]@tl)
         | h::tl -> (aux tl (acc@[h]))
       in (aux l []);;
 
