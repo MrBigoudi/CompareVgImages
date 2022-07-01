@@ -865,6 +865,8 @@ module Intermediate_i_tree_manipulation = struct
     let l3 = [(0.3,2.34);(1.563789,0.235000)] in
     let l4 = [(0.300001,2.340001);(1.563788,0.235000)] in
     let l5 = l2@l3@l4 in
+    let l6 = [(1.563789+.0.42,0.235000+.0.69);(0.3+.0.42,2.34+.0.69)] in
+    let l7 = [(1.563789+.0.42,0.235000+.0.42);(0.3+.0.42,2.34+.0.69)] in
       begin
         Printf.printf "Assert l1: ";
         print_list_tuple l;
@@ -899,6 +901,20 @@ module Intermediate_i_tree_manipulation = struct
         Printf.printf "Assert l2: ";
         print_list_tuple l5;
         (assert (Compare.ManipulateVg.compare_list_tuples l l5));
+        Printf.printf "Done\n\n";
+
+        Printf.printf "Assert l1: ";
+        print_list_tuple l;
+        Printf.printf "Assert l2: ";
+        print_list_tuple l6;
+        (assert (Compare.ManipulateVg.compare_list_tuples l l6));
+        Printf.printf "Done\n\n";
+
+        Printf.printf "Assert l1: ";
+        print_list_tuple l;
+        Printf.printf "Assert l2: ";
+        print_list_tuple l7;
+        (assert ((Compare.ManipulateVg.compare_list_tuples l l7) == false));
         Printf.printf "Done\n\n";
         
       end;
@@ -1248,6 +1264,8 @@ module Intermediate_i_tree_manipulation = struct
     let l5 = l2@l3@l4 in
     let l6 = [(1.563789,0.235000,1.,1.,1.,1.);(1.563789,0.235000,0.,0.,0.,0.);(0.3,2.34,1.,1.,1.,1.)] in
     let l7 = [(1.563789,0.235000,1.,1.,1.,1.);(0.3,2.34,0.,0.,0.,0.)] in
+    let l8 = [(1.563789+.0.42,0.235000+.0.69,0.,0.,0.,0.);(0.3+.0.42,2.34+.0.69,1.,1.,1.,1.)] in
+    let l9 = [(1.563789+.0.42,0.235000+.0.42,0.,0.,0.,0.);(0.3+.0.42,2.34+.0.69,1.,1.,1.,1.)] in
       begin
         Printf.printf "Assert l1: ";
         print_list_nuplet l;
@@ -1298,6 +1316,20 @@ module Intermediate_i_tree_manipulation = struct
         (assert ((Compare.ManipulateVg.compare_list_colors l l7)==false));
         Printf.printf "Done\n\n";
         
+        Printf.printf "Assert l1: ";
+        print_list_nuplet l;
+        Printf.printf "Assert l2: ";
+        print_list_nuplet l8;
+        (assert (Compare.ManipulateVg.compare_list_colors l l8));
+        Printf.printf "Done\n\n";
+
+        Printf.printf "Assert l1: ";
+        print_list_nuplet l;
+        Printf.printf "Assert l2: ";
+        print_list_nuplet l9;
+        (assert ((Compare.ManipulateVg.compare_list_colors l l9)==false));
+        Printf.printf "Done\n\n";
+
       end;
       Printf.printf "End of tests compare list colors.\n\n\n";;
 
@@ -1838,7 +1870,7 @@ end;;
 (** Tests for image_equal, the main function of the Compare module. *)
 let test_image_equal () =
   Printf.printf "\nStarting tests for image equal\n\n";
-  let i1 = "(i-blend Over
+  let tetris_j = "(i-blend Over
     (i-blend Over
     (i-cut anz
       (path S (0.1 0.1) L (0.2 0.1) L (0.2 0.2) L (0.1 0.2) L (0.1 0.1) Z)
@@ -1878,8 +1910,9 @@ let test_image_equal () =
         (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
         (path S (0.31 0.1) L (0.41 0.1) L (0.41 0.2) L (0.31 0.2) L (0.31 0.1)
         Z)
-        (i-const (0 0.0141151 0.132952 1)))))))" in
-  let i2 = "(i-tr (move (0.5 0))
+        (i-const (0 0.0141151 0.132952 1)))))))" 
+  in
+  let tetris_j_rotate_4_times = "(i-tr (move (0.5 0))
     (i-tr (rot 1.5708)
     (i-tr (move (0.5 0))
       (i-tr (rot 1.5708)
@@ -1935,61 +1968,211 @@ let test_image_equal () =
                 (0.31 0.1) Z)
                 (i-const (0 0.0141151 0.132952 1)))))))))))))))"
   in
-  begin
-    (*test without colors*)
-    Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" Compare.epsilon;
+  let tetris_z = "(i-blend Over
+    (i-blend Over
+    (i-cut anz
+      (path S (0.1 0.205) L (0.2 0.205) L (0.2 0.305) L (0.1 0.305) L
+      (0.1 0.205) Z)
+      (i-const (1 0 0 1)))
+    (i-cut
+      (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+      (path S (0.1 0.205) L (0.2 0.205) L (0.2 0.305) L (0.1 0.305) L
+      (0.1 0.205) Z)
+      (i-const (0.522522 0 0 1))))
+    (i-blend Over
+    (i-blend Over
+      (i-cut anz
+      (path S (0.205 0.1) L (0.305 0.1) L (0.305 0.2) L (0.205 0.2) L
+        (0.205 0.1) Z)
+      (i-const (1 0 0 1)))
+      (i-cut
+      (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+      (path S (0.205 0.1) L (0.305 0.1) L (0.305 0.2) L (0.205 0.2) L
+        (0.205 0.1) Z)
+      (i-const (0.522522 0 0 1))))
+    (i-blend Over
+      (i-blend Over
+      (i-cut anz
+        (path S (0.205 0.205) L (0.305 0.205) L (0.305 0.305) L (0.205 0.305) L
+        (0.205 0.205) Z)
+        (i-const (1 0 0 1)))
+      (i-cut
+        (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+        (path S (0.205 0.205) L (0.305 0.205) L (0.305 0.305) L (0.205 0.305) L
+        (0.205 0.205) Z)
+        (i-const (0.522522 0 0 1))))
+      (i-blend Over
+      (i-cut anz
+        (path S (0.31 0.1) L (0.41 0.1) L (0.41 0.2) L (0.31 0.2) L (0.31 0.1)
+        Z)
+        (i-const (1 0 0 1)))
+      (i-cut
+        (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+        (path S (0.31 0.1) L (0.41 0.1) L (0.41 0.2) L (0.31 0.2) L (0.31 0.1)
+        Z)
+        (i-const (0.522522 0 0 1)))))))"
+  in
+  let tetris_z_decale = "(i-blend Over
+    (i-blend Over
+    (i-cut anz
+      (path S (0.2 0.405) L (0.3 0.405) L (0.3 0.505) L (0.2 0.505) L
+      (0.2 0.405) Z)
+      (i-const (1 0 0 1)))
+    (i-cut
+      (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+      (path S (0.2 0.405) L (0.3 0.405) L (0.3 0.505) L (0.2 0.505) L
+      (0.2 0.405) Z)
+      (i-const (0.522522 0 0 1))))
+    (i-blend Over
+    (i-blend Over
+      (i-cut anz
+      (path S (0.305 0.3) L (0.405 0.3) L (0.405 0.4) L (0.305 0.4) L
+        (0.305 0.3) Z)
+      (i-const (1 0 0 1)))
+      (i-cut
+      (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+      (path S (0.305 0.3) L (0.405 0.3) L (0.405 0.4) L (0.305 0.4) L
+        (0.305 0.3) Z)
+      (i-const (0.522522 0 0 1))))
+    (i-blend Over
+      (i-blend Over
+      (i-cut anz
+        (path S (0.305 0.405) L (0.405 0.405) L (0.405 0.505) L (0.305 0.505) L
+        (0.305 0.405) Z)
+        (i-const (1 0 0 1)))
+      (i-cut
+        (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+        (path S (0.305 0.405) L (0.405 0.405) L (0.405 0.505) L (0.305 0.505) L
+        (0.305 0.405) Z)
+        (i-const (0.522522 0 0 1))))
+      (i-blend Over
+      (i-cut anz
+        (path S (0.41 0.3) L (0.51 0.3) L (0.51 0.4) L (0.41 0.4) L (0.41 0.3)
+        Z)
+        (i-const (1 0 0 1)))
+      (i-cut
+        (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+        (path S (0.41 0.3) L (0.51 0.3) L (0.51 0.4) L (0.41 0.4) L (0.41 0.3)
+        Z)
+        (i-const (0.522522 0 0 1)))))))"
+  in
+  let tetris_z_different_color = "(i-blend Over
+    (i-blend Over
+    (i-cut anz
+      (path S (0.1 0.205) L (0.2 0.205) L (0.2 0.305) L (0.1 0.305) L
+      (0.1 0.205) Z)
+      (i-const (1 0.0835351 0.0835351 1)))
+    (i-cut
+      (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+      (path S (0.1 0.205) L (0.2 0.205) L (0.2 0.305) L (0.1 0.305) L
+      (0.1 0.205) Z)
+      (i-const (0.522522 0.00517162 0.00517162 1))))
+    (i-blend Over
+    (i-blend Over
+      (i-cut anz
+      (path S (0.205 0.1) L (0.305 0.1) L (0.305 0.2) L (0.205 0.2) L
+        (0.205 0.1) Z)
+      (i-const (1 0.0835351 0.0835351 1)))
+      (i-cut
+      (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+      (path S (0.205 0.1) L (0.305 0.1) L (0.305 0.2) L (0.205 0.2) L
+        (0.205 0.1) Z)
+      (i-const (0.522522 0.00517162 0.00517162 1))))
+    (i-blend Over
+      (i-blend Over
+      (i-cut anz
+        (path S (0.205 0.205) L (0.305 0.205) L (0.305 0.305) L (0.205 0.305) L
+        (0.205 0.205) Z)
+        (i-const (1 0.0835351 0.0835351 1)))
+      (i-cut
+        (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+        (path S (0.205 0.205) L (0.305 0.205) L (0.305 0.305) L (0.205 0.305) L
+        (0.205 0.205) Z)
+        (i-const (0.522522 0.00517162 0.00517162 1))))
+      (i-blend Over
+      (i-cut anz
+        (path S (0.31 0.1) L (0.41 0.1) L (0.41 0.2) L (0.31 0.2) L (0.31 0.1)
+        Z)
+        (i-const (1 0.0835351 0.0835351 1)))
+      (i-cut
+        (outline (width 0.01) (cap Butt) (join Miter) (miter-angle 0.200713))
+        (path S (0.31 0.1) L (0.41 0.1) L (0.41 0.2) L (0.31 0.2) L (0.31 0.1)
+        Z)
+        (i-const (0.522522 0.00517162 0.00517162 1)))))))"
+  in
+  let comp_image ?epsilon i1 i2 =
     let di1 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i1)) in
       let di2 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i2))
     in 
-      (assert (Compare.ManipulateVg.compare_list_tuples di1 di2));
-      Printf.printf "Done\n";
+      (Compare.ManipulateVg.compare_list_tuples ?epsilon di1 di2)
+  in
+  let comp_image_color ?epsilon i1 i2 =
+    let di1 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i1)) in
+      let di2 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i2))
+    in 
+      (Compare.ManipulateVg.compare_list_colors ?epsilon di1 di2)
+  in 
+  begin
+    (*test without colors*)
+    Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" Compare.epsilon;
+    (assert (comp_image tetris_j tetris_j_rotate_4_times));
+    Printf.printf "Done\n";
   end;
   begin
     (*test with colors*)
     Printf.printf "Starting tests considering colors, epsilon: %f\n" Compare.epsilon;
-    let di1 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i1)) in
-      let di2 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i2))
-    in 
-      (assert (Compare.ManipulateVg.compare_list_colors di1 di2));
-      Printf.printf "Done\n";
+    (assert (comp_image_color tetris_j tetris_j_rotate_4_times));
+    Printf.printf "Done\n";
+  end;
+  begin
+    (*test without colors*)
+    Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" Compare.epsilon;
+    (assert (comp_image tetris_z tetris_z_different_color));
+    Printf.printf "Done\n";
+  end;
+  begin
+    (*test with colors*)
+    Printf.printf "Starting tests considering colors, epsilon: %f\n" Compare.epsilon;
+    (assert ((comp_image_color tetris_z tetris_z_different_color)==false));
+    Printf.printf "Done\n";
+  end;
+  begin
+    (*test without colors*)
+    Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" Compare.epsilon;
+    (assert (comp_image tetris_z tetris_z_decale));
+    Printf.printf "Done\n";
+  end;
+  begin
+    (*test with colors*)
+    Printf.printf "Starting tests considering colors, epsilon: %f\n" Compare.epsilon;
+    (assert (comp_image_color tetris_z tetris_z_decale));
+    Printf.printf "Done\n";
   end;
   let epsilon = 1e-4 in
   begin
     (*test without colors, greater epsilon*)
     Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" epsilon;
-    let di1 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i1)) in
-      let di2 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i2))
-    in 
-      (assert (Compare.ManipulateVg.compare_list_tuples ~epsilon di1 di2));
-      Printf.printf "Done\n";
+    (assert (comp_image ~epsilon tetris_j tetris_j_rotate_4_times));
+    Printf.printf "Done\n";
   end;
   begin
     (*test with colors, greater epsilon*)
     Printf.printf "Starting tests considering colors, epsilon: %f\n" epsilon;
-    let di1 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i1)) in
-      let di2 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i2))
-    in 
-      (assert (Compare.ManipulateVg.compare_list_colors ~epsilon di1 di2));
-      Printf.printf "Done\n";
+    (assert (comp_image_color ~epsilon tetris_j tetris_j_rotate_4_times));
+    Printf.printf "Done\n";
   end;
   let epsilon = 1e-6 in
   begin
-    (*test without colors, smaller epsilon*)
+    (*test without colors, greater epsilon*)
     Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" epsilon;
-    let di1 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i1)) in
-      let di2 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i2))
-    in 
-      (assert ((Compare.ManipulateVg.compare_list_tuples ~epsilon di1 di2)==false));
-      Printf.printf "Done\n";
+    (assert ((comp_image ~epsilon tetris_j tetris_j_rotate_4_times)==false));
+    Printf.printf "Done\n";
   end;
   begin
-    (*test with colors, smaller epsilon*)
+    (*test with colors, greater epsilon*)
     Printf.printf "Starting tests considering colors, epsilon: %f\n" epsilon;
-    let di1 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i1)) in
-      let di2 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i2))
-    in 
-      (assert ((Compare.ManipulateVg.compare_list_colors ~epsilon di1 di2)==false));
-      Printf.printf "Done\n";
+    (assert ((comp_image_color ~epsilon tetris_j tetris_j_rotate_4_times)==false));
+    Printf.printf "Done\n";
   end;
   Printf.printf "\nEnd of tests for for image equal\n\n";;
 

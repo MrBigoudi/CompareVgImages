@@ -217,19 +217,19 @@ module ManipulateVg : sig
 
     (** Convert an i_tree into a string. *)
 
-    (** {i to_string tree} -> string to check if the create_tree function worked*)
+    (** {i to_string tree} -> string to check if the create_tree function worked *)
     val to_string : i_tree -> string
 
 
     (** Get the list of path points in a tree, after applying necessary changes on it. *)
 
-    (** {i get_points tree} -> [(x1,y1);...;(xn,yn)]*)
+    (** {i get_points tree} -> [(x1,y1);...;(xn,yn)] *)
     val get_points : i_tree -> (float*float) list
 
 
     (** Get the list of path points with their color in a tree, after applying necessary changes on it. *)
 
-    (** {i get_points_color tree} -> [(x1,y1,r1,g1,b1,a1);...;(xn,yn,rn,gn,bn,an)]*)
+    (** {i get_points_color tree} -> [(x1,y1,r1,g1,b1,a1);...;(xn,yn,rn,gn,bn,an)] *)
     val get_points_color : i_tree -> (float*float*float*float*float*float) list
   
 
@@ -259,13 +259,13 @@ module ManipulateVg : sig
   
     (** Return true if a tuple of float is in a list. *)
 
-    (** {i list_mem_bis epsilon t l} -> true if t in l {i (~equal: equal_float_tuple epsilon)} *)
-    val list_mem_bis : ?epsilon:float -> (float * float) -> (float * float) list -> bool
+    (** {i list_mem_bis epsilon x_delta y_delta t l} -> true if t in l {i (~equal: equal_float_tuple epsilon and with a delta of (x_delta,y_delta))} *)
+    val list_mem_bis : ?epsilon:float -> ?x_delta:float -> ?y_delta:float -> (float * float) -> (float * float) list -> bool
 
     (** Return true if an element is in a list of paths with their colors. *)
 
-    (** {i list_mem_color epsilon p l} -> true if p in l {i (~equal: equal_float_tuple epsilon)} *)
-    val list_mem_color : ?epsilon:float -> ((float * float) * (float*float*float*float) list) -> ((float * float) * (float*float*float*float) list) list -> bool
+    (** {i list_mem_color epsilon x_delta y_delta p l} -> true if p in l {i (~equal: equal_float_tuple epsilon and with a delta of (x_delta,y_delta))} *)
+    val list_mem_color : ?epsilon:float -> ?x_delta:float -> ?y_delta:float -> ((float * float) * (float*float*float*float) list) -> ((float * float) * (float*float*float*float) list) list -> bool
 
     (** Add a given path with its color in a list of path with their colors (without duplicate tuple). *)
   
@@ -274,17 +274,17 @@ module ManipulateVg : sig
 
     (** Remove copies in a list of float tuple. *)
 
-    (** {i remove_double epsilon l} -> [(x1,y1);...;(xn,yn)] with (x1,y1) unique {i (~equal: equal_float_tuple)} *)
+    (** {i remove_double epsilon l} -> [(x1,y1);...;(xn,yn)] with (x1,y1) unique {i (~equal: equal_float_tuple epsilon )} *)
     val remove_double : ?epsilon:float -> (float * float) list -> (float * float) list
 
     (** Remove copies in a list of float 6-uplet and transfor them into a (float tuple * (float*float*float*float) list) tuple *)
 
-    (** {i remove_double_color epsilon l} -> [(x1,y1);...;(xn,yn)] with (x1,y1) unique {i (~equal: equal_float_tuple)} *)
+    (** {i remove_double_color epsilon l} -> [(x1,y1);...;(xn,yn)] with (x1,y1) unique {i (~equal: equal_float_tuple epsilon )} *)
     val remove_double_color : ?epsilon:float -> (float * float * float * float * float * float) list -> ((float * float) * (float*float*float*float) list) list
 
     (** Compare two list of float tuple. *)
     
-    (** {i compare_list_tuples epsilon l1 l2} -> true if all t in l1 exists in l2 and vice-versa {i (~exists: equal_float_tuple (or translated not yet implemented))} *)
+    (** {i compare_list_tuples epsilon l1 l2} -> true if all t in l1 exists in l2 and vice-versa {i (~exists: equal_float_tuple epsilon (or translated)} *)
     val compare_list_tuples : ?epsilon:float -> (float * float) list -> (float * float) list -> bool
 
     (** Compare two list of path with their colors. *)
