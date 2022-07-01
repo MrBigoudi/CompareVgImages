@@ -144,7 +144,7 @@ let color_check = true;;
 let q () = 
   Assume.compatible "create_circle" [%ty : float -> float -> color -> float -> image];
   Check.name4 "create_circle" [%ty : float -> float -> color -> float -> image]
-    ~equal: Compare.image_equal ~color_check
+    ~equal: (Compare.image_equal ~color_check)
     ~testers: [ Autotest.(tester (tuple4 (float 0 1) (float 0 1) (oneof [red; green; blue]) (float 0 1)))]
     [];;
 
