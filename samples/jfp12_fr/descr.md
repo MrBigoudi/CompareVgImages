@@ -17,7 +17,7 @@ Commençons par nous entendre une fois pour toute sur la fameuse séquence de pi
 
 À partir d’un unique nombre entier S (compris en 0 et 1000000), nous allons nous donner un moyen de calculer une séquence T de nombres entiers compris entre 1 et 7 (un nombre par pièces de Tetris).
 
-Cette séquence est obtenue en utilisant la fonction de hachage h suivante :
+Cette séquence est obtenue en utilisant la logique suivante :
 
 1. On calcule la séquence U
   U0 = S
@@ -205,7 +205,7 @@ Nous allons maintenant essayer de dessiner le Tetris à l'écran plutôt que de 
 
 Pour ce faire nous allons utiliser le module Vg; il est donc recommandé (pour ne pas dire nécessaire -_- ) d'avoir fait le tutoriel Vg disponible dans learnOCaml.
 
-La matrice initialement vide sera représentée par un rectangle vide, ouvert au dessus et dont les bords sont de couleur noir et d'épaisseur 0.01
+La matrice initialement vide sera représentée par une grille dont les bords sont de couleur noir et d'épaisseur 0.01
 
 Les couleurs des blocs sont les suivantes :
 
@@ -255,7 +255,7 @@ Réaliser la fonction
   gen_matrice_gravity l
 ```
 
-Qui étant donné une liste de quadruplet renvoie une matrice. Les quadruplets dont constitués de 4 entiers naturels. 
+Qui étant donné une liste de triplets renvoie une matrice. Les triplets dont constitués de 3 entiers naturels. 
 
 Le premier entier P est un numéro de pièce. 
 

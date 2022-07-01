@@ -1,7 +1,7 @@
 open Vg;;
 open Gg;;
 
-let print_matrice m =
+let print_matrix m =
   let l = Array.length m in
   let c = Array.length m.(0) in
   let rec print_line line cpt = match cpt with

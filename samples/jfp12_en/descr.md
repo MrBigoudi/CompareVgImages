@@ -1,134 +1,134 @@
-# Exercice JFP 12
+# JFP 12 Exercice
 
-Ceci est la transcription en LearnOCaml du sujet de la 12eme iteration de la Journée Franciliene de Programmation ayant eu lieu en Mai 2022.
+This is the LearnOCaml transcription of the 12th editioon of the JFP (Journée Franciliene de Programmation) which took place in May 2022.
 
-Avant de suivre cet exercice, il est conseillé (obligatoire) d'avoir fait le tutoriel Vg.
+Before trying this exercice, it is recommended (mandatory) to complete the Vg tutorial.
 
-## Le démon de Tetris
+## Tetris Daemon
 
-Si vous avez déjà joué à Tetris, n’avez-vous jamais rêvé de voir dans le futur quelle séquence de pièces vous réserve ce logiciel démoniaque? “Ah si seulement j’avais su qu’il ne me donnerait pas de
-barre pendant si longtemps, je n’aurais pas joué de cette façon!”, avez-vous certainement hurlé maintes fois!
+If you've ever played Tetris, have you never wished to see in the futur which pieces sequence will you get ? "If only I knew I wouldn't have a stick for so long, I wouldn't have played like that!", have you probably shouted so many times!
 
-Votre rêve est maintenant exaucé ! Aujourd’hui, vous (ou plutôt votre programme) serez le démon de Tetris: tel le démon de Laplace, vous aurez connaissance du passé, du présent et du futur pour prendre vos décisions. Serez-vous alors capables d’atteindre les plus hauts scores jamais réalisés par un joueur de Tetris?
+You dream has now come true ! Today you (well your program actually) will be the Tetris deamon: like the Laplace deamon, you'll know the past, the present and the futur. Will you be able to reach the highest score ever made by a Tetris player ?
 
-**Question 1 :** LA DESTRUCTION DU TEMPS
+**Question 1 :** TIME DESCTRUCTION
 
-Commençons par nous entendre une fois pour toute sur la fameuse séquence de pièces. 
+Let's be clear once and for all about the piece sequence.
 
-À partir d’un unique nombre entier S (compris en 0 et 1000000), nous allons nous donner un moyen de calculer une séquence T de nombres entiers compris entre 1 et 7 (un nombre par pièces de Tetris).
+From a unique integer S (between 0 and 1e6), we'll give us a way to calculate a T sequence of integers between 1 and 7 (one digit per Tetris piece).
 
-Cette séquence est obtenue en utilisant la fonction de hachage h suivante :
+This sequence is obtained by using the logic below :
 
-1. On calcule la séquence U
+1. We calcul a U sequence
   U0 = S
   Un+1~ = (6807 * Un - 1) mod (2 ^ 16)
-Notez que l’on obtient alors un nombre dont seuls 16 bits sont significatifs.
+Note that we obtain a number for which only 16 bits are meaningful.
 
-2. Q est la séquence de nombres entiers compris entre 0 et 7 dont le terme de rang N est obtenu à l’aide des 3 bits de poids les plus forts du terme de rang N de U.
+2. Q is the sequence of integers between 0 and 7 for which the Nth term is obtained using the 3 most significant bits of the U's Nth term.
 
-3. T est obtenue en ne gardant que les termes non nuls de Q.
+3. T is obtained by keeping only the non null Q terms.
 
-Réaliser la fonction 
+Write the function
 
 ```OCaml
   val get_n_termes_T : int -> int -> int list
   get_n_termes_T S n
 ```
 
-Qui étant donné la valeure de S et le nombre de termes a récupérer, renvoie la liste des n premiers termes de la suite T.
+Which, given the value S and the number of terms to generate, return the list of the n firsts terms of T.
 
-Par exemple, pour S = 231 et n = 20, on a :
+For example, if S = 231 and n = 20, we get :
 
 ```OCaml
   (get_n_termes_T 231 20);;
   int list = [7; 3; 4; 5; 1; 2; 4; 7; 5; 7; 6; 1; 6; 7; 2; 2; 5; 7; 7; 7]
 ```
 
-**Question 2 :** DES BLOCS À LEUR PLACE
+**Question 2 :** BLOCS AT THEIR PLACE
 
-Un plateau de jeu Tetris est une matrice de blocs composée de 24 lignes et de 12 colonnes. Les lignes sont numérotées du haut vers le bas de 0 à 23. Les colonnes sont numérotées de gauche à droite de 0 à 11.
+A Tetris board is a matrix of blocks made of 24 lines and 12 columns. Lignes are numbered from top (0) to bottom (23). Columns are numbered from left (0) to right (11).
 
-Un bloc est représenté par un entier de 0 à 7.
-0 est le bloc vide tandis que les blocs entre 1 et 7 correspondent à des blocs inclus dans des pièces de Tetris du même numéro.
+A blocks is represented by a digit between 0 and 7.
 
-En effet, les pièces sont numérotées comme l’indique le schéma suivant:
+0 is the empty block while blocks between 1 and 7 correspond to blocks included in a Tetris piece of same number.
+
+Indeed, pieces are numbered like below :
 
 ```
-Pièce i       1111
+i piece       1111
 
 
-Pièce j       222
+j piece       222
                 2
 
-Pièce l       333
+l piece       333
               3
 
-Pièce s        44
+s piece        44
               44
 
-Pièce z       55
+z piece       55
                55
 
-Pièce t       666
+t piece       666
                6
 
-Pièce o       77
+o piece       77
               77
 ```
 
-On dit que l’on “tourne une fois” une pièce si on lui fait faire un quart de tour dans le sens horaire. Ainsi, voici comment tourne la pièce j :
+We say that we 'rotate a piece once' if we make it do a quarter of turn clockwise.
+For example, here is how the j-piece rotate :
 
 ```
-Une fois :
+Once :
               2
               2
              22
 
-Deux fois :
+Twice :
               2
               222
 
-Trois fois :
+Three times :
               22
               2
               2
 
-Quatre fois :
+Four times :
               222
                 2
 
 ```
 
-Pour placer une pièce tournée R fois sur le plateau à la ligne L et à la colonne C, il faut l’avoir
-préalablement tournée R fois puis placer ses blocs de façon à ce que son bloc le plus haut se trouve sur la ligne L et que son bloc le plus à gauche se trouve sur la colonne C.
+To place a piece rotated R times in the board at the Lth line and Cth column, we must rotate it R times before placing it such as it's highest block is in the Lth line and is block the most on the left is in the Cth column.
 
-Une pièce peut être posée sur le plateau seulement si tous ses blocs le peuvent. Un bloc peut être posé sur le plateau seulement si l’emplacement du plateau est un bloc vide et si le bloc n’est pas situé à l’extérieur du plateau.
+A piece can be place in the board only if all its blocks can. A block can be placed in the board only if the space is free in the board (ie their is an empty block in the matrix) and if the space is not outside of the board.
 
-En utilisant le module [Array](https://v2.ocaml.org/api/Array.html) de OCaml, réaliser la fonction 
+Using the Ocaml [Array](https://v2.ocaml.org/api/Array.html) module write the function 
 
 ```OCaml
-  val gen_matrice : (int*int*int*int) list -> int array array
-  gen_matrice l
+  val gen_matrix : (int*int*int*int) list -> int array array
+  gen_matrix l
 ```
 
-Qui étant donné une liste de quadruplet renvoie une matrice. Les quadruplets dont constitués de 4 entiers naturels. 
+Which, given a list of quadruplet return a matrix. Quadruplets are made of 4 integers. 
 
-Le premier entier est le numéro P de la pièce (compris entre 1 et 7). 
+First is the piece number P (between 1 and 7). 
 
-Le second entier est le numéro L de la ligne (compris entre 0 et 23). 
+Second is the line number L (between 0 and 23).
 
-Le troisième entier est le numéro C de la colonne (compris entre 0 et 11). 
+Third is the column number C (between 0 and 11).
 
-Le quatrième entier est le nombre de tours R appliqués à la pièce (compris entre 0 et 3). 
+Last but not least is the number of rotations R applied to the piece (between 0 and 3).
 
-On part du plateau (une matrice d'entiers <strong>int array array</strong>) ne contenant que des blocs vides (donc des valeurs mis à 0). Pour chaque quadruplet, si on peut poser la pièce P en ligne L et colonne C après l’avoir fait tourner R fois alors on la place sur le plateau (ie on l'insère dans la matrice) sinon on passe à la pièce suivante.
+We start from a board (a matrix of integers <strong>int array array</strong>) containing only empty blocks. For each quadruplet, if we can place the piece P at line L, column C after rotating it R times, then we place it on the board (ie we place it in the matrix) else we check the next piece.
 
-Par exemple, 
+For example, 
 
 ```OCaml
   let l = [(1,5,5,0);(1,5,5,0);(1,6,5,0);(1,6,8,0);(2,7,0,0);(2,7,4,0);(2,8,0,0);(2,9,0,0);(3,11,0,0);(4,12,0,0)];;
 
-  (gen_matrice l);; 
+  (gen_matrix l);; 
 
   int array array =
     [|
@@ -158,17 +158,17 @@ Par exemple,
       [|0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0|]; |]
 ```
 
-Pour mieux visualiser une matrice en attendant les questions suivantes, vous pouvez utiliser la fonction
+If you want to have a better view of your matrix (before doing the upcoming questions), you can use the function
 
 ```OCaml
-  val print_matrice : (int array array) -> unit
-  print_matrice m
+  val print_matrix : (int array array) -> unit
+  print_matrix m
 ```
 
-Qui affiche de maniere lisible une matrice dans le Toplevel.
+Which prints a matrix in the TopLevel.
 
 ```OCaml
-  (print_matrice (gen_matrice l));;
+  (print_matrix (gen_matrice l));;
 
   - : unit = ()
 
@@ -199,40 +199,40 @@ Qui affiche de maniere lisible une matrice dans le Toplevel.
 
 ```
 
-**Question 2.5 :** L'ASCII C'EST RIGOLO MAIS BON VG C'EST MIEUX
+**Question 2.5 :** ASCII IS FUN BUT VG IS FUNNIER
 
-Nous allons maintenant essayer de dessiner le Tetris à l'écran plutôt que de le représenter en caractères ASCII.
+We'll now try to draw the Tetris board on screen instead of just representing it using ASCII.
 
-Pour ce faire nous allons utiliser le module Vg; il est donc recommandé (pour ne pas dire nécessaire -_- ) d'avoir fait le tutoriel Vg disponible dans learnOCaml.
+For that purpose, we'll use the Vg module; it's recommended (to not say mandatory -_-) to have completed the Vg tutorial available in learnOCaml.
 
-La matrice initialement vide sera représentée par un rectangle vide, ouvert au dessus et dont les bords sont de couleur noir et d'épaisseur 0.01
+The matrix initially empty will be represented by a grid with black borders of width 0.01
 
-Les couleurs des blocs sont les suivantes :
+Blocks colors will be as follow :
 
-  J -> couleur rgb (0., 0.443, 0.757)
+  J -> rgb color : (0., 0.443, 0.757)
 
-  L -> couleur rgb (1., 0.753, 0.)
+  L -> rgb color : (1., 0.753, 0.)
 
-  O -> couleur rgb (1., 1., 0.004)
+  O -> rgb color : (1., 1., 0.004)
   
-  S -> couleur rgb (0.573, 0.82, 0.31)
+  S -> rgb color : (0.573, 0.82, 0.31)
   
-  T -> couleur rgb (0.439, 0.188, 0.627)
+  T -> rgb color : (0.439, 0.188, 0.627)
   
-  Z -> couleur rgb (1., 0., 0.)
+  Z -> rgb color : (1., 0., 0.)
   
-  I -> couleur rgb (0.004, 0.690, 0.945) 
+  I -> rgb color : (0.004, 0.690, 0.945)
 
-Chaques blocs a une longueur de 0.04 et on considèrera que l'épaisseur des bords d'un bloc est 1/10 de la longeur d'un composant.
+Each block will have a length of 0.04 and we'll consider that outline width of a block will be 1/10 of the block length. 
 
-Realiser la fonction 
+Write the function
 
 ```OCaml
   val draw_tetris : int array array -> image
   draw_tetris m
 ```
 
-Qui, étant donné la matrice représentant le plateau de Tetris, crée une image au sens de Vg qui représente le Tetris.
+Which, given a matrix representing the Tetris board, creates a Vg image which represents the current state of the game.
 
 <div>
   <img src="/icons/images/exercices/jfp12/tetris_1.png" 
@@ -242,27 +242,27 @@ Qui, étant donné la matrice représentant le plateau de Tetris, crée une imag
   />
 </div>
 
-<em>Le buffer permettant d'afficher une image sur learnOCaml n'est pas illimité, votre image devra donc être efficace en terme d'espace mémoire</em>
+<em>The buffer used to print an image in learnOCaml being limited, your image must be space efficient in term of memory space</em>
 
-**Question 3 :** LA GRAVITÉ EST UNE LOI UNIVERSELLE
+**Question 3 :** GRAVITY IS AN UNIVERSAL LAW
 
-On suppose dans cette question que les quatre premières lignes du plateau sont toujours vides. On dit qu’“une pièce tournée R fois est lâchée sur le plateau à la colonne C” si on la pose sur la première ligne et qu’on la déplace d’une ligne vers le bas tant que c’est possible. (Ici, un déplacement est “possible” si on peut poser la pièce au sens de la question 2)
+We'll suppose here that the fourth first lines of the board will always be empty. We say that a R-times rotated piece is 'droped' on the board at the C column if we place it on the first line of the board and then move it to the bottom one line at a time until it's not possible anymore. (A movement is "possible" if the piece can be placed using question 2 restrictions)
 
-Réaliser la fonction 
+Write the function
 
 ```OCaml
-  val gen_matrice_gravity : (int*int*int) list -> int array array
-  gen_matrice_gravity l
+  val gen_matrix_gravity : (int*int*int) list -> int array array
+  gen_matrix_gravity l
 ```
 
-Qui étant donné une liste de quadruplet renvoie une matrice. Les quadruplets dont constitués de 4 entiers naturels. 
+Which, given a list of triplet return a matrix. Triplets are made of 3 integers.
 
-Le premier entier P est un numéro de pièce. 
+First is the piece number P.
 
-Le second entier C est un numéro de colonne. 
+Second is the column number C.
 
-Le troisième entier R est le nombre de fois où la pièce a été tournée. 
+Third is the number of rotations R applied to the piece.
 
-On peut supposer que l’on peut toujours poser la pièce P sur la première ligne et la colonne C en l’ayant fait tourner préalablement R fois. 
+We suppose that we can always put the piece P at the first line and column C after rotating it R times.
 
-(Il existe des couples (C, R) invalides mais nous ne les utilisons pas dans cette question. En d’autres termes, on suppose dans cette question que l’on peut toujours placer les pièces sur les quatre premières lignes avant de les faire descendre)
+(It exists invalid tuples (C,R) but we won't use them in this question. In other words, we suppose that we can always put the pieces on the first fourth lines before making them move to the bottom).

@@ -164,7 +164,7 @@ let init_matrix l c =
   (Array.make_matrix l c 0);;
 
 
-let gen_matrice l =
+let gen_matrix l =
   let l_max = 24 in
   let c_max = 12 in
   let m = (init_matrix l_max c_max) in 
@@ -295,7 +295,7 @@ let draw_tetris m =
   (I.blend grille pieces);;
 
 (*Question 3*)
-let matrice_equals m1 m2 =
+let matrix_equals m1 m2 =
   let l1 = Array.length m1 in
   let l2 = Array.length m2 in
   let c1 = Array.length (m1.(0)) in
@@ -309,7 +309,7 @@ let matrice_equals m1 m2 =
           else (aux i (j+1))
     in (aux 0 0);;
 
-let gen_matrice_gravity l =
+let gen_matrix_gravity l =
   let l_max = 24 in
   let c_max = 12 in
   let m = (init_matrix l_max c_max) in 
@@ -322,7 +322,7 @@ let gen_matrice_gravity l =
               begin 
                 let piece = (get_piece_r p r) in 
                 let m = (place_piece piece acc cur_l c) in
-                if (matrice_equals m acc) then (aux t 4 last_m last_m)
+                if (matrix_equals m acc) then (aux t 4 last_m last_m)
                 else (aux ((p,c,r)::t) (cur_l+1) m acc)
               end
             else begin Printf.printf "wrong quad\n"; (aux t 4 acc acc) end
