@@ -27,11 +27,12 @@
 
 (** Compare two images *)
 
-(** {i image_equal i1 i2} -> true if {b i1} and {b i2} are visually equal (+ or - epsilon (default Compare.epsilon)). 
+(** {i image_equal epsilon check_color allow_translations i1 i2} -> true if {b i1} and {b i2} are visually equal (+ or - epsilon (default Compare.epsilon)). 
   
     Place check_color to true if you want to take the color into account (default=false).
+    Place allow_translations to true if you want translated images to be considered as equal (default=false).
   *)
-val image_equal : ?epsilon:float -> ?check_color:bool -> Vg.image -> Vg.image -> bool
+val image_equal : ?epsilon:float -> ?check_color:bool -> ?allow_translations:bool -> Vg.image -> Vg.image -> bool
 
 (** Default value as epsilon : 1e-5 *)
 val epsilon : float
@@ -284,12 +285,12 @@ module ManipulateVg : sig
 
     (** Compare two list of float tuple. *)
     
-    (** {i compare_list_tuples epsilon l1 l2} -> true if all t in l1 exists in l2 and vice-versa {i (~exists: equal_float_tuple epsilon (or translated)} *)
-    val compare_list_tuples : ?epsilon:float -> (float * float) list -> (float * float) list -> bool
+    (** {i compare_list_tuples epsilon allow_translations l1 l2} -> true if all t in l1 exists in l2 and vice-versa {i (~exists: equal_float_tuple epsilon (or translated if allow_translations)} *)
+    val compare_list_tuples : ?epsilon:float -> ?allow_translations:bool -> (float * float) list -> (float * float) list -> bool
 
     (** Compare two list of path with their colors. *)
     
-    (** {i compare_list_colors epsilon l1 l2} -> true if all t in l1 exists in l2 and vice-versa *)
-    val compare_list_colors : ?epsilon:float -> (float * float * float * float * float * float) list -> (float * float * float * float * float * float) list -> bool
+    (** {i compare_list_colors epsilon allow_translations l1 l2} -> true if all t in l1 exists in l2 and vice-versa *)
+    val compare_list_colors : ?epsilon:float -> ?allow_translations:bool -> (float * float * float * float * float * float) list -> (float * float * float * float * float * float) list -> bool
 
 end  

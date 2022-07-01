@@ -859,6 +859,7 @@ module Intermediate_i_tree_manipulation = struct
         | (x,y)::t -> Printf.printf "(%f,%f);" x y; (aux t)
       in (aux l)
     in
+    let allow_translations = true in
     let l = [(1.563789,0.235000);(0.3,2.34)] in
     let l1 = [] in
     let l2 = [(1.563789,0.235000);(0.3,2.34)] in
@@ -907,14 +908,14 @@ module Intermediate_i_tree_manipulation = struct
         print_list_tuple l;
         Printf.printf "Assert l2: ";
         print_list_tuple l6;
-        (assert (Compare.ManipulateVg.compare_list_tuples l l6));
+        (assert (Compare.ManipulateVg.compare_list_tuples ~allow_translations l l6));
         Printf.printf "Done\n\n";
 
         Printf.printf "Assert l1: ";
         print_list_tuple l;
         Printf.printf "Assert l2: ";
         print_list_tuple l7;
-        (assert ((Compare.ManipulateVg.compare_list_tuples l l7) == false));
+        (assert ((Compare.ManipulateVg.compare_list_tuples ~allow_translations l l7) == false));
         Printf.printf "Done\n\n";
         
       end;
@@ -1256,6 +1257,7 @@ module Intermediate_i_tree_manipulation = struct
                     in (aux t newAcc)
       in Printf.printf "%s" (aux l "[")
     in
+    let allow_translations = true in
     let l = [(1.563789,0.235000,0.,0.,0.,0.);(0.3,2.34,1.,1.,1.,1.)] in
     let l1 = [] in
     let l2 = [(1.563789,0.235000,0.,0.,0.,0.);(0.3,2.34,1.,1.,1.,1.)] in
@@ -1320,14 +1322,14 @@ module Intermediate_i_tree_manipulation = struct
         print_list_nuplet l;
         Printf.printf "Assert l2: ";
         print_list_nuplet l8;
-        (assert (Compare.ManipulateVg.compare_list_colors l l8));
+        (assert (Compare.ManipulateVg.compare_list_colors ~allow_translations l l8));
         Printf.printf "Done\n\n";
 
         Printf.printf "Assert l1: ";
         print_list_nuplet l;
         Printf.printf "Assert l2: ";
         print_list_nuplet l9;
-        (assert ((Compare.ManipulateVg.compare_list_colors l l9)==false));
+        (assert ((Compare.ManipulateVg.compare_list_colors ~allow_translations l l9)==false));
         Printf.printf "Done\n\n";
 
       end;
@@ -2100,17 +2102,17 @@ let test_image_equal () =
         Z)
         (i-const (0.522522 0.00517162 0.00517162 1)))))))"
   in
-  let comp_image ?epsilon i1 i2 =
+  let comp_image ?epsilon ?allow_translations i1 i2 =
     let di1 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i1)) in
       let di2 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i2))
     in 
-      (Compare.ManipulateVg.compare_list_tuples ?epsilon di1 di2)
+      (Compare.ManipulateVg.compare_list_tuples ?epsilon ?allow_translations di1 di2)
   in
-  let comp_image_color ?epsilon i1 i2 =
+  let comp_image_color ?epsilon ?allow_translations i1 i2 =
     let di1 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i1)) in
       let di2 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i2))
     in 
-      (Compare.ManipulateVg.compare_list_colors ?epsilon di1 di2)
+      (Compare.ManipulateVg.compare_list_colors ?epsilon ?allow_translations di1 di2)
   in 
   begin
     (*test without colors*)
@@ -2139,13 +2141,26 @@ let test_image_equal () =
   begin
     (*test without colors*)
     Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" Compare.epsilon;
-    (assert (comp_image tetris_z tetris_z_decale));
+    (assert ((comp_image tetris_z tetris_z_decale)==false));
     Printf.printf "Done\n";
   end;
   begin
     (*test with colors*)
     Printf.printf "Starting tests considering colors, epsilon: %f\n" Compare.epsilon;
-    (assert (comp_image_color tetris_z tetris_z_decale));
+    (assert ((comp_image_color tetris_z tetris_z_decale)==false));
+    Printf.printf "Done\n";
+  end;
+  let allow_translations = true in
+  begin
+    (*test without colors*)
+    Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" Compare.epsilon;
+    (assert (comp_image ~allow_translations tetris_z tetris_z_decale));
+    Printf.printf "Done\n";
+  end;
+  begin
+    (*test with colors*)
+    Printf.printf "Starting tests considering colors, epsilon: %f\n" Compare.epsilon;
+    (assert (comp_image_color ~allow_translations tetris_z tetris_z_decale));
     Printf.printf "Done\n";
   end;
   let epsilon = 1e-4 in

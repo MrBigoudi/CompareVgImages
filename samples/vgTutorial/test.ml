@@ -33,6 +33,7 @@ let q4 () =
     [];;
 
 let check_color = true;;
+let allow_translations = true;;
 
 let q5 () =
   Assume.compatible "create_block_j" [%ty : float -> float -> float -> image];
@@ -43,31 +44,31 @@ let q5 () =
   Assume.compatible "create_block_z" [%ty : float -> float -> float -> image];
   Assume.compatible "create_block_i" [%ty : float -> float -> float -> image];
   Check.name3 "create_block_j" [%ty : float -> float -> float -> image]
-    ~equal: (Compare.image_equal ~epsilon ~check_color)
+    ~equal: (Compare.image_equal ~epsilon ~check_color ~allow_translations)
     ~testers: [ Autotest.(tester (tuple3 (float 0 1) (float 0 1) (float 0 1)))]
     [];
   Check.name3 "create_block_l" [%ty : float -> float -> float -> image]
-    ~equal: (Compare.image_equal ~check_color)
+    ~equal: (Compare.image_equal ~epsilon ~check_color ~allow_translations)
     ~testers: [ Autotest.(tester (tuple3 (float 0 1) (float 0 1) (float 0 1)))]
     [];
   Check.name3 "create_block_o" [%ty : float -> float -> float -> image]
-    ~equal: (Compare.image_equal ~check_color)
+    ~equal: (Compare.image_equal ~epsilon ~check_color ~allow_translations)
     ~testers: [ Autotest.(tester (tuple3 (float 0 1) (float 0 1) (float 0 1)))]
     [];
   Check.name3 "create_block_s" [%ty : float -> float -> float -> image]
-    ~equal: (Compare.image_equal ~check_color)
+    ~equal: (Compare.image_equal ~epsilon ~check_color ~allow_translations)
     ~testers: [ Autotest.(tester (tuple3 (float 0 1) (float 0 1) (float 0 1)))]
     [];
   Check.name3 "create_block_t" [%ty : float -> float -> float -> image]
-    ~equal: (Compare.image_equal ~check_color)
+    ~equal: (Compare.image_equal ~epsilon ~check_color ~allow_translations)
     ~testers: [ Autotest.(tester (tuple3 (float 0 1) (float 0 1) (float 0 1)))]
     [];
   Check.name3 "create_block_z" [%ty : float -> float -> float -> image]
-    ~equal: (Compare.image_equal ~check_color)
+    ~equal: (Compare.image_equal ~epsilon ~check_color ~allow_translations)
     ~testers: [ Autotest.(tester (tuple3 (float 0 1) (float 0 1) (float 0 1)))]
     [];
   Check.name3 "create_block_i" [%ty : float -> float -> float -> image]
-    ~equal: (Compare.image_equal ~check_color)
+    ~equal: (Compare.image_equal ~epsilon ~check_color ~allow_translations)
     ~testers: [ Autotest.(tester (tuple3 (float 0 1) (float 0 1) (float 0 1)))]
     [];;
 

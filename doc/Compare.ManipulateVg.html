@@ -261,16 +261,16 @@
 </div>
 <p>Compare two list of float tuple.</p>
 
-<pre><span id="VALcompare_list_tuples"><span class="keyword">val</span> compare_list_tuples</span> : <code class="type">?epsilon:float -> (float * float) list -> (float * float) list -> bool</code></pre><div class="info ">
+<pre><span id="VALcompare_list_tuples"><span class="keyword">val</span> compare_list_tuples</span> : <code class="type">?epsilon:float -><br>       ?allow_translations:bool -><br>       (float * float) list -> (float * float) list -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>compare_list_tuples epsilon l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa <i>(~exists: equal_float_tuple epsilon (or translated)</i></p>
+<p><i>compare_list_tuples epsilon allow_translations l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa <i>(~exists: equal_float_tuple epsilon (or translated if allow_translations)</i></p>
 </div>
 </div>
 <p>Compare two list of path with their colors.</p>
 
-<pre><span id="VALcompare_list_colors"><span class="keyword">val</span> compare_list_colors</span> : <code class="type">?epsilon:float -><br>       (float * float * float * float * float * float) list -><br>       (float * float * float * float * float * float) list -> bool</code></pre><div class="info ">
+<pre><span id="VALcompare_list_colors"><span class="keyword">val</span> compare_list_colors</span> : <code class="type">?epsilon:float -><br>       ?allow_translations:bool -><br>       (float * float * float * float * float * float) list -><br>       (float * float * float * float * float * float) list -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>compare_list_colors epsilon l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa</p>
+<p><i>compare_list_colors epsilon allow_translations l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa</p>
 </div>
 </div>
 </body></html>

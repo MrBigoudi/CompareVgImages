@@ -47,11 +47,12 @@
 <p>Having this tree we can manipulate the images' infos to try compare them.</p>
 <h3 id="2_Mainfunction">Main function</h3><p>Compare two images</p>
 
-<pre><span id="VALimage_equal"><span class="keyword">val</span> image_equal</span> : <code class="type">?epsilon:float -> ?check_color:bool -> Vg.image -> Vg.image -> bool</code></pre><div class="info ">
+<pre><span id="VALimage_equal"><span class="keyword">val</span> image_equal</span> : <code class="type">?epsilon:float -><br>       ?check_color:bool -> ?allow_translations:bool -> Vg.image -> Vg.image -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>image_equal i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal (+ or - epsilon (default Compare.epsilon)).</p>
+<p><i>image_equal epsilon check_color allow_translations i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal (+ or - epsilon (default Compare.epsilon)).</p>
 
-<p>Place check_color to true if you want to take the color into account (default=false).</p>
+<p>Place check_color to true if you want to take the color into account (default=false).
+    Place allow_translations to true if you want translated images to be considered as equal (default=false).</p>
 </div>
 </div>
 

@@ -25,13 +25,13 @@
 <tr><td align="left"><div>C</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALcompare_list_colors">compare_list_colors</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>compare_list_colors epsilon l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa</p>
+<p><i>compare_list_colors epsilon allow_translations l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALcompare_list_tuples">compare_list_tuples</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>compare_list_tuples epsilon l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa <i>(~exists: equal_float_tuple epsilon (or translated)</i></p>
+<p><i>compare_list_tuples epsilon allow_translations l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa <i>(~exists: equal_float_tuple epsilon (or translated if allow_translations)</i></p>
 
 </div>
 </td></tr>
@@ -131,7 +131,7 @@
 <tr><td align="left"><div>I</div></td></tr>
 <tr><td><a href="Compare.html#VALimage_equal">image_equal</a> [<a href="Compare.html">Compare</a>]</td>
 <td><div class="info">
-<p><i>image_equal i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal (+ or - epsilon (default Compare.epsilon)).</p>
+<p><i>image_equal epsilon check_color allow_translations i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal (+ or - epsilon (default Compare.epsilon)).</p>
 
 </div>
 </td></tr>

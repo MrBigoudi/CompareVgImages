@@ -513,125 +513,147 @@ module ManipulateVg = struct
     in (aux [] l);;
 
 
-  (* 
-  (** Compare two list of float tuple (v1). *)
-  let compare_list_tuples ?(epsilon) l1 l2 =
-    let l1_unique = (remove_double ?epsilon l1) in
-    let l2_unique = (remove_double ?epsilon l2) in
-    let f1 tuple = list_mem_bis ?epsilon tuple l2_unique in
-    let f2 tuple = list_mem_bis ?epsilon tuple l1_unique in
-    (* print_list_paths l1_unique;
-    print_list_paths l2_unique; *)
-    ((List.length l1_unique)==(List.length l2_unique)) 
-    && (List.for_all f1 l1_unique)
-    && (List.for_all f2 l2_unique);; *)
-
-
-  (** Compare two list of float tuple (v2). *)
-  let compare_list_tuples ?(epsilon) l1 l2 =
-    let l1_unique = (remove_double ?epsilon l1) in
-    let l2_unique = (remove_double ?epsilon l2) in
-
-    if l1=[] && l2=[] then true
-    else
-      if ((List.length l1_unique)!=(List.length l2_unique)) then false
-      else
-        (* get first element of list one *)
-        match l1_unique with (x1,y1)::_ -> 
-          let f1 x_delta y_delta tuple =
-            list_mem_bis ?epsilon ~x_delta ~y_delta tuple l2_unique in
-          let f2 x_delta y_delta tuple =
-            list_mem_bis ?epsilon ~x_delta ~y_delta tuple l1_unique in 
-          let rec aux l2 = match l2 with
-            | [] -> false
-            | (x2,y2)::t -> 
-                (* get the delta *)
-                let x_delta = (x2-.x1) in
-                let y_delta = (y2-.y1) in
-                  (* try with this delta *)
-                  if (List.for_all (f1 x_delta y_delta) l1_unique) then
-                    begin
-                      (* try with the opposite of this delta for the other list *)
-                      let x_delta = (-1.)*.x_delta in
-                      let y_delta = (-1.)*.y_delta in
-                      if (List.for_all (f2 x_delta y_delta) l2_unique) then true
-                      else (aux t)
-                    end
-                  else (aux t)
-          in (aux l2_unique);;
-
-
-  (** Compare two list of path with their colors (v2). *)
-  let compare_list_colors ?(epsilon) l1 l2 =
-    let l1_unique = (remove_double_color ?epsilon l1) in
-    let l2_unique = (remove_double_color ?epsilon l2) in
-
-    if l1=[] && l2=[] then true
-    else
-      if ((List.length l1_unique)!=(List.length l2_unique)) then false
-      else
-        (* get first element of list one *)
-        match l1_unique with ((x1,y1),_)::_ ->
-          let at_least_one_color x_delta y_delta p list = 
-            match p with ((x,y),colors) ->
-              let rec aux colors = match colors with
-                | [] -> false
-                | (r,g,b,a)::tl -> let c = ((x,y),[(r,g,b,a)]) in
-                                    if (list_mem_color ?epsilon ~x_delta ~y_delta c list) then true
-                                      else (aux tl)
-              in (aux colors)
-          in
-          let f1 x_delta y_delta p = 
-            at_least_one_color x_delta y_delta p l2_unique in
-          let f2 x_delta y_delta p = 
-            at_least_one_color x_delta y_delta p l1_unique in
-          let rec aux l2 = match l2 with
-            | [] -> false
-            | ((x2,y2),_)::t -> 
-                (* get the delta *)
-                let x_delta = (x2-.x1) in
-                let y_delta = (y2-.y1) in
-                  (* try with this delta *)
-                  if (List.for_all (f1 x_delta y_delta) l1_unique) then
-                    begin
-                      (* try with the opposite of this delta for the other list *)
-                      let x_delta = (-1.)*.x_delta in
-                      let y_delta = (-1.)*.y_delta in
-                      if (List.for_all (f2 x_delta y_delta) l2_unique) then true
-                      else (aux t)
-                    end
-                  else (aux t)
-          in (aux l2_unique);;
-
-
-(* 
-  (** Compare two list of path with their colors (v1). *)
-  let compare_list_colors ?(epsilon) l1 l2 =
-    let l1_unique = (remove_double_color ?epsilon l1) in
-    let l2_unique = (remove_double_color ?epsilon l2) in
-    let at_least_one_color p list = 
-      match p with ((x,y),colors) ->
-        let rec aux colors = match colors with
-          | [] -> false
-          | (r,g,b,a)::tl -> let c = ((x,y),[(r,g,b,a)]) in
-                              if (list_mem_color ?epsilon c list) then true
-                                else (aux tl)
-        in (aux colors)
-    in
-      let f1 p = at_least_one_color p l2_unique in
-      let f2 p = at_least_one_color p l1_unique in
+    (* 
+    (** Compare two list of float tuple (v1). *)
+    let compare_list_tuples ?(epsilon) l1 l2 =
+      let l1_unique = (remove_double ?epsilon l1) in
+      let l2_unique = (remove_double ?epsilon l2) in
+      let f1 tuple = list_mem_bis ?epsilon tuple l2_unique in
+      let f2 tuple = list_mem_bis ?epsilon tuple l1_unique in
+      (* print_list_paths l1_unique;
+      print_list_paths l2_unique; *)
       ((List.length l1_unique)==(List.length l2_unique)) 
       && (List.for_all f1 l1_unique)
       && (List.for_all f2 l2_unique);; *)
 
+
+  (** Compare two list of float tuple (v2). *)
+  let compare_list_tuples ?(epsilon) ?(allow_translations=false) l1 l2 =
+    let l1_unique = (remove_double ?epsilon l1) in
+    let l2_unique = (remove_double ?epsilon l2) in
+
+    if l1=[] && l2=[] then true
+    else
+      if ((List.length l1_unique)!=(List.length l2_unique)) then false
+      else
+        if allow_translations then
+          (* get first element of list one *)
+          match l1_unique with (x1,y1)::_ -> 
+            let f1 x_delta y_delta tuple =
+              list_mem_bis ?epsilon ~x_delta ~y_delta tuple l2_unique in
+            let f2 x_delta y_delta tuple =
+              list_mem_bis ?epsilon ~x_delta ~y_delta tuple l1_unique in 
+            let rec aux l2 = match l2 with
+              | [] -> false
+              | (x2,y2)::t -> 
+                  (* get the delta *)
+                  let x_delta = (x2-.x1) in
+                  let y_delta = (y2-.y1) in
+                    (* try with this delta *)
+                    if (List.for_all (f1 x_delta y_delta) l1_unique) then
+                      begin
+                        (* try with the opposite of this delta for the other list *)
+                        let x_delta = (-1.)*.x_delta in
+                        let y_delta = (-1.)*.y_delta in
+                        if (List.for_all (f2 x_delta y_delta) l2_unique) then true
+                        else (aux t)
+                      end
+                    else (aux t)
+            in (aux l2_unique)
+        else
+          let f1 tuple = list_mem_bis ?epsilon tuple l2_unique in
+          let f2 tuple = list_mem_bis ?epsilon tuple l1_unique in
+            (List.for_all f1 l1_unique) && (List.for_all f2 l2_unique);;
+
+
+    (* 
+    (** Compare two list of path with their colors (v1). *)
+    let compare_list_colors ?(epsilon) l1 l2 =
+      let l1_unique = (remove_double_color ?epsilon l1) in
+      let l2_unique = (remove_double_color ?epsilon l2) in
+      let at_least_one_color p list = 
+        match p with ((x,y),colors) ->
+          let rec aux colors = match colors with
+            | [] -> false
+            | (r,g,b,a)::tl -> let c = ((x,y),[(r,g,b,a)]) in
+                                if (list_mem_color ?epsilon c list) then true
+                                  else (aux tl)
+          in (aux colors)
+      in
+        let f1 p = at_least_one_color p l2_unique in
+        let f2 p = at_least_one_color p l1_unique in
+        ((List.length l1_unique)==(List.length l2_unique)) 
+        && (List.for_all f1 l1_unique)
+        && (List.for_all f2 l2_unique);; *)
+
+
+  (** Compare two list of path with their colors (v2). *)
+  let compare_list_colors ?(epsilon) ?(allow_translations=false) l1 l2 =
+    let l1_unique = (remove_double_color ?epsilon l1) in
+    let l2_unique = (remove_double_color ?epsilon l2) in
+
+    if l1=[] && l2=[] then true
+    else
+      if ((List.length l1_unique)!=(List.length l2_unique)) then false
+      else
+        if allow_translations then
+          (* get first element of list one *)
+          match l1_unique with ((x1,y1),_)::_ ->
+            let at_least_one_color x_delta y_delta p list = 
+              match p with ((x,y),colors) ->
+                let rec aux colors = match colors with
+                  | [] -> false
+                  | (r,g,b,a)::tl -> let c = ((x,y),[(r,g,b,a)]) in
+                                      if (list_mem_color ?epsilon ~x_delta ~y_delta c list) then true
+                                        else (aux tl)
+                in (aux colors)
+            in
+            let f1 x_delta y_delta p = 
+              at_least_one_color x_delta y_delta p l2_unique in
+            let f2 x_delta y_delta p = 
+              at_least_one_color x_delta y_delta p l1_unique in
+            let rec aux l2 = match l2 with
+              | [] -> false
+              | ((x2,y2),_)::t -> 
+                  (* get the delta *)
+                  let x_delta = (x2-.x1) in
+                  let y_delta = (y2-.y1) in
+                    (* try with this delta *)
+                    if (List.for_all (f1 x_delta y_delta) l1_unique) then
+                      begin
+                        (* try with the opposite of this delta for the other list *)
+                        let x_delta = (-1.)*.x_delta in
+                        let y_delta = (-1.)*.y_delta in
+                        if (List.for_all (f2 x_delta y_delta) l2_unique) then true
+                        else (aux t)
+                      end
+                    else (aux t)
+            in (aux l2_unique)
+        else
+          let at_least_one_color p list = 
+            match p with ((x,y),colors) ->
+              let rec aux colors = match colors with
+                | [] -> false
+                | (r,g,b,a)::tl -> let c = ((x,y),[(r,g,b,a)]) in
+                                    if (list_mem_color ?epsilon c list) then true
+                                      else (aux tl)
+              in (aux colors)
+          in
+            let f1 p = at_least_one_color p l2_unique in
+            let f2 p = at_least_one_color p l1_unique in
+            (List.for_all f1 l1_unique) && (List.for_all f2 l2_unique);;
+
+
 end
 
 (** Compare 2 Vg images. *)
-let image_equal ?(epsilon) ?(check_color=false) i1 i2 =
+let image_equal ?(epsilon) ?(check_color=false) ?(allow_translations) i1 i2 =
   if check_color then
     let di1 = (ManipulateVg.decompose_color i1) in
-      let di2 = (ManipulateVg.decompose_color i2) in (ManipulateVg.compare_list_colors ?epsilon di1 di2)
+      let di2 = (ManipulateVg.decompose_color i2) in 
+        (ManipulateVg.compare_list_colors ?epsilon ?allow_translations di1 di2)
   else
     let di1 = (ManipulateVg.decompose i1) in
-      let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples ?epsilon di1 di2);;
+      let di2 = (ManipulateVg.decompose i2) in 
+        (ManipulateVg.compare_list_tuples ?epsilon ?allow_translations di1 di2);;
   

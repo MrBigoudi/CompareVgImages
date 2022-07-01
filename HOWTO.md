@@ -112,7 +112,6 @@ let create_circle x y color r =
   in I.const color |> I.cut p;;
 ```
 
-
 If you don't care about the color you can use this syntax :
 
 ```OCaml
@@ -174,7 +173,28 @@ let () =
   Result.set (Result.questions [q])
 ```
 
-Finally you can use both optional arguments at the same time : 
+You can also decide if you want translated images to be considered equal :
+
+```OCaml
+(*test.ml*)
+let red = Color.red;;
+let green = Color.green;;
+let blue = Color.blue;;
+
+let allow_translations = true;;
+
+let q () = 
+  Assume.compatible "create_circle" [%ty : float -> float -> color -> float -> image];
+  Check.name4 "create_circle" [%ty : float -> float -> color -> float -> image]
+    ~equal: (Compare.image_equal ~allow_translations)
+    ~testers: [ Autotest.(tester (tuple4 (float 0 1) (float 0 1) (oneof [red; green; blue]) (float 0 1)))]
+    [];;
+
+let () =
+  Result.set (Result.questions [q])
+```
+
+Finally you can mix all optional arguments as you wish : 
 
 ```OCaml
 (*test.ml*)
@@ -184,11 +204,12 @@ let blue = Color.blue;;
 
 let epsilon = 1e-1;;
 let check_color = true;;
+let allow_translations = true;;
 
 let q () = 
   Assume.compatible "create_circle" [%ty : float -> float -> color -> float -> image];
   Check.name4 "create_circle" [%ty : float -> float -> color -> float -> image]
-    ~equal: (Compare.image_equal ~epsilon ~check_color)
+    ~equal: (Compare.image_equal ~epsilon ~check_color ~allow_translations)
     ~testers: [ Autotest.(tester (tuple4 (float 0 1) (float 0 1) (oneof [red; green; blue]) (float 0 1)))]
     [];;
 
