@@ -5,7 +5,8 @@
 
 ## Compare Vg images
 
-- Add options for comparison (like epsilon or so...)
+<br>
+
 
 - Compare outline.
 
