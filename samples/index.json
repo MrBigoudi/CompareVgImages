@@ -18,10 +18,28 @@
 				  "Exercices using CompareVgImages":
 				  {
 				  "title": "Exercices using CompareVgImages",
-				  "exercises": [ 
-						  "CompareVgImages/samples/vgTutorial", 
-						  "CompareVgImages/samples/jfp12"
-					  ]
+
+				  "groups":
+				  	{
+					"Exercices in French":
+						{
+						"title": "Exercices in French",
+
+						"exercises": [ 
+								"CompareVgImages/samples/vgTutorial_fr", 
+								"CompareVgImages/samples/jfp12_fr"
+							]
+						},
+					"Exercices in English":
+						{
+						"title": "Exercices in English",
+
+						"exercises": [ 
+								"CompareVgImages/samples/vgTutorial_en", 
+								"CompareVgImages/samples/jfp12_en"
+							]
+						}
+					}
 				  
 				  }
 			  }

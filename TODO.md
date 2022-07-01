@@ -10,7 +10,7 @@
 
 - Compare outlines.
 
-- Add other type of constants (like b-curves ...).
+- Add other type of transformations (like for b-curves ...).
 
 <br>
 
