@@ -696,6 +696,7 @@ module Intermediate_i_tree_manipulation = struct
   let test_equal_tuples () = 
     Printf.printf "Tests equal tuples:\n\n";
     let tuple_to_string t = match t with (x,y) -> (Printf.sprintf "(%f,%f)" x y) in
+      let epsilon = 0.1 in
       let t1 = (1.,2.) in
       let t2 = (2.,1.) in
       let t3 = (1.0001,2.) in
@@ -705,43 +706,55 @@ module Intermediate_i_tree_manipulation = struct
       let t7 = (1.563789,0.235) in
       let t8 = (1.563788,0.235) in
       begin
-        Printf.printf "Assert %s %s\n" (tuple_to_string t1) (tuple_to_string t1);
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t1) (tuple_to_string t1) Compare.epsilon;
         (assert ((Compare.ManipulateVg.equal_float_tuple t1 t1) == true));
         Printf.printf "Done\n";
-        Printf.printf "Assert %s %s\n" (tuple_to_string t1) (tuple_to_string t2);
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t1) (tuple_to_string t2) Compare.epsilon;
         (assert ((Compare.ManipulateVg.equal_float_tuple t1 t2) == false));
         Printf.printf "Done\n";
-        Printf.printf "Assert %s %s\n" (tuple_to_string t2) (tuple_to_string t1);
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t2) (tuple_to_string t1) Compare.epsilon;
         (assert ((Compare.ManipulateVg.equal_float_tuple t2 t1) == false));
         Printf.printf "Done\n";
-        Printf.printf "Assert %s %s\n" (tuple_to_string t1) (tuple_to_string t1);
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t1) (tuple_to_string t3) Compare.epsilon;
         (assert ((Compare.ManipulateVg.equal_float_tuple t1 t3) == false));
         Printf.printf "Done\n";
-        Printf.printf "Assert %s %s\n" (tuple_to_string t3) (tuple_to_string t1);
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t3) (tuple_to_string t1) Compare.epsilon;
         (assert ((Compare.ManipulateVg.equal_float_tuple t3 t1) == false));
         Printf.printf "Done\n";
-        Printf.printf "Assert %s %s\n" (tuple_to_string t1) (tuple_to_string t4);
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t1) (tuple_to_string t4) Compare.epsilon;
         (assert ((Compare.ManipulateVg.equal_float_tuple t1 t4) == false));
         Printf.printf "Done\n";
-        Printf.printf "Assert %s %s\n" (tuple_to_string t4) (tuple_to_string t1);
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t4) (tuple_to_string t1) Compare.epsilon;
         (assert ((Compare.ManipulateVg.equal_float_tuple t4 t1) == false));
         Printf.printf "Done\n";
-        Printf.printf "Assert %s %s\n" (tuple_to_string t1) (tuple_to_string t5);
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t1) (tuple_to_string t3) epsilon;
+        (assert ((Compare.ManipulateVg.equal_float_tuple ~epsilon t1 t3) == true));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t3) (tuple_to_string t1) epsilon;
+        (assert ((Compare.ManipulateVg.equal_float_tuple ~epsilon t3 t1) == true));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t1) (tuple_to_string t4) epsilon;
+        (assert ((Compare.ManipulateVg.equal_float_tuple ~epsilon t1 t4) == true));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t4) (tuple_to_string t1) epsilon;
+        (assert ((Compare.ManipulateVg.equal_float_tuple ~epsilon t4 t1) == true));
+        Printf.printf "Done\n";
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t1) (tuple_to_string t5) Compare.epsilon;
         (assert ((Compare.ManipulateVg.equal_float_tuple t1 t5) == true));
         Printf.printf "Done\n";
-        Printf.printf "Assert %s %s\n" (tuple_to_string t5) (tuple_to_string t1);
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t5) (tuple_to_string t1) Compare.epsilon;
         (assert ((Compare.ManipulateVg.equal_float_tuple t5 t1) == true));
         Printf.printf "Done\n";
-        Printf.printf "Assert %s %s\n" (tuple_to_string t1) (tuple_to_string t6);
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t1) (tuple_to_string t6) Compare.epsilon;
         (assert ((Compare.ManipulateVg.equal_float_tuple t1 t6) == true));
         Printf.printf "Done\n";
-        Printf.printf "Assert %s %s\n" (tuple_to_string t6) (tuple_to_string t1);
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t6) (tuple_to_string t1) Compare.epsilon;
         (assert ((Compare.ManipulateVg.equal_float_tuple t6 t1) == true));
         Printf.printf "Done\n";
-        Printf.printf "Assert %s %s\n" (tuple_to_string t7) (tuple_to_string t8);
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t7) (tuple_to_string t8) Compare.epsilon;
         (assert ((Compare.ManipulateVg.equal_float_tuple t7 t8) == true));
         Printf.printf "Done\n";
-        Printf.printf "Assert %s %s\n" (tuple_to_string t8) (tuple_to_string t7);
+        Printf.printf "Assert %s %s, epsilon: %f\n" (tuple_to_string t8) (tuple_to_string t7) Compare.epsilon;
         (assert ((Compare.ManipulateVg.equal_float_tuple t8 t7) == true));
         Printf.printf "Done\n";
       end;

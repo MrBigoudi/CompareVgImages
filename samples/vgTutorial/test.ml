@@ -8,11 +8,13 @@ let red = Solution.create_color 1.0 0.0 0.0 1.0;;
 let green = Solution.create_color 0.0 1.0 0.0 1.0;;
 let blue = Solution.create_color 0.0 0.0 1.0 1.0;;
 
+let epsilon = 1e-7;;
+
 
 let q2 () = 
   Assume.compatible "create_circle" [%ty : float -> float -> color -> float -> image];
   Check.name4 "create_circle" [%ty : float -> float -> color -> float -> image]
-    ~equal: Compare.image_equal
+    ~equal: (Compare.image_equal ~epsilon)
     ~testers: [ Autotest.(tester (tuple4 (float 0 1) (float 0 1) (oneof [red; green; blue]) (float 0 1)))]
     [];;
 

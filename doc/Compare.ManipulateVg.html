@@ -212,65 +212,65 @@
 </div>
 <p>Return true if two tuple of floats are equal.</p>
 
-<pre><span id="VALequal_float_tuple"><span class="keyword">val</span> equal_float_tuple</span> : <code class="type">float * float -> float * float -> bool</code></pre><div class="info ">
+<pre><span id="VALequal_float_tuple"><span class="keyword">val</span> equal_float_tuple</span> : <code class="type">?epsilon:float -> float * float -> float * float -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>equal_float_tuple t1 t2</i> -&gt; E(x1-x2)&lt;=1e5 &amp;&amp; E(y1-y2)&lt;=1e5</p>
+<p><i>equal_float_tuple epsilon t1 t2</i> -&gt; E(x1-x2)&lt;=epsilon &amp;&amp; E(y1-y2)&lt;=epsilon</p>
 </div>
 </div>
 <p>Return true if two colors are equal.</p>
 
-<pre><span id="VALequal_colors"><span class="keyword">val</span> equal_colors</span> : <code class="type">float * float * float * float -> float * float * float * float -> bool</code></pre><div class="info ">
+<pre><span id="VALequal_colors"><span class="keyword">val</span> equal_colors</span> : <code class="type">?epsilon:float -><br>       float * float * float * float -> float * float * float * float -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>equal_colors c1 c2</i> -&gt; E(r1-r2)&lt;=1e5 &amp;&amp; E(g1-g2)&lt;=1e5 ...</p>
+<p><i>equal_colors epsilon c1 c2</i> -&gt; E(r1-r2)&lt;=epsilon &amp;&amp; E(g1-g2)&lt;=epsilon ...</p>
 </div>
 </div>
 <p>Return true if a tuple of float is in a list.</p>
 
-<pre><span id="VALlist_mem_bis"><span class="keyword">val</span> list_mem_bis</span> : <code class="type">float * float -> (float * float) list -> bool</code></pre><div class="info ">
+<pre><span id="VALlist_mem_bis"><span class="keyword">val</span> list_mem_bis</span> : <code class="type">?epsilon:float -> float * float -> (float * float) list -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>list_mem_bis t l</i> -&gt; true if t in l <i>(~equal: equal_float_tuple)</i></p>
+<p><i>list_mem_bis epsilon t l</i> -&gt; true if t in l <i>(~equal: equal_float_tuple epsilon)</i></p>
 </div>
 </div>
 <p>Return true if an element is in a list of paths with their colors.</p>
 
-<pre><span id="VALlist_mem_color"><span class="keyword">val</span> list_mem_color</span> : <code class="type">(float * float) * (float * float * float * float) list -><br>       ((float * float) * (float * float * float * float) list) list -> bool</code></pre><div class="info ">
+<pre><span id="VALlist_mem_color"><span class="keyword">val</span> list_mem_color</span> : <code class="type">?epsilon:float -><br>       (float * float) * (float * float * float * float) list -><br>       ((float * float) * (float * float * float * float) list) list -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>list_mem_color p l</i> -&gt; true if p in l <i>(~equal: equal_float_tuple)</i></p>
+<p><i>list_mem_color epsilon p l</i> -&gt; true if p in l <i>(~equal: equal_float_tuple epsilon)</i></p>
 </div>
 </div>
 <p>Add a given path with its color in a list of path with their colors (without duplicate tuple).</p>
 
-<pre><span id="VALadd_color"><span class="keyword">val</span> add_color</span> : <code class="type">(float * float) * (float * float * float * float) list -><br>       ((float * float) * (float * float * float * float) list) list -><br>       ((float * float) * (float * float * float * float) list) list</code></pre><div class="info ">
+<pre><span id="VALadd_color"><span class="keyword">val</span> add_color</span> : <code class="type">?epsilon:float -><br>       (float * float) * (float * float * float * float) list -><br>       ((float * float) * (float * float * float * float) list) list -><br>       ((float * float) * (float * float * float * float) list) list</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>add_color (t,c1) l</i> -&gt; replace (t,c1) in l by (t,c1'@'c)</p>
+<p><i>add_color epsilon (t,c1) l</i> -&gt; replace (t,c1) in l by (t,c1'@'c)</p>
 </div>
 </div>
 <p>Remove copies in a list of float tuple.</p>
 
-<pre><span id="VALremove_double"><span class="keyword">val</span> remove_double</span> : <code class="type">(float * float) list -> (float * float) list</code></pre><div class="info ">
+<pre><span id="VALremove_double"><span class="keyword">val</span> remove_double</span> : <code class="type">?epsilon:float -> (float * float) list -> (float * float) list</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>remove_double l</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code> with (x1,y1) unique <i>(~equal: equal_float_tuple)</i></p>
+<p><i>remove_double epsilon l</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code> with (x1,y1) unique <i>(~equal: equal_float_tuple)</i></p>
 </div>
 </div>
 <p>Remove copies in a list of float 6-uplet and transfor them into a (float tuple * (float*float*float*float) list) tuple</p>
 
-<pre><span id="VALremove_double_color"><span class="keyword">val</span> remove_double_color</span> : <code class="type">(float * float * float * float * float * float) list -><br>       ((float * float) * (float * float * float * float) list) list</code></pre><div class="info ">
+<pre><span id="VALremove_double_color"><span class="keyword">val</span> remove_double_color</span> : <code class="type">?epsilon:float -><br>       (float * float * float * float * float * float) list -><br>       ((float * float) * (float * float * float * float) list) list</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>remove_double_color l</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code> with (x1,y1) unique <i>(~equal: equal_float_tuple)</i></p>
+<p><i>remove_double_color epsilon l</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code> with (x1,y1) unique <i>(~equal: equal_float_tuple)</i></p>
 </div>
 </div>
 <p>Compare two list of float tuple.</p>
 
-<pre><span id="VALcompare_list_tuples"><span class="keyword">val</span> compare_list_tuples</span> : <code class="type">(float * float) list -> (float * float) list -> bool</code></pre><div class="info ">
+<pre><span id="VALcompare_list_tuples"><span class="keyword">val</span> compare_list_tuples</span> : <code class="type">?epsilon:float -> (float * float) list -> (float * float) list -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>compare_list_tuples l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa <i>(~exists: equal_float_tuple (or translated not yet implemented))</i></p>
+<p><i>compare_list_tuples epsilon l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa <i>(~exists: equal_float_tuple (or translated not yet implemented))</i></p>
 </div>
 </div>
 <p>Compare two list of path with their colors.</p>
 
-<pre><span id="VALcompare_list_colors"><span class="keyword">val</span> compare_list_colors</span> : <code class="type">(float * float * float * float * float * float) list -><br>       (float * float * float * float * float * float) list -> bool</code></pre><div class="info ">
+<pre><span id="VALcompare_list_colors"><span class="keyword">val</span> compare_list_colors</span> : <code class="type">?epsilon:float -><br>       (float * float * float * float * float * float) list -><br>       (float * float * float * float * float * float) list -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>compare_list_colors l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa</p>
+<p><i>compare_list_colors epsilon l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa</p>
 </div>
 </div>
 </body></html>

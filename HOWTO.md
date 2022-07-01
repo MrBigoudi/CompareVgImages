@@ -151,6 +151,27 @@ let () =
   Result.set (Result.questions [q])
 ```
 
+You can also change the epsilon to compare images with a given precision :
+
+```OCaml
+(*test.ml*)
+let red = Color.red;;
+let green = Color.green;;
+let blue = Color.blue;;
+
+let epsilon = 1e-1
+
+let q () = 
+  Assume.compatible "create_circle" [%ty : float -> float -> color -> float -> image];
+  Check.name4 "create_circle" [%ty : float -> float -> color -> float -> image]
+    ~equal: (Compare.image_equal ~epsilon)
+    ~testers: [ Autotest.(tester (tuple4 (float 0 1) (float 0 1) (oneof [red; green; blue]) (float 0 1)))]
+    [];;
+
+let () =
+  Result.set (Result.questions [q])
+```
+
 You'll also have to change <strong>depend.txt</strong> files to add CompareVgImages as a dependency.
 
 ```sh 

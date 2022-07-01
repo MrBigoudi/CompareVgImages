@@ -26,6 +26,10 @@ type i_tree =
   | Node of i_token * i_tree list (** A tree node. *)
 ;;
 
+
+(** Default value as epsilon. *)
+let epsilon = 1e-5;;
+
 (** A module for all the functions used to compare images. *)
 module ManipulateVg = struct 
 
@@ -438,84 +442,83 @@ module ManipulateVg = struct
 
 
   (** Return true if two tuple of floats are equal. *)
-  let equal_float_tuple t1 t2 =
-    let epsilon = 1e-5 in
-      match t1 with (x1,y1) -> 
-        match t2 with (x2,y2) ->
-          let comp_x = (if (x1-.x2)<0. then ((x2-.x1)<=epsilon) else ((x1-.x2)<=epsilon)) in
-            let comp_y = (if (y1-.y2)<0. then ((y2-.y1)<=epsilon) else ((y1-.y2)<=epsilon)) in
-              (comp_x && comp_y);;
+  let equal_float_tuple ?(epsilon=epsilon) t1 t2 =
+    match t1 with (x1,y1) -> 
+      match t2 with (x2,y2) ->
+        let comp_x = (if (x1-.x2)<0. then ((x2-.x1)<=epsilon) else ((x1-.x2)<=epsilon)) in
+          let comp_y = (if (y1-.y2)<0. then ((y2-.y1)<=epsilon) else ((y1-.y2)<=epsilon)) in
+            (comp_x && comp_y);;
 
 
   (** Return true if two colors are equal. *)
-  let equal_colors c1 c2 =
+  let equal_colors ?(epsilon) c1 c2 =
     match c1 with (r1,g1,b1,a1) ->
       match c2 with (r2,g2,b2,a2) ->
-        (equal_float_tuple (r1,g1) (r2,g2)) && (equal_float_tuple (b1,a1) (b2,a2));;
+        (equal_float_tuple ?epsilon (r1,g1) (r2,g2)) && (equal_float_tuple ?epsilon (b1,a1) (b2,a2));;
 
 
   (** Return true if a tuple of float is in a list. *)
-  let list_mem_bis t l = 
+  let list_mem_bis ?(epsilon) t l = 
     let rec aux l = match l with
       | [] -> false
-      | h::tl -> if (equal_float_tuple h t) then true
+      | h::tl -> if (equal_float_tuple ?epsilon h t) then true
                   else (aux tl)
     in (aux l);;
 
 
   (** Return true if a path with its color is in a list of paths with their colors. *)
-  let list_mem_color (p : ((float * float) * (float*float*float*float) list)) (l : ((float * float) * (float*float*float*float) list) list) =
+  let list_mem_color ?(epsilon) (p : ((float * float) * (float*float*float*float) list)) (l : ((float * float) * (float*float*float*float) list) list) =
     match p with (t,c) ->
       let rec in_color_list lc = match lc with
         | [] -> false
         | c1::tl -> match c with 
                     | [] -> failwith "This path doesn't have a color"
-                    | c::[] -> if (equal_colors c1 c) then true
+                    | c::[] -> if (equal_colors ?epsilon c1 c) then true
                                 else (in_color_list tl)
                     | _ -> failwith "This path as more than one color"
       in
       let rec aux l = match l with
         | [] -> false
-        | (h,c1)::tl -> if ((equal_float_tuple h t)&&(in_color_list c1)) then true
+        | (h,c1)::tl -> if ((equal_float_tuple ?epsilon h t)&&(in_color_list c1)) then true
                         else (aux tl)
       in (aux l);;
 
       
   (** Add a given path with its color in a list of path with their colors (without duplicate tuple). *)
-  let add_color (p : ((float * float) * (float*float*float*float) list)) (l : ((float * float) * (float*float*float*float) list) list) =
+  let add_color ?(epsilon) (p : ((float * float) * (float*float*float*float) list)) (l : ((float * float) * (float*float*float*float) list) list) =
     match p with (t,c) ->
       let rec aux l acc = match l with
         | [] -> acc@[(t,c)]
-        | (t1,c1)::tl when (equal_float_tuple t1 t) -> 
+        | (t1,c1)::tl when (equal_float_tuple ?epsilon t1 t) -> 
             let newTuple = (t1,c1@c) in (acc@[newTuple]@tl)
         | h::tl -> (aux tl (acc@[h]))
       in (aux l []);;
 
 
   (** Remove copies in a list of float tuple. *)
-  let remove_double l =
+  let remove_double ?(epsilon) l =
     let rec aux acc arr = match arr with
       | [] -> acc
-      | h::t -> if (list_mem_bis h acc) then (aux acc t)
+      | h::t -> if (list_mem_bis ?epsilon h acc) then (aux acc t)
           else (aux (acc@[h]) t)
     in (aux [] l);; 
 
 
   (** Remove copies in a list of float 6-uplet and transfor them into a (float tuple * (float*float*float) list) tuple *)
-  let remove_double_color l =
+  let remove_double_color ?(epsilon) l =
     let rec aux acc arr = match arr with 
       | [] -> acc
-      | (x,y,r,g,b,a)::t -> let newAcc = (add_color ((x,y),[(r,g,b,a)]) acc)
+      | (x,y,r,g,b,a)::t -> let newAcc = (add_color ?epsilon ((x,y),[(r,g,b,a)]) acc)
                               in (aux newAcc t)
     in (aux [] l);;
 
 
   (** Compare two list of float tuple. *)
-  let compare_list_tuples l1 l2 =
-    let l1_unique = (remove_double l1) in
-    let l2_unique = (remove_double l2) in
-    let f1 tuple = list_mem_bis tuple l2_unique in
-    let f2 tuple = list_mem_bis tuple l1_unique in
+  let compare_list_tuples ?(epsilon) l1 l2 =
+    let l1_unique = (remove_double ?epsilon l1) in
+    let l2_unique = (remove_double ?epsilon l2) in
+    let f1 tuple = list_mem_bis ?epsilon tuple l2_unique in
+    let f2 tuple = list_mem_bis ?epsilon tuple l1_unique in
     (* print_list_paths l1_unique;
     print_list_paths l2_unique; *)
     ((List.length l1_unique)==(List.length l2_unique)) 
@@ -524,15 +527,15 @@ module ManipulateVg = struct
 
 
   (** Compare two list of path with their colors. *)
-  let compare_list_colors l1 l2 =
-    let l1_unique = (remove_double_color l1) in
-    let l2_unique = (remove_double_color l2) in
+  let compare_list_colors ?(epsilon) l1 l2 =
+    let l1_unique = (remove_double_color ?epsilon l1) in
+    let l2_unique = (remove_double_color ?epsilon l2) in
     let at_least_one_color p list = 
       match p with ((x,y),colors) ->
         let rec aux colors = match colors with
           | [] -> false
           | (r,g,b,a)::tl -> let c = ((x,y),[(r,g,b,a)]) in
-                              if (list_mem_color c list) then true
+                              if (list_mem_color ?epsilon c list) then true
                                 else (aux tl)
         in (aux colors)
     in
@@ -545,12 +548,12 @@ module ManipulateVg = struct
 end
 
 (** Compare 2 Vg images. *)
-let image_equal i1 i2 =
+let image_equal ?(epsilon) i1 i2 =
   let di1 = (ManipulateVg.decompose i1) in
-    let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples di1 di2);;
+    let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples ?epsilon di1 di2);;
 
 
 (** Compare 2 Vg images and taking into account their colors. *)
-let image_equal_color i1 i2 =
+let image_equal_color ?(epsilon) i1 i2 =
   let di1 = (ManipulateVg.decompose_color i1) in
-      let di2 = (ManipulateVg.decompose_color i2) in (ManipulateVg.compare_list_colors di1 di2);;
+      let di2 = (ManipulateVg.decompose_color i2) in (ManipulateVg.compare_list_colors ?epsilon di1 di2);;

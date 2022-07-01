@@ -18,20 +18,20 @@
 <tr><td align="left"><div>A</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALadd_color">add_color</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>add_color (t,c1) l</i> -&gt; replace (t,c1) in l by (t,c1'@'c)</p>
+<p><i>add_color epsilon (t,c1) l</i> -&gt; replace (t,c1) in l by (t,c1'@'c)</p>
 
 </div>
 </td></tr>
 <tr><td align="left"><div>C</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALcompare_list_colors">compare_list_colors</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>compare_list_colors l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa</p>
+<p><i>compare_list_colors epsilon l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALcompare_list_tuples">compare_list_tuples</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>compare_list_tuples l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa <i>(~exists: equal_float_tuple (or translated not yet implemented))</i></p>
+<p><i>compare_list_tuples epsilon l1 l2</i> -&gt; true if all t in l1 exists in l2 and vice-versa <i>(~exists: equal_float_tuple (or translated not yet implemented))</i></p>
 
 </div>
 </td></tr>
@@ -55,15 +55,21 @@
 </div>
 </td></tr>
 <tr><td align="left"><div>E</div></td></tr>
+<tr><td><a href="Compare.html#VALepsilon">epsilon</a> [<a href="Compare.html">Compare</a>]</td>
+<td><div class="info">
+<p>Default value as epsilon : 1e-5</p>
+
+</div>
+</td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALequal_colors">equal_colors</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>equal_colors c1 c2</i> -&gt; E(r1-r2)&lt;=1e5 &amp;&amp; E(g1-g2)&lt;=1e5 ...</p>
+<p><i>equal_colors epsilon c1 c2</i> -&gt; E(r1-r2)&lt;=epsilon &amp;&amp; E(g1-g2)&lt;=epsilon ...</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALequal_float_tuple">equal_float_tuple</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>equal_float_tuple t1 t2</i> -&gt; E(x1-x2)&lt;=1e5 &amp;&amp; E(y1-y2)&lt;=1e5</p>
+<p><i>equal_float_tuple epsilon t1 t2</i> -&gt; E(x1-x2)&lt;=epsilon &amp;&amp; E(y1-y2)&lt;=epsilon</p>
 
 </div>
 </td></tr>
@@ -125,26 +131,26 @@
 <tr><td align="left"><div>I</div></td></tr>
 <tr><td><a href="Compare.html#VALimage_equal">image_equal</a> [<a href="Compare.html">Compare</a>]</td>
 <td><div class="info">
-<p><i>image_equal i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal but they can have different colors.</p>
+<p><i>image_equal i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal (+ or - epsilon (default Compare.epsilon)) but they can have different colors.</p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.html#VALimage_equal_color">image_equal_color</a> [<a href="Compare.html">Compare</a>]</td>
 <td><div class="info">
-<p><i>image_equal true i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal and have the same colors.</p>
+<p><i>image_equal_color epsilon i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal and have the same colors.</p>
 
 </div>
 </td></tr>
 <tr><td align="left"><div>L</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALlist_mem_bis">list_mem_bis</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>list_mem_bis t l</i> -&gt; true if t in l <i>(~equal: equal_float_tuple)</i></p>
+<p><i>list_mem_bis epsilon t l</i> -&gt; true if t in l <i>(~equal: equal_float_tuple epsilon)</i></p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALlist_mem_color">list_mem_color</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>list_mem_color p l</i> -&gt; true if p in l <i>(~equal: equal_float_tuple)</i></p>
+<p><i>list_mem_color epsilon p l</i> -&gt; true if p in l <i>(~equal: equal_float_tuple epsilon)</i></p>
 
 </div>
 </td></tr>
@@ -214,13 +220,13 @@
 <tr><td align="left"><div>R</div></td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALremove_double">remove_double</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>remove_double l</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code> with (x1,y1) unique <i>(~equal: equal_float_tuple)</i></p>
+<p><i>remove_double epsilon l</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code> with (x1,y1) unique <i>(~equal: equal_float_tuple)</i></p>
 
 </div>
 </td></tr>
 <tr><td><a href="Compare.ManipulateVg.html#VALremove_double_color">remove_double_color</a> [<a href="Compare.ManipulateVg.html">Compare.ManipulateVg</a>]</td>
 <td><div class="info">
-<p><i>remove_double_color l</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code> with (x1,y1) unique <i>(~equal: equal_float_tuple)</i></p>
+<p><i>remove_double_color epsilon l</i> -&gt; <code class="code">(x1,y1);...;(xn,yn)</code> with (x1,y1) unique <i>(~equal: equal_float_tuple)</i></p>
 
 </div>
 </td></tr>
