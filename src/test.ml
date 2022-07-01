@@ -1937,7 +1937,7 @@ let test_image_equal () =
   in
   begin
     (*test without colors*)
-    Printf.printf "Starting tests without considering colors\n";
+    Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" Compare.epsilon;
     let di1 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i1)) in
       let di2 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i2))
     in 
@@ -1946,11 +1946,49 @@ let test_image_equal () =
   end;
   begin
     (*test with colors*)
-    Printf.printf "\nStarting tests considering colors\n";
+    Printf.printf "Starting tests considering colors, epsilon: %f\n" Compare.epsilon;
     let di1 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i1)) in
       let di2 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i2))
     in 
       (assert (Compare.ManipulateVg.compare_list_colors di1 di2));
+      Printf.printf "Done\n";
+  end;
+  let epsilon = 1e-4 in
+  begin
+    (*test without colors, greater epsilon*)
+    Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" epsilon;
+    let di1 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i1)) in
+      let di2 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i2))
+    in 
+      (assert (Compare.ManipulateVg.compare_list_tuples ~epsilon di1 di2));
+      Printf.printf "Done\n";
+  end;
+  begin
+    (*test with colors, greater epsilon*)
+    Printf.printf "Starting tests considering colors, epsilon: %f\n" epsilon;
+    let di1 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i1)) in
+      let di2 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i2))
+    in 
+      (assert (Compare.ManipulateVg.compare_list_colors ~epsilon di1 di2));
+      Printf.printf "Done\n";
+  end;
+  let epsilon = 1e-6 in
+  begin
+    (*test without colors, smaller epsilon*)
+    Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" epsilon;
+    let di1 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i1)) in
+      let di2 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i2))
+    in 
+      (assert ((Compare.ManipulateVg.compare_list_tuples ~epsilon di1 di2)==false));
+      Printf.printf "Done\n";
+  end;
+  begin
+    (*test with colors, smaller epsilon*)
+    Printf.printf "Starting tests considering colors, epsilon: %f\n" epsilon;
+    let di1 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i1)) in
+      let di2 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i2))
+    in 
+      (assert ((Compare.ManipulateVg.compare_list_colors ~epsilon di1 di2)==false));
       Printf.printf "Done\n";
   end;
   Printf.printf "\nEnd of tests for for image equal\n\n";;
