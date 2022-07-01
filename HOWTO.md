@@ -96,7 +96,7 @@ To learn how to correct an exercice using easy-check, I invite you to read the a
 
 To test a function producing Vg.image you can use CompareVgImages. 
 
-In your <strong>test.ml</strong> file, you'll have to add <strong>~equal: Compare.image_equal</strong> or <strong>~equal: Compare.image_equal_color</strong> as an optional parameter of the Check.name function.
+In your <strong>test.ml</strong> file, you'll have to add <strong>~equal: Compare.image_equal</strong> as an optional parameter of the Check.name function.
 
 For example :
 
@@ -140,10 +140,12 @@ let red = Color.red;;
 let green = Color.green;;
 let blue = Color.blue;;
 
+let color_check = true;;
+
 let q () = 
   Assume.compatible "create_circle" [%ty : float -> float -> color -> float -> image];
   Check.name4 "create_circle" [%ty : float -> float -> color -> float -> image]
-    ~equal: Compare.image_equal_color
+    ~equal: Compare.image_equal ~color_check
     ~testers: [ Autotest.(tester (tuple4 (float 0 1) (float 0 1) (oneof [red; green; blue]) (float 0 1)))]
     [];;
 
@@ -159,12 +161,34 @@ let red = Color.red;;
 let green = Color.green;;
 let blue = Color.blue;;
 
-let epsilon = 1e-1
+let epsilon = 1e-1;;
 
 let q () = 
   Assume.compatible "create_circle" [%ty : float -> float -> color -> float -> image];
   Check.name4 "create_circle" [%ty : float -> float -> color -> float -> image]
     ~equal: (Compare.image_equal ~epsilon)
+    ~testers: [ Autotest.(tester (tuple4 (float 0 1) (float 0 1) (oneof [red; green; blue]) (float 0 1)))]
+    [];;
+
+let () =
+  Result.set (Result.questions [q])
+```
+
+Finally you can use both optional arguments at the same time : 
+
+```OCaml
+(*test.ml*)
+let red = Color.red;;
+let green = Color.green;;
+let blue = Color.blue;;
+
+let epsilon = 1e-1;;
+let check_color = true;;
+
+let q () = 
+  Assume.compatible "create_circle" [%ty : float -> float -> color -> float -> image];
+  Check.name4 "create_circle" [%ty : float -> float -> color -> float -> image]
+    ~equal: (Compare.image_equal ~epsilon ~check_color)
     ~testers: [ Autotest.(tester (tuple4 (float 0 1) (float 0 1) (oneof [red; green; blue]) (float 0 1)))]
     [];;
 

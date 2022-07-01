@@ -548,12 +548,11 @@ module ManipulateVg = struct
 end
 
 (** Compare 2 Vg images. *)
-let image_equal ?(epsilon) i1 i2 =
-  let di1 = (ManipulateVg.decompose i1) in
-    let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples ?epsilon di1 di2);;
-
-
-(** Compare 2 Vg images and taking into account their colors. *)
-let image_equal_color ?(epsilon) i1 i2 =
-  let di1 = (ManipulateVg.decompose_color i1) in
-      let di2 = (ManipulateVg.decompose_color i2) in (ManipulateVg.compare_list_colors ?epsilon di1 di2);;
+let image_equal ?(epsilon) ?(check_color=false) i1 i2 =
+  if check_color then
+    let di1 = (ManipulateVg.decompose_color i1) in
+      let di2 = (ManipulateVg.decompose_color i2) in (ManipulateVg.compare_list_colors ?epsilon di1 di2)
+  else
+    let di1 = (ManipulateVg.decompose i1) in
+      let di2 = (ManipulateVg.decompose i2) in (ManipulateVg.compare_list_tuples ?epsilon di1 di2);;
+  

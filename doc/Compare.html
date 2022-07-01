@@ -47,16 +47,11 @@
 <p>Having this tree we can manipulate the images' infos to try compare them.</p>
 <h3 id="2_Mainfunction">Main function</h3><p>Compare two images</p>
 
-<pre><span id="VALimage_equal"><span class="keyword">val</span> image_equal</span> : <code class="type">?epsilon:float -> Vg.image -> Vg.image -> bool</code></pre><div class="info ">
+<pre><span id="VALimage_equal"><span class="keyword">val</span> image_equal</span> : <code class="type">?epsilon:float -> ?check_color:bool -> Vg.image -> Vg.image -> bool</code></pre><div class="info ">
 <div class="info-desc">
-<p><i>image_equal i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal (+ or - epsilon (default Compare.epsilon)) but they can have different colors.</p>
-</div>
-</div>
-<p>Compare 2 Vg images and taking into account their colors.</p>
+<p><i>image_equal i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal (+ or - epsilon (default Compare.epsilon)).</p>
 
-<pre><span id="VALimage_equal_color"><span class="keyword">val</span> image_equal_color</span> : <code class="type">?epsilon:float -> Vg.image -> Vg.image -> bool</code></pre><div class="info ">
-<div class="info-desc">
-<p><i>image_equal_color epsilon i1 i2</i> -&gt; true if <b>i1</b> and <b>i2</b> are visually equal and have the same colors.</p>
+<p>Place check_color to true if you want to take the color into account (default=false).</p>
 </div>
 </div>
 

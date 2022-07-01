@@ -27,13 +27,11 @@
 
 (** Compare two images *)
 
-(** {i image_equal i1 i2} -> true if {b i1} and {b i2} are visually equal (+ or - epsilon (default Compare.epsilon)) but they can have different colors. *)
-val image_equal : ?epsilon:float -> Vg.image -> Vg.image -> bool
-
-(** Compare 2 Vg images and taking into account their colors. *)
-
-(** {i image_equal_color epsilon i1 i2} -> true if {b i1} and {b i2} are visually equal and have the same colors. *)
-val image_equal_color : ?epsilon:float -> Vg.image -> Vg.image -> bool  
+(** {i image_equal i1 i2} -> true if {b i1} and {b i2} are visually equal (+ or - epsilon (default Compare.epsilon)). 
+  
+    Place check_color to true if you want to take the color into account (default=false).
+  *)
+val image_equal : ?epsilon:float -> ?check_color:bool -> Vg.image -> Vg.image -> bool
 
 (** Default value as epsilon : 1e-5 *)
 val epsilon : float
