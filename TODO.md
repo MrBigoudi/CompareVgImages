@@ -10,8 +10,6 @@
 
 - Compare outline.
 
-- Be less strict with translations, ie, two images which look alike but are at different positions should be considered as the same. 
-
 - Add other type of constants (like b-curves ...).
 
 <br>
