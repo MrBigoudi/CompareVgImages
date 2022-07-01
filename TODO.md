@@ -8,7 +8,7 @@
 <br>
 
 
-- Compare outline.
+- Compare outlines.
 
 - Add other type of constants (like b-curves ...).
 
