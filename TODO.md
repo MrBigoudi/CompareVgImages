@@ -38,4 +38,4 @@
 
 ## Outside this module
 
-- Try to update learnOcaml to show the student the expected image and their image after the correctiono instead of just writting '<abstr>'
+- Try to update learnOcaml to show the expected image and their image to the student after the corrections instead of just writting '\<abstr\>'
