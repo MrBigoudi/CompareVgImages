@@ -237,7 +237,7 @@ Which, given a matrix representing the Tetris board, creates a Vg image which re
 <div>
   <img src="/icons/images/exercices/jfp12/tetris_1.png" 
     alt="tetris" 
-    width="896" 
+    width="768" 
     height="512"
   />
 </div>
@@ -266,3 +266,82 @@ Third is the number of rotations R applied to the piece.
 We suppose that we can always put the piece P at the first line and column C after rotating it R times.
 
 (It exists invalid tuples (C,R) but we won't use them in this question. In other words, we suppose that we can always put the pieces on the first fourth lines before making them move to the bottom).
+
+For example 
+
+```Ocaml
+  let l = [(1,0,0);(2,1,0);(3,2,0);(4,3,0);(5,4,0);(6,5,0);(7,6,0);(1,7,0);(2,8,0);(3,9,0)]
+
+  let board = (gen_matrice_gravity l);;
+
+  (draw_tetris board);;
+```
+
+<div>
+  <img src="/icons/images/exercices/jfp12/tetris_2.png" 
+    alt="tetris" 
+    width="768" 
+    height="512"
+  />
+</div>
+
+
+**Question 4 :** CALCUL THE SCORE
+
+We have now all the things needed to pllay Tetris. Knowing an integer S: the sequence T (from question 1) determined by S gives us the sequence of pieces presented to the player. The player must decide on which column and how many times we should turn the piece for each pieces of the sequence. 
+
+Before playing each piece, we check that each of the four first lines are empty : otherwise the game ends.
+The piece is then dropped on the column chosen by the player. If we can't drop it, the game ends.
+
+Then, there's the Tetris magic : if a line of the board is fill with non empty blocks then this line vanishes and all the blocks from above drop by a line. If four contiguous lines vanishe at the same time, the player get 800 points : it's a Tetris ! If the previous piece was already used for a Tetris, then he gets 1200 points ! Otherwise, each line gives 100 points to the player.
+
+Write the function 
+
+```Ocaml
+  val calcul_score int -> (int*int*int) list -> (int array array)*int
+```
+
+Which, knowing the integer S and a list of triplets (like the one from the last question) return a tuple of the final board and the final score.
+
+The first integer P of a triplet represents the piece number : it must be equal to the nth term of the T sequence initialized by S. Otherwise, the game ends.
+
+The second integer C represents the column where the player decided to drop the piece.
+
+The third R represents the numberof rotations for the piece.
+
+If we can't drop the piece on the board (because the tuple (C,R) makes it go out of the board) then the game ends. Otherwise, we drop the piece on the board and update the score as explained above.
+
+We check the next triplet.
+
+If there aren't any, the game ends.
+
+For example
+
+```OCaml
+  let s = 231;;
+
+  let l = [(7,8,2);(3,7,0);(4,4,2);(5,1,2);(1,1,2);(2,10,3);(4,8,3);(7,6,3);(5,3,2);(7,0,3);(6,8,2);
+    (1,4,0);(6,0,2);(7,7,0);(2,0,2);(2,10,3);(5,5,2);(7,3,0);(7,9,0);(7,1,1);(3,7,1);(2,3,2);(1,4,2);
+    (2,0,3);(3,9,2);(7,2,3);(1,7,2);(2,0,3);(7,10,1);(4,5,1);(3,3,3);(4,8,0);(6,0,2);(7,6,3);(7,4,1);
+    (1,0,0);(3,9,0);(7,9,2);(1,2,0);(4,7,1);(3,5,3);(7,0,2);(3,3,3);(2,9,0);(1,0,0);(7,5,2);(3,8,2);
+    (3,6,1);(4,4,2);(7,2,2);(3,9,2);(4,5,2);(2,1,30);(2,10,3);(2,4,0);(1,8,3);(5,2,1);(4,0,3);(2,6,3);
+    (1,9,0);(4,3,2);(3,1,1);(4,7,0);(2,3,0);(4,9,0);(7,0,3);(4,7,2);(6,1,0);(2,4,0);(3,0,0);(7,10,3);
+    (3,7,0);(6,4,2);(1,1,2);(4,9,2);(3,6,0);(1,2,2);(6,0,3);(2,7,2);(7,5,3);(5,2,2);(5,9,2);(7,0,3);
+    (3,4,0);(7,7,3);(1,3,2);(4,10,3);]
+
+  let (board,score) = (calcul_score s l);;
+
+  score;;
+
+  int = 1500
+
+  (draw_tetris board);;
+```
+
+<div>
+  <img src="/icons/images/exercices/jfp12/tetris_3.png" 
+    alt="tetris" 
+    width="768" 
+    height="512"
+  />
+</div>

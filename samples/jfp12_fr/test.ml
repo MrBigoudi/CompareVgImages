@@ -1,3 +1,7 @@
+let allow_translations = true;;
+let epsilon = 1e-3;;
+(* let check_color = true;; *)
+
 let q1 () =
   Assume.compatible "get_n_termes_T" [%ty : int -> int -> int list];
   Check.name2 "get_n_termes_T" [%ty : int -> int -> int list]
@@ -17,7 +21,7 @@ let q2_5 () =
   Check.expr1 
       [%code (fun list -> draw_tetris@@gen_matrice@@list)]
       [%ty: (int * int * int * int) list -> Vg.image] 
-      ~equal: Compare.image_equal
+      ~equal: (Compare.image_equal ~epsilon ~allow_translations)
       ~testers: [ Autotest.(tester (list ~length:(nat 100) (tuple4 (int 1 7) (nat 23) (nat 11) (nat 3)))) ]
       [[(1,5,5,0);(1,5,5,0);(1,6,5,0);(1,6,8,0);(2,7,0,0);(2,7,4,0);(2,8,0,0);(2,9,0,0);(3,11,0,0);(4,12,0,0)]];;
 
@@ -34,7 +38,7 @@ let q3 () =
   Check.expr1 
       [%code fun list -> draw_tetris@@gen_matrice_gravity@@list ]
       [%ty: (int * int * int) list -> Vg.image] 
-      ~equal: Compare.image_equal
+      ~equal: (Compare.image_equal ~epsilon ~allow_translations)
       ~testers: [ Autotest.(tester (list ~length:(nat 100) (tuple3 (int 1 7) (nat 11) (nat 3))))]
       [[(1,0,0);(2,1,0);(3,2,0);(4,3,0);(5,4,0);(6,5,0);(7,6,0);(1,7,0);(2,8,0);(3,9,0)]];;
 

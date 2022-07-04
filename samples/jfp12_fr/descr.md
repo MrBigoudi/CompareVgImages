@@ -237,7 +237,7 @@ Qui, étant donné la matrice représentant le plateau de Tetris, crée une imag
 <div>
   <img src="/icons/images/exercices/jfp12/tetris_1.png" 
     alt="tetris" 
-    width="896" 
+    width="768" 
     height="512"
   />
 </div>
@@ -265,4 +265,87 @@ Le troisième entier R est le nombre de fois où la pièce a été tournée.
 
 On peut supposer que l’on peut toujours poser la pièce P sur la première ligne et la colonne C en l’ayant fait tourner préalablement R fois. 
 
-(Il existe des couples (C, R) invalides mais nous ne les utilisons pas dans cette question. En d’autres termes, on suppose dans cette question que l’on peut toujours placer les pièces sur les quatre premières lignes avant de les faire descendre)
+(Il existe des couples (C, R) invalides mais nous ne les utilisons pas dans cette question. En d’autres termes, on suppose dans cette question que l’on peut toujours placer les pièces sur les quatre premières lignes avant de les faire descendre).
+
+Par exemple 
+
+```Ocaml
+  let l = [(1,0,0);(2,1,0);(3,2,0);(4,3,0);(5,4,0);(6,5,0);(7,6,0);(1,7,0);(2,8,0);(3,9,0)]
+
+  let plateau = (gen_matrice_gravity l);;
+
+  (draw_tetris plateau);;
+```
+
+<div>
+  <img src="/icons/images/exercices/jfp12/tetris_2.png" 
+    alt="tetris" 
+    width="768" 
+    height="512"
+  />
+</div>
+
+
+**Question 4 :** CALCUL DU SCORE
+
+Nous avons maintenant tous les ingrédients pour jouer à Tetris. Supposons donné un nombre S: la séquence T (de la question 1) déterminée par ce nombre S nous donne la séquence de pièces présentées au joueur. Le joueur doit décider sur quelle colonne et combien de fois tourner chaque pièce de cette séquence.
+
+Avant de jouer chaque pièce, on vérifie que les quatre premières lignes sont bien vides : dans le cas
+contraire, la partie est terminée. 
+La pièce est alors lâchée où l’a décidé le joueur. Si on ne peut pas lâcher la pièce, alors la partie est terminée.
+
+Ensuite, il se passe la magie de Tetris : si une ligne du plateau est remplie de blocs non vides alors elle est éliminée du plateau et toutes les pièces au-dessus descendent d’une ligne. Si quatre lignes
+contiguës sont éliminées, le joueur gagne 800 points : c’est un Tetris! Si la pièce précédente avait déjà donné lieu à un Tetris, alors il gagne même 1200 points! Sinon, chaque ligne remporte 100.
+
+Réaliser la fonction 
+
+```Ocaml
+  val calcul_score int -> (int*int*int) list -> (int array array)*int
+```
+
+Qui, étant donné le nombre S et une liste de triplets (identique à celle de la question précédente)
+renvoie un tuple contenant la matrice représentant le plateau et le score final.
+
+Le premier entier P d'un triplet est le numéro de la pièce : il doit correspondre au terme de rang N de la suite T (de la question 1) initialisée par S. Sinon, la partie est terminée.
+
+Le second entier C est la colonne où le joueur a décidé de lâcher sa pièce. 
+
+Le troisième entier R est le nombre de fois où la pièce est tournée.
+
+Si on ne peut pas lâcher la pièce sur le plateau (parce que le couple (C, R) fourni la fait sortir du
+plateau) alors la partie est terminée. Sinon, on lâche la pièce sur le plateau et on met à jour le score comme indiqué plus haut.
+
+On passe au triplet suivant. 
+
+S’il n’y a plus de ligne, alors la partie est terminée.
+
+Par exemple
+
+```OCaml
+  let s = 231;;
+
+  let l = [(7,8,2);(3,7,0);(4,4,2);(5,1,2);(1,1,2);(2,10,3);(4,8,3);(7,6,3);(5,3,2);(7,0,3);(6,8,2);
+    (1,4,0);(6,0,2);(7,7,0);(2,0,2);(2,10,3);(5,5,2);(7,3,0);(7,9,0);(7,1,1);(3,7,1);(2,3,2);(1,4,2);
+    (2,0,3);(3,9,2);(7,2,3);(1,7,2);(2,0,3);(7,10,1);(4,5,1);(3,3,3);(4,8,0);(6,0,2);(7,6,3);(7,4,1);
+    (1,0,0);(3,9,0);(7,9,2);(1,2,0);(4,7,1);(3,5,3);(7,0,2);(3,3,3);(2,9,0);(1,0,0);(7,5,2);(3,8,2);
+    (3,6,1);(4,4,2);(7,2,2);(3,9,2);(4,5,2);(2,1,30);(2,10,3);(2,4,0);(1,8,3);(5,2,1);(4,0,3);(2,6,3);
+    (1,9,0);(4,3,2);(3,1,1);(4,7,0);(2,3,0);(4,9,0);(7,0,3);(4,7,2);(6,1,0);(2,4,0);(3,0,0);(7,10,3);
+    (3,7,0);(6,4,2);(1,1,2);(4,9,2);(3,6,0);(1,2,2);(6,0,3);(2,7,2);(7,5,3);(5,2,2);(5,9,2);(7,0,3);
+    (3,4,0);(7,7,3);(1,3,2);(4,10,3);]
+
+  let (plateau,score) = (calcul_score s l);;
+
+  score;;
+
+  int = 1500
+
+  (draw_tetris plateau);;
+```
+
+<div>
+  <img src="/icons/images/exercices/jfp12/tetris_3.png" 
+    alt="tetris" 
+    width="768" 
+    height="512"
+  />
+</div>
