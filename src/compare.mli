@@ -34,7 +34,7 @@
   *)
 val image_equal : ?epsilon:float -> ?check_color:bool -> ?allow_translations:bool -> Vg.image -> Vg.image -> bool
 
-(** Default value as epsilon : 1e-5 *)
+(** Default value for epsilon : 1e-5 *)
 val epsilon : float
 
 
