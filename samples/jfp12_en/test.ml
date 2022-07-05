@@ -27,11 +27,6 @@ let q2_5 () =
       [[(1,5,5,0);(1,5,5,0);(1,6,5,0);(1,6,8,0);(2,7,0,0);(2,7,4,0);(2,8,0,0);(2,9,0,0);(3,11,0,0);(4,12,0,0)]];;
 
 let q3 () =
-  (* Test matrix generation *)
-  Assume.compatible "gen_matrix_gravity" [%ty : (int * int * int) list -> int array array];
-  Check.name1 "gen_matrix_gravity" [%ty : (int * int * int) list -> int array array]
-    ~testers: [ Autotest.(tester (list ~length:(nat 100) (tuple3 (int 1 7) (nat 11) (nat 3))))]
-    [[(1,0,0);(2,1,0);(3,2,0);(4,3,0);(5,4,0);(6,5,0);(7,6,0);(1,7,0);(2,8,0);(3,9,0)]];
   (* Test draw *)
   let gen_matrix_gravity = Get.value "gen_matrix_gravity" [%ty : (int * int * int) list -> int array array] in
   let draw_tetris = Get.value "draw_tetris" [%ty : int array array -> Vg.image] in

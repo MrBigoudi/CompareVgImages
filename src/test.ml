@@ -419,9 +419,10 @@ module Token_getters = struct
       (0 5) Z)" 
     in
     let s2 = "unknown command" in
+    let s3 = "(path)" in
       begin
         Printf.printf "Assert s: '%s'\n" s1;
-        let list = (Compare.ManipulateVg.get_path_token s1 3) in
+        let list = (Compare.ManipulateVg.get_path_token s1 1) in
         (* Compare.ManipulateVg.print_list_paths list; *)
         let (x1,y1) = (0.,5.) in
         (* Printf.printf "t1: (%f,%f)\n" x1 y1; *)
@@ -453,9 +454,15 @@ module Token_getters = struct
                     Printf.printf "Error: (Compare.ManipulateVg.get_path_token %s %d) = (%f,%f)\n" s2 0 x y; 
                   assert false;
                 end
-              with 
+              with
                 _ -> assert true; 
-                Printf.printf "Done\n";
+                begin
+                  Printf.printf "Done\n";
+                  Printf.printf "Assert s: '%s'\n" s3;
+                  let list = (Compare.ManipulateVg.get_path_token s3 1) in
+                  (assert (list=[]));
+                  Printf.printf "Done\n";
+                end
       end;
       Printf.printf "End of tests get path-token.\n\n\n";;
 
@@ -467,7 +474,7 @@ module Token_getters = struct
     let s2 = "unknown command" in
       begin
         Printf.printf "Assert s: '%s'\n" s1;
-        let width = (Compare.ManipulateVg.get_outline_token s1 3) in
+        let width = (Compare.ManipulateVg.get_outline_token s1 1) in
           (assert (width=0.5));
           Printf.printf "Done\n";
           Printf.printf "Assert s: '%s'\n" s2;
@@ -2102,91 +2109,440 @@ let test_image_equal () =
         Z)
         (i-const (0.522522 0.00517162 0.00517162 1)))))))"
   in
-  let comp_image ?epsilon ?allow_translations i1 i2 =
-    let di1 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i1)) in
-      let di2 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i2))
-    in 
-      (Compare.ManipulateVg.compare_list_tuples ?epsilon ?allow_translations di1 di2)
+  let tetris_board = "(i-blend Over
+    (i-blend Over
+    (i-cut
+      (outline (width 0.004) (cap Butt) (join Miter) (miter-angle 0.200713))
+      (path S (0.21 0) L (0.714 0) Z S (0.21 0.042) L (0.714 0.042) Z S
+      (0.21 0.084) L (0.714 0.084) Z S (0.21 0.126) L (0.714 0.126) Z S
+      (0.21 0.168) L (0.714 0.168) Z S (0.21 0.21) L (0.714 0.21) Z S
+      (0.21 0.252) L (0.714 0.252) Z S (0.21 0.294) L (0.714 0.294) Z S
+      (0.21 0.336) L (0.714 0.336) Z S (0.21 0.378) L (0.714 0.378) Z S
+      (0.21 0.42) L (0.714 0.42) Z S (0.21 0.462) L (0.714 0.462) Z S
+      (0.21 0.504) L (0.714 0.504) Z S (0.21 0.546) L (0.714 0.546) Z S
+      (0.21 0.588) L (0.714 0.588) Z S (0.21 0.63) L (0.714 0.63) Z S
+      (0.21 0.672) L (0.714 0.672) Z S (0.21 0.714) L (0.714 0.714) Z S
+      (0.21 0.756) L (0.714 0.756) Z S (0.21 0.798) L (0.714 0.798) Z S
+      (0.21 0.84) L (0.714 0.84) Z S (0.21 0.882) L (0.714 0.882) Z S
+      (0.21 0.924) L (0.714 0.924) Z S (0.21 0.966) L (0.714 0.966) Z S
+      (0.21 1.008) L (0.714 1.008) Z)
+      (i-const (0 0 0 0.5)))
+    (i-cut
+      (outline (width 0.004) (cap Butt) (join Miter) (miter-angle 0.200713))
+      (path S (0.21 0) L (0.21 1.008) Z S (0.252 0) L (0.252 1.008) Z S
+      (0.294 0) L (0.294 1.008) Z S (0.336 0) L (0.336 1.008) Z S (0.378 0) L
+      (0.378 1.008) Z S (0.42 0) L (0.42 1.008) Z S (0.462 0) L (0.462 1.008) Z
+      S (0.504 0) L (0.504 1.008) Z S (0.546 0) L (0.546 1.008) Z S (0.588 0) L
+      (0.588 1.008) Z S (0.63 0) L (0.63 1.008) Z S (0.672 0) L (0.672 1.008) Z
+      S (0.714 0) L (0.714 1.008) Z)
+      (i-const (0 0 0 0.5))))
+    (i-blend Over
+    (i-cut anz
+      (path S (0.504 0.63) L (0.544 0.63) L (0.544 0.67) L (0.504 0.67) L
+      (0.504 0.63) Z S (0.546 0.63) L (0.586 0.63) L (0.586 0.67) L
+      (0.546 0.67) L (0.546 0.63) Z S (0.21 0.588) L (0.25 0.588) L
+      (0.25 0.628) L (0.21 0.628) L (0.21 0.588) Z S (0.252 0.588) L
+      (0.292 0.588) L (0.292 0.628) L (0.252 0.628) L (0.252 0.588) Z S
+      (0.504 0.588) L (0.544 0.588) L (0.544 0.628) L (0.504 0.628) L
+      (0.504 0.588) Z S (0.546 0.588) L (0.586 0.588) L (0.586 0.628) L
+      (0.546 0.628) L (0.546 0.588) Z S (0.21 0.546) L (0.25 0.546) L
+      (0.25 0.586) L (0.21 0.586) L (0.21 0.546) Z S (0.252 0.546) L
+      (0.292 0.546) L (0.292 0.586) L (0.252 0.586) L (0.252 0.546) Z S
+      (0.42 0.546) L (0.46 0.546) L (0.46 0.586) L (0.42 0.586) L (0.42 0.546)
+      Z S (0.462 0.546) L (0.502 0.546) L (0.502 0.586) L (0.462 0.586) L
+      (0.462 0.546) Z S (0.42 0.504) L (0.46 0.504) L (0.46 0.544) L
+      (0.42 0.544) L (0.42 0.504) Z S (0.462 0.504) L (0.502 0.504) L
+      (0.502 0.544) L (0.462 0.544) L (0.462 0.504) Z S (0.63 0.42) L
+      (0.67 0.42) L (0.67 0.46) L (0.63 0.46) L (0.63 0.42) Z S (0.672 0.42) L
+      (0.712 0.42) L (0.712 0.46) L (0.672 0.46) L (0.672 0.42) Z S
+      (0.21 0.378) L (0.25 0.378) L (0.25 0.418) L (0.21 0.418) L (0.21 0.378)
+      Z S (0.252 0.378) L (0.292 0.378) L (0.292 0.418) L (0.252 0.418) L
+      (0.252 0.378) Z S (0.21 0.336) L (0.25 0.336) L (0.25 0.376) L
+      (0.21 0.376) L (0.21 0.336) Z S (0.252 0.336) L (0.292 0.336) L
+      (0.292 0.376) L (0.252 0.376) L (0.252 0.336) Z S (0.546 0.294) L
+      (0.586 0.294) L (0.586 0.334) L (0.546 0.334) L (0.546 0.294) Z S
+      (0.588 0.294) L (0.628 0.294) L (0.628 0.334) L (0.588 0.334) L
+      (0.588 0.294) Z S (0.42 0.168) L (0.46 0.168) L (0.46 0.208) L
+      (0.42 0.208) L (0.42 0.168) Z S (0.462 0.168) L (0.502 0.168) L
+      (0.502 0.208) L (0.462 0.208) L (0.462 0.168) Z S (0.462 0.126) L
+      (0.502 0.126) L (0.502 0.166) L (0.462 0.166) L (0.462 0.126) Z S
+      (0.504 0.126) L (0.544 0.126) L (0.544 0.166) L (0.504 0.166) L
+      (0.504 0.126) Z)
+      (i-const (1 1 0.000309598 1)))
+    (i-blend Over
+      (i-cut anz
+      (path S (0.21 0.504) L (0.25 0.504) L (0.25 0.544) L (0.21 0.544) L
+        (0.21 0.504) Z S (0.21 0.462) L (0.25 0.462) L (0.25 0.502) L
+        (0.21 0.502) L (0.21 0.462) Z S (0.252 0.462) L (0.292 0.462) L
+        (0.292 0.502) L (0.252 0.502) L (0.252 0.462) Z S (0.378 0.42) L
+        (0.418 0.42) L (0.418 0.46) L (0.378 0.46) L (0.378 0.42) Z S
+        (0.42 0.42) L (0.46 0.42) L (0.46 0.46) L (0.42 0.46) L (0.42 0.42) Z S
+        (0.462 0.42) L (0.502 0.42) L (0.502 0.46) L (0.462 0.46) L (0.462 0.42)
+        Z S (0.294 0.378) L (0.334 0.378) L (0.334 0.418) L (0.294 0.418) L
+        (0.294 0.378) Z S (0.504 0.378) L (0.544 0.378) L (0.544 0.418) L
+        (0.504 0.418) L (0.504 0.378) Z S (0.546 0.378) L (0.586 0.378) L
+        (0.586 0.418) L (0.546 0.418) L (0.546 0.378) Z S (0.588 0.378) L
+        (0.628 0.378) L (0.628 0.418) L (0.588 0.418) L (0.588 0.378) Z S
+        (0.294 0.336) L (0.334 0.336) L (0.334 0.376) L (0.294 0.376) L
+        (0.294 0.336) Z S (0.546 0.336) L (0.586 0.336) L (0.586 0.376) L
+        (0.546 0.376) L (0.546 0.336) Z S (0.21 0.294) L (0.25 0.294) L
+        (0.25 0.334) L (0.21 0.334) L (0.21 0.294) Z S (0.252 0.294) L
+        (0.292 0.294) L (0.292 0.334) L (0.252 0.334) L (0.252 0.294) Z S
+        (0.294 0.294) L (0.334 0.294) L (0.334 0.334) L (0.294 0.334) L
+        (0.294 0.294) Z S (0.336 0.294) L (0.376 0.294) L (0.376 0.334) L
+        (0.336 0.334) L (0.336 0.294) Z S (0.294 0.252) L (0.334 0.252) L
+        (0.334 0.292) L (0.294 0.292) L (0.294 0.252) Z S (0.504 0.252) L
+        (0.544 0.252) L (0.544 0.292) L (0.504 0.292) L (0.504 0.252) Z S
+        (0.462 0.21) L (0.502 0.21) L (0.502 0.25) L (0.462 0.25) L (0.462 0.21)
+        Z S (0.504 0.21) L (0.544 0.21) L (0.544 0.25) L (0.504 0.25) L
+        (0.504 0.21) Z S (0.294 0.168) L (0.334 0.168) L (0.334 0.208) L
+        (0.294 0.208) L (0.294 0.168) Z S (0.336 0.168) L (0.376 0.168) L
+        (0.376 0.208) L (0.336 0.208) L (0.336 0.168) Z S (0.378 0.168) L
+        (0.418 0.168) L (0.418 0.208) L (0.378 0.208) L (0.378 0.168) Z S
+        (0.504 0.168) L (0.544 0.168) L (0.544 0.208) L (0.504 0.208) L
+        (0.504 0.168) Z S (0.546 0.168) L (0.586 0.168) L (0.586 0.208) L
+        (0.546 0.208) L (0.546 0.168) Z S (0.252 0.126) L (0.292 0.126) L
+        (0.292 0.166) L (0.252 0.166) L (0.252 0.126) Z S (0.546 0.126) L
+        (0.586 0.126) L (0.586 0.166) L (0.546 0.166) L (0.546 0.126) Z S
+        (0.588 0.126) L (0.628 0.126) L (0.628 0.166) L (0.588 0.166) L
+        (0.588 0.126) Z S (0.63 0.126) L (0.67 0.126) L (0.67 0.166) L
+        (0.63 0.166) L (0.63 0.126) Z S (0.63 0.084) L (0.67 0.084) L
+        (0.67 0.124) L (0.63 0.124) L (0.63 0.084) Z)
+      (i-const (0.16186 0.0294883 0.350975 1)))
+      (i-blend Over
+      (i-cut anz
+        (path S (0.588 0.588) L (0.628 0.588) L (0.628 0.628) L (0.588 0.628) L
+        (0.588 0.588) Z S (0.63 0.588) L (0.67 0.588) L (0.67 0.628) L
+        (0.63 0.628) L (0.63 0.588) Z S (0.294 0.546) L (0.334 0.546) L
+        (0.334 0.586) L (0.294 0.586) L (0.294 0.546) Z S (0.336 0.546) L
+        (0.376 0.546) L (0.376 0.586) L (0.336 0.586) L (0.336 0.546) Z S
+        (0.63 0.546) L (0.67 0.546) L (0.67 0.586) L (0.63 0.586) L
+        (0.63 0.546) Z S (0.672 0.546) L (0.712 0.546) L (0.712 0.586) L
+        (0.672 0.586) L (0.672 0.546) Z S (0.336 0.504) L (0.376 0.504) L
+        (0.376 0.544) L (0.336 0.544) L (0.336 0.504) Z S (0.378 0.504) L
+        (0.418 0.504) L (0.418 0.544) L (0.378 0.544) L (0.378 0.504) Z S
+        (0.336 0.336) L (0.376 0.336) L (0.376 0.376) L (0.336 0.376) L
+        (0.336 0.336) Z S (0.378 0.336) L (0.418 0.336) L (0.418 0.376) L
+        (0.378 0.376) L (0.378 0.336) Z S (0.378 0.294) L (0.418 0.294) L
+        (0.418 0.334) L (0.378 0.334) L (0.378 0.294) Z S (0.42 0.294) L
+        (0.46 0.294) L (0.46 0.334) L (0.42 0.334) L (0.42 0.294) Z S
+        (0.546 0.084) L (0.586 0.084) L (0.586 0.124) L (0.546 0.124) L
+        (0.546 0.084) Z S (0.588 0.084) L (0.628 0.084) L (0.628 0.124) L
+        (0.588 0.124) L (0.588 0.084) Z S (0.378 0.042) L (0.418 0.042) L
+        (0.418 0.082) L (0.378 0.082) L (0.378 0.042) Z S (0.42 0.042) L
+        (0.46 0.042) L (0.46 0.082) L (0.42 0.082) L (0.42 0.042) Z S (0.42 0)
+        L (0.46 0) L (0.46 0.04) L (0.42 0.04) L (0.42 0) Z S (0.462 0) L
+        (0.502 0) L (0.502 0.04) L (0.462 0.04) L (0.462 0) Z)
+        (i-const (1 0 0 1)))
+      (i-blend Over
+        (i-cut anz
+        (path S (0.63 0.672) L (0.67 0.672) L (0.67 0.712) L (0.63 0.712) L
+          (0.63 0.672) Z S (0.63 0.63) L (0.67 0.63) L (0.67 0.67) L (0.63 0.67)
+          L (0.63 0.63) Z S (0.672 0.63) L (0.712 0.63) L (0.712 0.67) L
+          (0.672 0.67) L (0.672 0.63) Z S (0.672 0.588) L (0.712 0.588) L
+          (0.712 0.628) L (0.672 0.628) L (0.672 0.588) Z S (0.63 0.504) L
+          (0.67 0.504) L (0.67 0.544) L (0.63 0.544) L (0.63 0.504) Z S
+          (0.672 0.504) L (0.712 0.504) L (0.712 0.544) L (0.672 0.544) L
+          (0.672 0.504) Z S (0.588 0.462) L (0.628 0.462) L (0.628 0.502) L
+          (0.588 0.502) L (0.588 0.462) Z S (0.63 0.462) L (0.67 0.462) L
+          (0.67 0.502) L (0.63 0.502) L (0.63 0.462) Z S (0.546 0.42) L
+          (0.586 0.42) L (0.586 0.46) L (0.546 0.46) L (0.546 0.42) Z S
+          (0.588 0.42) L (0.628 0.42) L (0.628 0.46) L (0.588 0.46) L
+          (0.588 0.42) Z S (0.462 0.336) L (0.502 0.336) L (0.502 0.376) L
+          (0.462 0.376) L (0.462 0.336) Z S (0.462 0.294) L (0.502 0.294) L
+          (0.502 0.334) L (0.462 0.334) L (0.462 0.294) Z S (0.504 0.294) L
+          (0.544 0.294) L (0.544 0.334) L (0.504 0.334) L (0.504 0.294) Z S
+          (0.336 0.252) L (0.376 0.252) L (0.376 0.292) L (0.336 0.292) L
+          (0.336 0.252) Z S (0.378 0.252) L (0.418 0.252) L (0.418 0.292) L
+          (0.378 0.292) L (0.378 0.252) Z S (0.42 0.252) L (0.46 0.252) L
+          (0.46 0.292) L (0.42 0.292) L (0.42 0.252) Z S (0.462 0.252) L
+          (0.502 0.252) L (0.502 0.292) L (0.462 0.292) L (0.462 0.252) Z S
+          (0.294 0.21) L (0.334 0.21) L (0.334 0.25) L (0.294 0.25) L
+          (0.294 0.21) Z S (0.336 0.21) L (0.376 0.21) L (0.376 0.25) L
+          (0.336 0.25) L (0.336 0.21) Z S (0.378 0.21) L (0.418 0.21) L
+          (0.418 0.25) L (0.378 0.25) L (0.378 0.21) Z S (0.42 0.21) L
+          (0.46 0.21) L (0.46 0.25) L (0.42 0.25) L (0.42 0.21) Z S (0.21 0.168)
+          L (0.25 0.168) L (0.25 0.208) L (0.21 0.208) L (0.21 0.168) Z S
+          (0.252 0.168) L (0.292 0.168) L (0.292 0.208) L (0.252 0.208) L
+          (0.252 0.168) Z S (0.588 0.168) L (0.628 0.168) L (0.628 0.208) L
+          (0.588 0.208) L (0.588 0.168) Z S (0.63 0.168) L (0.67 0.168) L
+          (0.67 0.208) L (0.63 0.208) L (0.63 0.168) Z S (0.336 0.126) L
+          (0.376 0.126) L (0.376 0.166) L (0.336 0.166) L (0.336 0.126) Z S
+          (0.294 0.084) L (0.334 0.084) L (0.334 0.124) L (0.294 0.124) L
+          (0.294 0.084) Z S (0.378 0.084) L (0.418 0.084) L (0.418 0.124) L
+          (0.378 0.124) L (0.378 0.084) Z S (0.252 0.042) L (0.292 0.042) L
+          (0.292 0.082) L (0.252 0.082) L (0.252 0.042) Z S (0.294 0.042) L
+          (0.334 0.042) L (0.334 0.082) L (0.294 0.082) L (0.294 0.042) Z S
+          (0.672 0.042) L (0.712 0.042) L (0.712 0.082) L (0.672 0.082) L
+          (0.672 0.042) Z)
+        (i-const (0.287937 0.638283 0.0782883 1)))
+        (i-blend Over
+        (i-cut anz
+          (path S (0.378 0.588) L (0.418 0.588) L (0.418 0.628) L (0.378 0.628)
+          L (0.378 0.588) Z S (0.42 0.588) L (0.46 0.588) L (0.46 0.628) L
+          (0.42 0.628) L (0.42 0.588) Z S (0.462 0.588) L (0.502 0.588) L
+          (0.502 0.628) L (0.462 0.628) L (0.462 0.588) Z S (0.378 0.546) L
+          (0.418 0.546) L (0.418 0.586) L (0.378 0.586) L (0.378 0.546) Z S
+          (0.462 0.462) L (0.502 0.462) L (0.502 0.502) L (0.462 0.502) L
+          (0.462 0.462) Z S (0.504 0.462) L (0.544 0.462) L (0.544 0.502) L
+          (0.504 0.502) L (0.504 0.462) Z S (0.546 0.462) L (0.586 0.462) L
+          (0.586 0.502) L (0.546 0.502) L (0.546 0.462) Z S (0.21 0.42) L
+          (0.25 0.42) L (0.25 0.46) L (0.21 0.46) L (0.21 0.42) Z S
+          (0.252 0.42) L (0.292 0.42) L (0.292 0.46) L (0.252 0.46) L
+          (0.252 0.42) Z S (0.294 0.42) L (0.334 0.42) L (0.334 0.46) L
+          (0.294 0.46) L (0.294 0.42) Z S (0.504 0.42) L (0.544 0.42) L
+          (0.544 0.46) L (0.504 0.46) L (0.504 0.42) Z S (0.21 0.126) L
+          (0.25 0.126) L (0.25 0.166) L (0.21 0.166) L (0.21 0.126) Z S
+          (0.42 0.126) L (0.46 0.126) L (0.46 0.166) L (0.42 0.166) L
+          (0.42 0.126) Z S (0.42 0.084) L (0.46 0.084) L (0.46 0.124) L
+          (0.42 0.124) L (0.42 0.084) Z S (0.462 0.084) L (0.502 0.084) L
+          (0.502 0.124) L (0.462 0.124) L (0.462 0.084) Z S (0.672 0.084) L
+          (0.712 0.084) L (0.712 0.124) L (0.672 0.124) L (0.672 0.084) Z S
+          (0.336 0.042) L (0.376 0.042) L (0.376 0.082) L (0.336 0.082) L
+          (0.336 0.042) Z S (0.462 0.042) L (0.502 0.042) L (0.502 0.082) L
+          (0.462 0.082) L (0.462 0.042) Z S (0.504 0.042) L (0.544 0.042) L
+          (0.544 0.082) L (0.504 0.082) L (0.504 0.042) Z S (0.546 0.042) L
+          (0.586 0.042) L (0.586 0.082) L (0.546 0.082) L (0.546 0.042) Z S
+          (0.588 0.042) L (0.628 0.042) L (0.628 0.082) L (0.588 0.082) L
+          (0.588 0.042) Z S (0.252 0) L (0.292 0) L (0.292 0.04) L (0.252 0.04)
+          L (0.252 0) Z S (0.294 0) L (0.334 0) L (0.334 0.04) L (0.294 0.04) L
+          (0.294 0) Z S (0.336 0) L (0.376 0) L (0.376 0.04) L (0.336 0.04) L
+          (0.336 0) Z S (0.504 0) L (0.544 0) L (0.544 0.04) L (0.504 0.04) L
+          (0.504 0) Z)
+          (i-const (1 0.527207 0 1)))
+        (i-blend Over
+          (i-cut anz
+          (path S (0.504 0.546) L (0.544 0.546) L (0.544 0.586) L (0.504 0.586)
+            L (0.504 0.546) Z S (0.504 0.504) L (0.544 0.504) L (0.544 0.544) L
+            (0.504 0.544) L (0.504 0.504) Z S (0.546 0.504) L (0.586 0.504) L
+            (0.586 0.544) L (0.546 0.544) L (0.546 0.504) Z S (0.588 0.504) L
+            (0.628 0.504) L (0.628 0.544) L (0.588 0.544) L (0.588 0.504) Z S
+            (0.336 0.378) L (0.376 0.378) L (0.376 0.418) L (0.336 0.418) L
+            (0.336 0.378) Z S (0.378 0.378) L (0.418 0.378) L (0.418 0.418) L
+            (0.378 0.418) L (0.378 0.378) Z S (0.42 0.378) L (0.46 0.378) L
+            (0.46 0.418) L (0.42 0.418) L (0.42 0.378) Z S (0.462 0.378) L
+            (0.502 0.378) L (0.502 0.418) L (0.462 0.418) L (0.462 0.378) Z S
+            (0.672 0.378) L (0.712 0.378) L (0.712 0.418) L (0.672 0.418) L
+            (0.672 0.378) Z S (0.42 0.336) L (0.46 0.336) L (0.46 0.376) L
+            (0.42 0.376) L (0.42 0.336) Z S (0.588 0.336) L (0.628 0.336) L
+            (0.628 0.376) L (0.588 0.376) L (0.588 0.336) Z S (0.63 0.336) L
+            (0.67 0.336) L (0.67 0.376) L (0.63 0.376) L (0.63 0.336) Z S
+            (0.672 0.336) L (0.712 0.336) L (0.712 0.376) L (0.672 0.376) L
+            (0.672 0.336) Z S (0.672 0.294) L (0.712 0.294) L (0.712 0.334) L
+            (0.672 0.334) L (0.672 0.294) Z S (0.252 0.252) L (0.292 0.252) L
+            (0.292 0.292) L (0.252 0.292) L (0.252 0.252) Z S (0.588 0.252) L
+            (0.628 0.252) L (0.628 0.292) L (0.588 0.292) L (0.588 0.252) Z S
+            (0.63 0.252) L (0.67 0.252) L (0.67 0.292) L (0.63 0.292) L
+            (0.63 0.252) Z S (0.672 0.252) L (0.712 0.252) L (0.712 0.292) L
+            (0.672 0.292) L (0.672 0.252) Z S (0.252 0.21) L (0.292 0.21) L
+            (0.292 0.25) L (0.252 0.25) L (0.252 0.21) Z S (0.672 0.126) L
+            (0.712 0.126) L (0.712 0.166) L (0.672 0.166) L (0.672 0.126) Z S
+            (0.21 0.084) L (0.25 0.084) L (0.25 0.124) L (0.21 0.124) L
+            (0.21 0.084) Z S (0.252 0.084) L (0.292 0.084) L (0.292 0.124) L
+            (0.252 0.124) L (0.252 0.084) Z S (0.21 0.042) L (0.25 0.042) L
+            (0.25 0.082) L (0.21 0.082) L (0.21 0.042) Z S (0.21 0) L (0.25 0) L
+            (0.25 0.04) L (0.21 0.04) L (0.21 0) Z)
+          (i-const (0 0.165023 0.533493 1)))
+          (i-blend Over
+          (i-cut anz
+            (path S (0.336 0.63) L (0.376 0.63) L (0.376 0.67) L (0.336 0.67) L
+            (0.336 0.63) Z S (0.378 0.63) L (0.418 0.63) L (0.418 0.67) L
+            (0.378 0.67) L (0.378 0.63) Z S (0.42 0.63) L (0.46 0.63) L
+            (0.46 0.67) L (0.42 0.67) L (0.42 0.63) Z S (0.462 0.63) L
+            (0.502 0.63) L (0.502 0.67) L (0.462 0.67) L (0.462 0.63) Z S
+            (0.294 0.462) L (0.334 0.462) L (0.334 0.502) L (0.294 0.502) L
+            (0.294 0.462) Z S (0.336 0.462) L (0.376 0.462) L (0.376 0.502) L
+            (0.336 0.502) L (0.336 0.462) Z S (0.378 0.462) L (0.418 0.462) L
+            (0.418 0.502) L (0.378 0.502) L (0.378 0.462) Z S (0.42 0.462) L
+            (0.46 0.462) L (0.46 0.502) L (0.42 0.502) L (0.42 0.462) Z S
+            (0.546 0.21) L (0.586 0.21) L (0.586 0.25) L (0.546 0.25) L
+            (0.546 0.21) Z S (0.588 0.21) L (0.628 0.21) L (0.628 0.25) L
+            (0.588 0.25) L (0.588 0.21) Z S (0.63 0.21) L (0.67 0.21) L
+            (0.67 0.25) L (0.63 0.25) L (0.63 0.21) Z S (0.672 0.21) L
+            (0.712 0.21) L (0.712 0.25) L (0.672 0.25) L (0.672 0.21) Z S
+            (0.546 0) L (0.586 0) L (0.586 0.04) L (0.546 0.04) L (0.546 0) Z S
+            (0.588 0) L (0.628 0) L (0.628 0.04) L (0.588 0.04) L (0.588 0) Z S
+            (0.63 0) L (0.67 0) L (0.67 0.04) L (0.63 0.04) L (0.63 0) Z S
+            (0.672 0) L (0.712 0) L (0.712 0.04) L (0.672 0.04) L (0.672 0) Z)
+            (i-const (0.000309598 0.43388 0.879415 1)))
+          (i-const (1 1 1 1))))))))))"
   in
-  let comp_image_color ?epsilon ?allow_translations i1 i2 =
-    let di1 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i1)) in
-      let di2 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i2))
-    in 
-      (Compare.ManipulateVg.compare_list_colors ?epsilon ?allow_translations di1 di2)
-  in 
+  let tetris_board_easy = "(i-blend Over
+    (i-blend Over
+    (i-cut
+      (outline (width 0.004) (cap Butt) (join Miter) (miter-angle 0.200713))
+      (path S (0.21 0) L (0.714 0) Z S (0.21 0.042) L (0.714 0.042) Z S
+      (0.21 0.084) L (0.714 0.084) Z S (0.21 0.126) L (0.714 0.126) Z S
+      (0.21 0.168) L (0.714 0.168) Z S (0.21 0.21) L (0.714 0.21) Z S
+      (0.21 0.252) L (0.714 0.252) Z S (0.21 0.294) L (0.714 0.294) Z S
+      (0.21 0.336) L (0.714 0.336) Z S (0.21 0.378) L (0.714 0.378) Z S
+      (0.21 0.42) L (0.714 0.42) Z S (0.21 0.462) L (0.714 0.462) Z S
+      (0.21 0.504) L (0.714 0.504) Z S (0.21 0.546) L (0.714 0.546) Z S
+      (0.21 0.588) L (0.714 0.588) Z S (0.21 0.63) L (0.714 0.63) Z S
+      (0.21 0.672) L (0.714 0.672) Z S (0.21 0.714) L (0.714 0.714) Z S
+      (0.21 0.756) L (0.714 0.756) Z S (0.21 0.798) L (0.714 0.798) Z S
+      (0.21 0.84) L (0.714 0.84) Z S (0.21 0.882) L (0.714 0.882) Z S
+      (0.21 0.924) L (0.714 0.924) Z S (0.21 0.966) L (0.714 0.966) Z S
+      (0.21 1.008) L (0.714 1.008) Z)
+      (i-const (0 0 0 0.5)))
+    (i-cut
+      (outline (width 0.004) (cap Butt) (join Miter) (miter-angle 0.200713))
+      (path S (0.21 0) L (0.21 1.008) Z S (0.252 0) L (0.252 1.008) Z S
+      (0.294 0) L (0.294 1.008) Z S (0.336 0) L (0.336 1.008) Z S (0.378 0) L
+      (0.378 1.008) Z S (0.42 0) L (0.42 1.008) Z S (0.462 0) L (0.462 1.008) Z
+      S (0.504 0) L (0.504 1.008) Z S (0.546 0) L (0.546 1.008) Z S (0.588 0) L
+      (0.588 1.008) Z S (0.63 0) L (0.63 1.008) Z S (0.672 0) L (0.672 1.008) Z
+      S (0.714 0) L (0.714 1.008) Z)
+      (i-const (0 0 0 0.5))))
+    (i-blend Over (i-cut anz (path) (i-const (1 1 0.000309598 1)))
+    (i-blend Over (i-cut anz (path) (i-const (0.16186 0.0294883 0.350975 1)))
+      (i-blend Over (i-cut anz (path) (i-const (1 0 0 1)))
+      (i-blend Over
+        (i-cut anz
+        (path S (0.252 0.462) L (0.292 0.462) L (0.292 0.502) L (0.252 0.502) L
+          (0.252 0.462) Z S (0.294 0.462) L (0.334 0.462) L (0.334 0.502) L
+          (0.294 0.502) L (0.294 0.462) Z S (0.21 0.42) L (0.25 0.42) L
+          (0.25 0.46) L (0.21 0.46) L (0.21 0.42) Z S (0.252 0.42) L
+          (0.292 0.42) L (0.292 0.46) L (0.252 0.46) L (0.252 0.42) Z)
+        (i-const (0.287937 0.638283 0.0782883 1)))
+        (i-blend Over
+        (i-cut anz
+          (path S (0.21 0.504) L (0.25 0.504) L (0.25 0.544) L (0.21 0.544) L
+          (0.21 0.504) Z S (0.252 0.504) L (0.292 0.504) L (0.292 0.544) L
+          (0.252 0.544) L (0.252 0.504) Z S (0.294 0.504) L (0.334 0.504) L
+          (0.334 0.544) L (0.294 0.544) L (0.294 0.504) Z S (0.21 0.462) L
+          (0.25 0.462) L (0.25 0.502) L (0.21 0.502) L (0.21 0.462) Z)
+          (i-const (1 0.527207 0 1)))
+        (i-blend Over
+          (i-cut anz
+          (path S (0.21 0.672) L (0.25 0.672) L (0.25 0.712) L (0.21 0.712) L
+            (0.21 0.672) Z S (0.252 0.672) L (0.292 0.672) L (0.292 0.712) L
+            (0.252 0.712) L (0.252 0.672) Z S (0.294 0.672) L (0.334 0.672) L
+            (0.334 0.712) L (0.294 0.712) L (0.294 0.672) Z S (0.378 0.672) L
+            (0.418 0.672) L (0.418 0.712) L (0.378 0.712) L (0.378 0.672) Z S
+            (0.42 0.672) L (0.46 0.672) L (0.46 0.712) L (0.42 0.712) L
+            (0.42 0.672) Z S (0.462 0.672) L (0.502 0.672) L (0.502 0.712) L
+            (0.462 0.712) L (0.462 0.672) Z S (0.294 0.63) L (0.334 0.63) L
+            (0.334 0.67) L (0.294 0.67) L (0.294 0.63) Z S (0.462 0.63) L
+            (0.502 0.63) L (0.502 0.67) L (0.462 0.67) L (0.462 0.63) Z S
+            (0.21 0.588) L (0.25 0.588) L (0.25 0.628) L (0.21 0.628) L
+            (0.21 0.588) Z S (0.252 0.588) L (0.292 0.588) L (0.292 0.628) L
+            (0.252 0.628) L (0.252 0.588) Z S (0.294 0.588) L (0.334 0.588) L
+            (0.334 0.628) L (0.294 0.628) L (0.294 0.588) Z S (0.294 0.546) L
+            (0.334 0.546) L (0.334 0.586) L (0.294 0.586) L (0.294 0.546) Z)
+          (i-const (0 0.165023 0.533493 1)))
+          (i-blend Over
+          (i-cut anz
+            (path S (0.42 0.756) L (0.46 0.756) L (0.46 0.796) L (0.42 0.796) L
+            (0.42 0.756) Z S (0.462 0.756) L (0.502 0.756) L (0.502 0.796) L
+            (0.462 0.796) L (0.462 0.756) Z S (0.504 0.756) L (0.544 0.756) L
+            (0.544 0.796) L (0.504 0.796) L (0.504 0.756) Z S (0.546 0.756) L
+            (0.586 0.756) L (0.586 0.796) L (0.546 0.796) L (0.546 0.756) Z S
+            (0.42 0.714) L (0.46 0.714) L (0.46 0.754) L (0.42 0.754) L
+            (0.42 0.714) Z S (0.462 0.714) L (0.502 0.714) L (0.502 0.754) L
+            (0.462 0.754) L (0.462 0.714) Z S (0.504 0.714) L (0.544 0.714) L
+            (0.544 0.754) L (0.504 0.754) L (0.504 0.714) Z S (0.546 0.714) L
+            (0.586 0.714) L (0.586 0.754) L (0.546 0.754) L (0.546 0.714) Z)
+            (i-const (0.000309598 0.43388 0.879415 1)))
+          (i-const (1 1 1 1))))))))))"
+  in
+  let image_equal ?(epsilon) ?(check_color=false) ?(allow_translations) i1 i2 =
+    if check_color then
+      let di1 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i1)) in
+        let di2 = (Compare.ManipulateVg.get_points_color (Compare.ManipulateVg.create_i_tree i2)) in
+          (Compare.ManipulateVg.compare_list_colors ?epsilon ?allow_translations di1 di2)
+    else
+      let di1 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i1)) in
+        let di2 = (Compare.ManipulateVg.get_points (Compare.ManipulateVg.create_i_tree i2)) in 
+          (Compare.ManipulateVg.compare_list_tuples ?epsilon ?allow_translations di1 di2)
+  in
+  let check_color = true 
+  in
   begin
     (*test without colors*)
     Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" Compare.epsilon;
-    (assert (comp_image tetris_j tetris_j_rotate_4_times));
+    (assert (image_equal tetris_j tetris_j_rotate_4_times));
     Printf.printf "Done\n";
   end;
   begin
     (*test with colors*)
     Printf.printf "Starting tests considering colors, epsilon: %f\n" Compare.epsilon;
-    (assert (comp_image_color tetris_j tetris_j_rotate_4_times));
+    (assert (image_equal ~check_color tetris_j tetris_j_rotate_4_times));
     Printf.printf "Done\n";
   end;
   begin
     (*test without colors*)
     Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" Compare.epsilon;
-    (assert (comp_image tetris_z tetris_z_different_color));
+    (assert (image_equal tetris_z tetris_z_different_color));
     Printf.printf "Done\n";
   end;
   begin
     (*test with colors*)
     Printf.printf "Starting tests considering colors, epsilon: %f\n" Compare.epsilon;
-    (assert ((comp_image_color tetris_z tetris_z_different_color)==false));
+    (assert ((image_equal ~check_color tetris_z tetris_z_different_color)==false));
     Printf.printf "Done\n";
   end;
   begin
     (*test without colors*)
     Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" Compare.epsilon;
-    (assert ((comp_image tetris_z tetris_z_decale)==false));
+    (assert ((image_equal tetris_z tetris_z_decale)==false));
     Printf.printf "Done\n";
   end;
   begin
     (*test with colors*)
     Printf.printf "Starting tests considering colors, epsilon: %f\n" Compare.epsilon;
-    (assert ((comp_image_color tetris_z tetris_z_decale)==false));
+    (assert ((image_equal ~check_color tetris_z tetris_z_decale)==false));
     Printf.printf "Done\n";
   end;
   let allow_translations = true in
   begin
     (*test without colors*)
     Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" Compare.epsilon;
-    (assert (comp_image ~allow_translations tetris_z tetris_z_decale));
+    (assert (image_equal ~allow_translations tetris_z tetris_z_decale));
     Printf.printf "Done\n";
   end;
   begin
     (*test with colors*)
     Printf.printf "Starting tests considering colors, epsilon: %f\n" Compare.epsilon;
-    (assert (comp_image_color ~allow_translations tetris_z tetris_z_decale));
+    (assert (image_equal ~check_color ~allow_translations tetris_z tetris_z_decale));
     Printf.printf "Done\n";
   end;
   let epsilon = 1e-4 in
   begin
     (*test without colors, greater epsilon*)
     Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" epsilon;
-    (assert (comp_image ~epsilon tetris_j tetris_j_rotate_4_times));
+    (assert (image_equal ~epsilon tetris_j tetris_j_rotate_4_times));
     Printf.printf "Done\n";
   end;
   begin
     (*test with colors, greater epsilon*)
     Printf.printf "Starting tests considering colors, epsilon: %f\n" epsilon;
-    (assert (comp_image_color ~epsilon tetris_j tetris_j_rotate_4_times));
+    (assert (image_equal ~check_color ~epsilon tetris_j tetris_j_rotate_4_times));
+    Printf.printf "Done\n";
+  end;
+  begin
+    (*test with colors, greater epsilon*)
+    Printf.printf "Starting tests considering colors, epsilon: %f\n" epsilon;
+    (assert ((image_equal ~check_color ~epsilon tetris_board_easy tetris_board)==false));
+    Printf.printf "Done\n";
+  end;
+  begin
+    (*test with colors, greater epsilon*)
+    Printf.printf "Starting tests considering colors, epsilon: %f\n" epsilon;
+    (assert (image_equal ~check_color ~epsilon tetris_board tetris_board));
     Printf.printf "Done\n";
   end;
   let epsilon = 1e-6 in
   begin
     (*test without colors, greater epsilon*)
     Printf.printf "\nStarting tests without considering colors, epsilon: %f\n" epsilon;
-    (assert ((comp_image ~epsilon tetris_j tetris_j_rotate_4_times)==false));
+    (assert ((image_equal ~epsilon tetris_j tetris_j_rotate_4_times)==false));
     Printf.printf "Done\n";
   end;
   begin
     (*test with colors, greater epsilon*)
     Printf.printf "Starting tests considering colors, epsilon: %f\n" epsilon;
-    (assert ((comp_image_color ~epsilon tetris_j tetris_j_rotate_4_times)==false));
+    (assert ((image_equal ~check_color ~epsilon tetris_j tetris_j_rotate_4_times)==false));
     Printf.printf "Done\n";
   end;
   Printf.printf "\nEnd of tests for for image equal\n\n";;

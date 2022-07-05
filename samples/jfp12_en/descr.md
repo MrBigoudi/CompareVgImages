@@ -111,7 +111,7 @@ Using the Ocaml [Array](https://v2.ocaml.org/api/Array.html) module write the fu
   gen_matrix l
 ```
 
-Which, given a list of quadruplet return a matrix. Quadruplets are made of 4 integers. 
+Which, given a list of 4-tuples return a matrix. 4-tuples are made of 4 integers. 
 
 First is the piece number P (between 1 and 7). 
 
@@ -121,7 +121,7 @@ Third is the column number C (between 0 and 11).
 
 Last but not least is the number of rotations R applied to the piece (between 0 and 3).
 
-We start from a board (a matrix of integers <strong>int array array</strong>) containing only empty blocks. For each quadruplet, if we can place the piece P at line L, column C after rotating it R times, then we place it on the board (ie we place it in the matrix) else we check the next piece.
+We start from a board (a matrix of integers <strong>int array array</strong>) containing only empty blocks. For each 4-tuples, if we can place the piece P at line L, column C after rotating it R times, then we place it on the board (ie we place it in the matrix) else we check the next piece.
 
 For example, 
 
@@ -255,7 +255,7 @@ Write the function
   gen_matrix_gravity l
 ```
 
-Which, given a list of triplet return a matrix. Triplets are made of 3 integers.
+Which, given a list of triple of numbers return a matrix. Triple of numbers are made of 3 integers.
 
 First is the piece number P.
 
@@ -301,9 +301,9 @@ Write the function
   val calcul_score int -> (int*int*int) list -> (int array array)*int
 ```
 
-Which, knowing the integer S and a list of triplets (like the one from the last question) return a tuple of the final board and the final score.
+Which, knowing the integer S and a list of triple of numbers (like the one from the last question) return a tuple of the final board and the final score.
 
-The first integer P of a triplet represents the piece number : it must be equal to the nth term of the T sequence initialized by S. Otherwise, the game ends.
+The first integer P of a triple of numbers represents the piece number : it must be equal to the nth term of the T sequence initialized by S. Otherwise, the game ends.
 
 The second integer C represents the column where the player decided to drop the piece.
 
@@ -311,7 +311,7 @@ The third R represents the numberof rotations for the piece.
 
 If we can't drop the piece on the board (because the tuple (C,R) makes it go out of the board) then the game ends. Otherwise, we drop the piece on the board and update the score as explained above.
 
-We check the next triplet.
+We check the next triple of numbers.
 
 If there aren't any, the game ends.
 
@@ -320,14 +320,14 @@ For example
 ```OCaml
   let s = 231;;
 
-  let l = [(7,8,2);(3,7,0);(4,4,2);(5,1,2);(1,1,2);(2,10,3);(4,8,3);(7,6,3);(5,3,2);(7,0,3);(6,8,2);
-    (1,4,0);(6,0,2);(7,7,0);(2,0,2);(2,10,3);(5,5,2);(7,3,0);(7,9,0);(7,1,1);(3,7,1);(2,3,2);(1,4,2);
-    (2,0,3);(3,9,2);(7,2,3);(1,7,2);(2,0,3);(7,10,1);(4,5,1);(3,3,3);(4,8,0);(6,0,2);(7,6,3);(7,4,1);
-    (1,0,0);(3,9,0);(7,9,2);(1,2,0);(4,7,1);(3,5,3);(7,0,2);(3,3,3);(2,9,0);(1,0,0);(7,5,2);(3,8,2);
-    (3,6,1);(4,4,2);(7,2,2);(3,9,2);(4,5,2);(2,1,30);(2,10,3);(2,4,0);(1,8,3);(5,2,1);(4,0,3);(2,6,3);
-    (1,9,0);(4,3,2);(3,1,1);(4,7,0);(2,3,0);(4,9,0);(7,0,3);(4,7,2);(6,1,0);(2,4,0);(3,0,0);(7,10,3);
+  let l = [(1,8,2);(3,7,0);(5,4,2);(3,1,2);(4,1,2);(4,10,3);(7,8,3);(7,6,3);(5,3,2);(2,0,3);(1,8,2);
+    (6,4,0);(1,0,2);(3,7,0);(5,0,2);(7,10,3);(4,5,2);(6,3,0);(3,9,0);(6,1,1);(6,7,1);(1,3,2);(1,4,2);
+    (5,0,3);(6,9,2);(4,2,3);(5,7,2);(2,0,3);(3,10,1);(3,5,1);(4,3,3);(6,8,0);(6,0,2);(7,6,3);(3,4,1);
+    (3,0,0);(2,9,0);(4,9,2);(6,2,0);(6,7,1);(7,5,3);(4,0,2);(7,3,3);(3,9,0);(3,0,0);(1,5,2);(1,8,2);
+    (6,6,1);(4,4,2);(4,2,2);(2,9,2);(1,5,2);(2,1,3);(7,10,3);(3,4,0);(7,8,3);(6,2,1);(6,0,3);(4,6,3);
+    (2,9,0);(5,3,2);(6,1,1);(6,7,0);(2,3,0);(2,9,0);(7,0,3);(4,7,2);(6,1,0);(2,4,0);(3,0,0);(7,10,3);
     (3,7,0);(6,4,2);(1,1,2);(4,9,2);(3,6,0);(1,2,2);(6,0,3);(2,7,2);(7,5,3);(5,2,2);(5,9,2);(7,0,3);
-    (3,4,0);(7,7,3);(1,3,2);(4,10,3);]
+    (3,4,0);(7,7,3);(1,3,2);(4,10,3)];;
 
   let (board,score) = (calcul_score s l);;
 

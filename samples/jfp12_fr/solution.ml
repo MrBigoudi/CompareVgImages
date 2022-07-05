@@ -1,3 +1,16 @@
+let print_matrice m =
+  let l = Array.length m in
+  let c = Array.length m.(0) in
+  let rec print_line line cpt = match cpt with
+    | a when a==c -> Printf.printf "\n"
+    | _ -> (if (line.(cpt)==0) then Printf.printf "." 
+            else Printf.printf "%d" (line.(cpt))); (print_line line (cpt+1))
+  in 
+    let rec aux cpt = match cpt with
+      | a when a==l -> Printf.printf "\n"
+      | _ -> (print_line (m.(cpt)) 0); (aux (cpt+1))
+    in (aux 0);;
+
 (*Question 1*)
 let get_n_termes_T s n =
   let get_val x = x lsr 13 in
@@ -148,10 +161,13 @@ let place_piece piece m l c =
   let l_matrix = Array.length m in
   let c_matrix = Array.length (m.(0)) in
   let (left,right,up,down) = (get_pos piece) in
-  let rec aux i j acc =match (i,j) with
+  (* Printf.printf "left:%d, right:%d, up:%d, down:%d\n" left right up down; *)
+  let rec aux i j acc =
+    (* Printf.printf "i:%d, j:%d\n" i j;  *)
+    match (i,j) with
     | (i,_) when i>down -> acc
     | (_,j) when j>right -> (aux (i+1) left acc)
-    | (i,j) when (l+i-up)>(l_matrix) || (c+j-left)>(c_matrix) -> m 
+    | (i,j) when (l+i-up)>=(l_matrix) || (c+j-left)>=(c_matrix) -> m 
     | (i,j) when (piece.(i)).(j)<=0 -> (aux i (j+1) acc)
     | (i,j) when (piece.(i)).(j)>0 && (m.(i+l-up)).(c+j-left)>0-> m
     | _ -> let cur = (piece.(i)).(j) in
@@ -186,33 +202,6 @@ let create_shade color =
   let (r,g,b) = (Color.r color, Color.g color, Color.b color) in
   create_color (r*.quart) (g*.quart) (b*.quart);;
 
-let create_square_path x y l = 
-  let p = 
-    let rel = true in
-    P.empty |>
-    P.sub (P2.v x y) |>
-    P.line ~rel (P2.v l 0.) |>
-    P.line ~rel (P2.v 0. l) |>
-    P.line ~rel (P2.v (-1.*.l) 0.) |>
-    P.line ~rel (P2.v 0. (-1.*.l)) |>
-    P.close
-  in p;;
-
-let create_square x y l color = 
-  let p = create_square_path x y l
-  in I.const color |> I.cut p;;
-
-let create_square_outline x y l color w = 
-  let p = create_square_path x y l
-  in let area = `O { P.o with P.width = w } in
-  I.const color |> I.cut ~area p;;
-
-let create_square_with_outline x y l color w = 
-  let shade = create_shade color in
-  let square = create_square x y l color in
-  let outline = create_square_outline x y l shade w in
-  (I.blend square outline);;
-
 let i_couleur = create_color 0.004 0.690 0.945;;
 let j_couleur = create_color 0. 0.443 0.757;;
 let l_couleur = create_color 1. 0.753 0.;;
@@ -222,19 +211,6 @@ let t_couleur = create_color 0.439 0.188 0.627;;
 let o_couleur = create_color 1. 1. 0.004;;
 
 let grid_couleur = Color.v_srgb 0. 0. 0. ~a:0.5;;
-
-
-let create_block n x y l w = 
-  match n with
-  | 1 -> create_square_with_outline x y l i_couleur w 
-  | 2 -> create_square_with_outline x y l j_couleur w
-  | 3 -> create_square_with_outline x y l l_couleur w 
-  | 4 -> create_square_with_outline x y l s_couleur w
-  | 5 -> create_square_with_outline x y l z_couleur w 
-  | 6 -> create_square_with_outline x y l t_couleur w
-  | 7 -> create_square_with_outline x y l o_couleur w 
-  | _ -> failwith "unknown block";;
-
 
 let line_subpath init_p xi yi xf yf =
   let p = 
@@ -270,6 +246,34 @@ let draw_grid line col len w x y color =
   let draw_c = (I.const color |> I.cut ~area c_path) in
   (I.blend draw_l draw_c);;
 
+let create_square_path init_p x y l = 
+  let p = 
+    let rel = true in
+    init_p |>
+    P.sub (P2.v x y) |>
+    P.line ~rel (P2.v l 0.) |>
+    P.line ~rel (P2.v 0. l) |>
+    P.line ~rel (P2.v (-1.*.l) 0.) |>
+    P.line ~rel (P2.v 0. (-1.*.l)) |>
+    P.close
+  in p;;
+
+let block_path_n block_number m len w =
+  let l = Array.length m in
+  let c = Array.length (m.(0)) in
+  let next_x j = (float_of_int (c/2+j-1))*.(len+.(w/.2.)) in
+  let next_y i = (float_of_int (l-i-1))*.(len+.(w/.2.)) in
+  let rec aux acc i j = match (i,j) with
+    | (i,_) when i>=l -> acc
+    | (_,j) when j>=c -> (aux acc (i+1) 0)
+    | _ -> let n = (m.(i)).(j) in
+        if n<>block_number then (aux acc i (j+1))
+        else
+          let x = next_x j in
+          let y = next_y i in
+          (aux (create_square_path acc x y len) i (j+1))
+  in (aux P.empty 0 0);;
+
 let draw_tetris m =
   let l = Array.length m in
   let c = Array.length (m.(0)) in
@@ -280,19 +284,26 @@ let draw_tetris m =
   let x0 = (next_x 0) in
   let y0 = (next_y (l-1)) in
   let grille = (draw_grid l c (len+.(w/.2.)) w x0 y0 grid_couleur) in
-  let rec aux i j acc =
-    match i,j with
-    | (i,_) when i>=l -> acc
-    | (_,j) when j>=c -> (aux (i+1) 0 acc)
-    | _ -> let n = (m.(i)).(j) in
-        if n==0 then (aux i (j+1) acc)
-        else
-          let x = next_x j in
-          let y = next_y i in
-          (aux i (j+1) (I.blend (create_block n x y len w) acc))
+  let rec aux n acc =
+    match n with
+    | 1 -> let new_image = (I.cut (block_path_n 1 m len w) (I.const i_couleur)) in
+            (aux (n+1) (I.blend new_image acc)) 
+    | 2 -> let new_image = (I.cut (block_path_n 2 m len w) (I.const j_couleur)) in
+            (aux (n+1) (I.blend new_image acc))
+    | 3 -> let new_image = (I.cut (block_path_n 3 m len w) (I.const l_couleur)) in
+            (aux (n+1) (I.blend new_image acc)) 
+    | 4 -> let new_image = (I.cut (block_path_n 4 m len w) (I.const s_couleur)) in
+            (aux (n+1) (I.blend new_image acc))
+    | 5 -> let new_image = (I.cut (block_path_n 5 m len w) (I.const z_couleur)) in
+            (aux (n+1) (I.blend new_image acc)) 
+    | 6 -> let new_image = (I.cut (block_path_n 6 m len w) (I.const t_couleur)) in
+            (aux (n+1) (I.blend new_image acc))
+    | 7 -> let new_image = (I.cut (block_path_n 7 m len w) (I.const o_couleur)) in
+            (aux (n+1) (I.blend new_image acc)) 
+    | _ -> acc
   in 
-  let pieces = (aux 0 0 (I.const Color.white)) in
-  (I.blend grille pieces);;
+  let pieces = (aux 1 (I.const Color.white)) in
+    (I.blend grille pieces);;
 
 (*Question 3*)
 let matrice_equals m1 m2 =
@@ -330,7 +341,126 @@ let gen_matrice_gravity l =
   in (aux l 4 (copy_matrix m) (copy_matrix m));;
 
 
+(*Question 4*)
+let not_empty_lines m i_min i_max =
+  let c_max = Array.length m.(0) in
+  let rec aux i j = match (i,j) with
+    | (i,_) when i>=i_max -> false
+    | (_,j) when j>=c_max -> (aux (i+1) 0)
+    | (i,j) -> if (m.(i)).(j) <> 0 then true
+              else (aux i (j+1))
+  in (aux i_min 0);;
 
+let delete_line n m =
+  let c_max = Array.length (m.(0)) in 
+  let rec aux i j acc = 
+    (* Printf.printf "i:%d, j:%d\n" i j; *)
+    match (i,j) with
+    | ((-1),_) -> acc
+    | (_,j) when j>=c_max -> (aux (i-1) 0 acc)
+    | (0,_) -> (acc.(i)).(j) <- 0; (aux i (j+1) acc);
+    | _ -> (acc.(i)).(j) <- (acc.(i-1)).(j); 
+            (aux i (j+1) acc)
+  in (aux n 0 (copy_matrix m));;
+
+let line_complete n m = 
+  let c_max = Array.length (m.(0)) in 
+  let rec aux j = match j with
+    | j when j>=c_max -> true
+    | _ -> if (m.(n)).(j) == 0 then false
+            else (aux (j+1))
+  in (aux 0);;
+
+let update_completed_lines m =
+  let l_max = Array.length m in 
+  let rec aux i acc = 
+    match i with
+    | i when i>=l_max -> acc
+    | _ -> if (line_complete i m) 
+            then
+              begin
+                (* Printf.printf "delete line\n"; *)
+                let acc = (delete_line i acc) in 
+                (* Printf.printf "done delete\n"; *)
+                (aux (i+1) acc);
+              end
+            else
+              (aux (i+1) acc)
+  in 
+    let res = (aux 0 (copy_matrix m)) in
+    (* Printf.printf "done\n"; *)
+    res;;
+
+let calcul_score s l = 
+  let l_max = 24 in
+  let c_max = 12 in
+  let m = (init_matrix l_max c_max) in
+  let t_sequence = (get_n_termes_T s (List.length l)) in
+  let rec aux t_seq list cur_l last_m acc = 
+    (*if 4 first lines aren't empty*)
+    (* Printf.printf "not empty\n"; *)
+    if (not_empty_lines acc 0 4) then acc
+    else
+      begin
+        (* Printf.printf "aux\n"; *)
+        match (list,t_seq) with
+          | ([],_) -> acc
+          | (_,[]) -> failwith "Error calcul_score : t_sequence too short"
+          | ((p,c,r)::t, real_p::t2) -> 
+            (*wrong piece*)
+            if false (*p<>real_p*) then acc
+            else
+              if cur_l>=l_max then 
+                begin
+                  (* Printf.printf "update_completed1\n"; *)
+                  let acc = (update_completed_lines last_m) in
+                    (* Printf.printf "update_completed1\n"; *)
+                    (aux t2 t 4 acc acc)
+                end
+              else
+                begin
+                  (* Printf.printf "check_quad\n"; *)
+                  if (check_quadruplet p cur_l c l_max c_max) then
+                    begin 
+                      (* Printf.printf "check_quad\n"; *)
+                      (* Printf.printf "get_piece\n"; *)
+                      let piece = (get_piece_r p r) in 
+                      (* Printf.printf "get_piece\n"; *)
+                      (* Printf.printf "place_piece: %d, c: %d\n" cur_l c; *)
+                      (* print_matrice piece; *)
+                      (* print_matrice acc; *)
+                      let m = (place_piece piece acc cur_l c) in
+                      (* Printf.printf "place_piece\n"; *)
+                      if (matrice_equals m acc) 
+                        then 
+                          begin
+                            (* Printf.printf "update_completed2\n"; *)
+                            let acc = (update_completed_lines last_m) in
+                              (* Printf.printf "update_completed2\n"; *)
+                              (aux t2 t 4 acc acc)
+                          end
+                      else (aux (real_p::t2) ((p,c,r)::t) (cur_l+1) m acc)
+                    end
+                  else begin Printf.printf "wrong quad\n"; (aux t2 t 4 acc acc) end
+                end
+        end
+  in (aux t_sequence l 4 (copy_matrix m) (copy_matrix m));;
+
+
+(* let l = [(1,8,2);(3,7,0);(5,4,2);(3,1,2);(4,1,2);(4,10,3);(7,8,3);(7,6,3);(5,3,2);(2,0,3);(1,8,2);
+(6,4,0);(1,0,2);(3,7,0);(5,0,2);(7,10,3);(4,5,2);(6,3,0);(3,9,0);(6,1,1);(6,7,1);(1,3,2);(1,4,2);
+(5,0,3);(6,9,2);(4,2,3);(5,7,2);(2,0,3);(3,10,1);(3,5,1);(4,3,3);(6,8,0);(6,0,2);(7,6,3);(3,4,1);
+(3,0,0);(2,9,0);(4,9,2);(6,2,0);(6,7,1);(7,5,3);(4,0,2);(7,3,3);(3,9,0);(3,0,0);(1,5,2);(1,8,2);
+(6,6,1);(4,4,2);(4,2,2);(2,9,2);(1,5,2);(2,1,3);(7,10,3);(3,4,0);(7,8,3);(6,2,1);(6,0,3);(4,6,3);
+(2,9,0);(5,3,2);(6,1,1);(6,7,0);(2,3,0);(2,9,0);(7,0,3);(4,7,2);(6,1,0);(2,4,0);(3,0,0);(7,10,3);
+(3,7,0);(6,4,2);(1,1,2);(4,9,2);(3,6,0);(1,2,2);(6,0,3);(2,7,2);(7,5,3);(5,2,2);(5,9,2);(7,0,3);
+(3,4,0);(7,7,3);(1,3,2);(4,10,3)];;
+
+let m = calcul_score 231 l;;
+
+let i = draw_tetris m;;
+
+Printf.printf "\n\n\n%s\n\n\n" (I.to_string i);; *)
 
 
 

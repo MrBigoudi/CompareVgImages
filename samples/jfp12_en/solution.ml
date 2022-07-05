@@ -186,33 +186,6 @@ let create_shade color =
   let (r,g,b) = (Color.r color, Color.g color, Color.b color) in
   create_color (r*.quart) (g*.quart) (b*.quart);;
 
-let create_square_path x y l = 
-  let p = 
-    let rel = true in
-    P.empty |>
-    P.sub (P2.v x y) |>
-    P.line ~rel (P2.v l 0.) |>
-    P.line ~rel (P2.v 0. l) |>
-    P.line ~rel (P2.v (-1.*.l) 0.) |>
-    P.line ~rel (P2.v 0. (-1.*.l)) |>
-    P.close
-  in p;;
-
-let create_square x y l color = 
-  let p = create_square_path x y l
-  in I.const color |> I.cut p;;
-
-let create_square_outline x y l color w = 
-  let p = create_square_path x y l
-  in let area = `O { P.o with P.width = w } in
-  I.const color |> I.cut ~area p;;
-
-let create_square_with_outline x y l color w = 
-  let shade = create_shade color in
-  let square = create_square x y l color in
-  let outline = create_square_outline x y l shade w in
-  (I.blend square outline);;
-
 let i_couleur = create_color 0.004 0.690 0.945;;
 let j_couleur = create_color 0. 0.443 0.757;;
 let l_couleur = create_color 1. 0.753 0.;;
@@ -222,19 +195,6 @@ let t_couleur = create_color 0.439 0.188 0.627;;
 let o_couleur = create_color 1. 1. 0.004;;
 
 let grid_couleur = Color.v_srgb 0. 0. 0. ~a:0.5;;
-
-
-let create_block n x y l w = 
-  match n with
-  | 1 -> create_square_with_outline x y l i_couleur w 
-  | 2 -> create_square_with_outline x y l j_couleur w
-  | 3 -> create_square_with_outline x y l l_couleur w 
-  | 4 -> create_square_with_outline x y l s_couleur w
-  | 5 -> create_square_with_outline x y l z_couleur w 
-  | 6 -> create_square_with_outline x y l t_couleur w
-  | 7 -> create_square_with_outline x y l o_couleur w 
-  | _ -> failwith "unknown block";;
-
 
 let line_subpath init_p xi yi xf yf =
   let p = 
@@ -270,6 +230,34 @@ let draw_grid line col len w x y color =
   let draw_c = (I.const color |> I.cut ~area c_path) in
   (I.blend draw_l draw_c);;
 
+let create_square_path init_p x y l = 
+  let p = 
+    let rel = true in
+    init_p |>
+    P.sub (P2.v x y) |>
+    P.line ~rel (P2.v l 0.) |>
+    P.line ~rel (P2.v 0. l) |>
+    P.line ~rel (P2.v (-1.*.l) 0.) |>
+    P.line ~rel (P2.v 0. (-1.*.l)) |>
+    P.close
+  in p;;
+
+let block_path_n block_number m len w =
+  let l = Array.length m in
+  let c = Array.length (m.(0)) in
+  let next_x j = (float_of_int (c/2+j-1))*.(len+.(w/.2.)) in
+  let next_y i = (float_of_int (l-i-1))*.(len+.(w/.2.)) in
+  let rec aux acc i j = match (i,j) with
+    | (i,_) when i>=l -> acc
+    | (_,j) when j>=c -> (aux acc (i+1) 0)
+    | _ -> let n = (m.(i)).(j) in
+        if n<>block_number then (aux acc i (j+1))
+        else
+          let x = next_x j in
+          let y = next_y i in
+          (aux (create_square_path acc x y len) i (j+1))
+  in (aux P.empty 0 0);;
+
 let draw_tetris m =
   let l = Array.length m in
   let c = Array.length (m.(0)) in
@@ -280,19 +268,26 @@ let draw_tetris m =
   let x0 = (next_x 0) in
   let y0 = (next_y (l-1)) in
   let grille = (draw_grid l c (len+.(w/.2.)) w x0 y0 grid_couleur) in
-  let rec aux i j acc =
-    match i,j with
-    | (i,_) when i>=l -> acc
-    | (_,j) when j>=c -> (aux (i+1) 0 acc)
-    | _ -> let n = (m.(i)).(j) in
-        if n==0 then (aux i (j+1) acc)
-        else
-          let x = next_x j in
-          let y = next_y i in
-          (aux i (j+1) (I.blend (create_block n x y len w) acc))
+  let rec aux n acc =
+    match n with
+    | 1 -> let new_image = (I.cut (block_path_n 1 m len w) (I.const i_couleur)) in
+            (aux (n+1) (I.blend new_image acc)) 
+    | 2 -> let new_image = (I.cut (block_path_n 2 m len w) (I.const j_couleur)) in
+            (aux (n+1) (I.blend new_image acc))
+    | 3 -> let new_image = (I.cut (block_path_n 3 m len w) (I.const l_couleur)) in
+            (aux (n+1) (I.blend new_image acc)) 
+    | 4 -> let new_image = (I.cut (block_path_n 4 m len w) (I.const s_couleur)) in
+            (aux (n+1) (I.blend new_image acc))
+    | 5 -> let new_image = (I.cut (block_path_n 5 m len w) (I.const z_couleur)) in
+            (aux (n+1) (I.blend new_image acc)) 
+    | 6 -> let new_image = (I.cut (block_path_n 6 m len w) (I.const t_couleur)) in
+            (aux (n+1) (I.blend new_image acc))
+    | 7 -> let new_image = (I.cut (block_path_n 7 m len w) (I.const o_couleur)) in
+            (aux (n+1) (I.blend new_image acc)) 
+    | _ -> acc
   in 
-  let pieces = (aux 0 0 (I.const Color.white)) in
-  (I.blend grille pieces);;
+  let pieces = (aux 1 (I.const Color.white)) in
+    (I.blend grille pieces);;
 
 (*Question 3*)
 let matrix_equals m1 m2 =

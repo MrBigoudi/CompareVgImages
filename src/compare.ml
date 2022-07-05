@@ -220,7 +220,13 @@ module ManipulateVg = struct
             (get_points next_offset (point::acc))
         | _   -> let msg = (Printf.sprintf "unknown charactere '%c', at pos: %d\n" str.[cur_offset] cur_offset) in
             failwith msg
-    in (get_points (next_left_p str offset) []);;
+    in 
+    (*test empty path*)
+    try 
+      if ((next_left_p str offset) > (next_right_p str offset)) then []
+      else (get_points (next_left_p str offset) [])
+    with
+      Not_found -> [];;
   
 
   (** Get an outline_token {i (only the width of the outline for the moment)}. *)

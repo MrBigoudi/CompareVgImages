@@ -43,6 +43,7 @@ CLEAN := clean_obj clean_bin clean_doc
 
 # default recipe
 all: dir test doc
+	@echo -e "\nEverything has compiled successfully\n"
 
 test: $(CMI) $(CMO)
 	@echo -e "\nGenerating test"
