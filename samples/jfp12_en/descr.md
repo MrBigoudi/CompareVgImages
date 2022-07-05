@@ -293,7 +293,7 @@ We have now all the things needed to pllay Tetris. Knowing an integer S: the seq
 Before playing each piece, we check that each of the four first lines are empty : otherwise the game ends.
 The piece is then dropped on the column chosen by the player. If we can't drop it, the game ends.
 
-Then, there's the Tetris magic : if a line of the board is fill with non empty blocks then this line vanishes and all the blocks from above drop by a line. If four contiguous lines vanishe at the same time, the player get 800 points : it's a Tetris ! If the previous piece was already used for a Tetris, then he gets 1200 points ! Otherwise, each line gives 100 points to the player.
+Then, there's the Tetris magic : if a line of the board is fill with non empty blocks then this line vanishes and all the blocks from above drop by a line. If four contiguous lines vanishe at the same time, the player get 800 points : it's a Tetris ! Otherwise, each line gives 100 points to the player.
 
 Write the function 
 
@@ -333,7 +333,7 @@ For example
 
   score;;
 
-  int = 1500
+  int = 1600
 
   (draw_tetris board);;
 ```

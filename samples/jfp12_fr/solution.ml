@@ -371,51 +371,62 @@ let line_complete n m =
             else (aux (j+1))
   in (aux 0);;
 
-let update_completed_lines m =
+let update_completed_lines m cur_score =
   let l_max = Array.length m in 
-  let rec aux i acc = 
+  let rec aux i acc cpt score = 
     match i with
-    | i when i>=l_max -> acc
+    | i when i>=l_max -> 
+      if cpt>=4 then (acc,(score+800))
+      else (acc,(cpt*100+score))
     | _ -> if (line_complete i m) 
             then
               begin
                 (* Printf.printf "delete line\n"; *)
                 let acc = (delete_line i acc) in 
                 (* Printf.printf "done delete\n"; *)
-                (aux (i+1) acc);
+                if cpt>=4 then (aux (i+1) acc 0 (score+800))
+                  else (aux (i+1) acc (cpt+1) score);
               end
             else
-              (aux (i+1) acc)
-  in 
-    let res = (aux 0 (copy_matrix m)) in
-    (* Printf.printf "done\n"; *)
-    res;;
+              (aux (i+1) acc 0 (cpt*100+score))
+  in (aux 0 (copy_matrix m) 0 cur_score);;
+    (* let rec while_complete_lines m1 m2 score =
+      let (m_after,score1) = (aux 0 m2 0 score) in
+        if matrice_equals m_after m1 then (m1,score)
+          else (while_complete_lines m_after m_after score1)
+    in (while_complete_lines (copy_matrix m) (copy_matrix m) cur_score);; *)
 
 let calcul_score s l = 
   let l_max = 24 in
   let c_max = 12 in
   let m = (init_matrix l_max c_max) in
   let t_sequence = (get_n_termes_T s (List.length l)) in
-  let rec aux t_seq list cur_l last_m acc = 
+  let score = 0 in
+  let rec aux t_seq list cur_l last_m acc score = 
     (*if 4 first lines aren't empty*)
     (* Printf.printf "not empty\n"; *)
-    if (not_empty_lines acc 0 4) then acc
+    if (not_empty_lines acc 0 4) then (acc,score)
     else
       begin
         (* Printf.printf "aux\n"; *)
         match (list,t_seq) with
-          | ([],_) -> acc
+          | ([],_) -> (acc,score)
           | (_,[]) -> failwith "Error calcul_score : t_sequence too short"
           | ((p,c,r)::t, real_p::t2) -> 
             (*wrong piece*)
-            if false (*p<>real_p*) then acc
+            if false (*p<>real_p*) 
+            then 
+              begin
+                (* Printf.printf "(p,c,r): (%d,%d,%d), real_p: %d\n" p c r real_p; *)
+                (acc,score)
+              end
             else
               if cur_l>=l_max then 
                 begin
                   (* Printf.printf "update_completed1\n"; *)
-                  let acc = (update_completed_lines last_m) in
+                  let (acc,score) = (update_completed_lines last_m score) in
                     (* Printf.printf "update_completed1\n"; *)
-                    (aux t2 t 4 acc acc)
+                    (aux t2 t 4 acc acc score)
                 end
               else
                 begin
@@ -435,32 +446,17 @@ let calcul_score s l =
                         then 
                           begin
                             (* Printf.printf "update_completed2\n"; *)
-                            let acc = (update_completed_lines last_m) in
+                            let (acc,score) = (update_completed_lines last_m score) in
                               (* Printf.printf "update_completed2\n"; *)
-                              (aux t2 t 4 acc acc)
+                              (aux t2 t 4 acc acc score)
                           end
-                      else (aux (real_p::t2) ((p,c,r)::t) (cur_l+1) m acc)
+                      else (aux (real_p::t2) ((p,c,r)::t) (cur_l+1) m acc score)
                     end
-                  else begin Printf.printf "wrong quad\n"; (aux t2 t 4 acc acc) end
+                  else begin Printf.printf "wrong quad\n"; (aux t2 t 4 acc acc score) end
                 end
         end
-  in (aux t_sequence l 4 (copy_matrix m) (copy_matrix m));;
+  in (aux t_sequence l 4 (copy_matrix m) (copy_matrix m) score);;
 
-
-(* let l = [(1,8,2);(3,7,0);(5,4,2);(3,1,2);(4,1,2);(4,10,3);(7,8,3);(7,6,3);(5,3,2);(2,0,3);(1,8,2);
-(6,4,0);(1,0,2);(3,7,0);(5,0,2);(7,10,3);(4,5,2);(6,3,0);(3,9,0);(6,1,1);(6,7,1);(1,3,2);(1,4,2);
-(5,0,3);(6,9,2);(4,2,3);(5,7,2);(2,0,3);(3,10,1);(3,5,1);(4,3,3);(6,8,0);(6,0,2);(7,6,3);(3,4,1);
-(3,0,0);(2,9,0);(4,9,2);(6,2,0);(6,7,1);(7,5,3);(4,0,2);(7,3,3);(3,9,0);(3,0,0);(1,5,2);(1,8,2);
-(6,6,1);(4,4,2);(4,2,2);(2,9,2);(1,5,2);(2,1,3);(7,10,3);(3,4,0);(7,8,3);(6,2,1);(6,0,3);(4,6,3);
-(2,9,0);(5,3,2);(6,1,1);(6,7,0);(2,3,0);(2,9,0);(7,0,3);(4,7,2);(6,1,0);(2,4,0);(3,0,0);(7,10,3);
-(3,7,0);(6,4,2);(1,1,2);(4,9,2);(3,6,0);(1,2,2);(6,0,3);(2,7,2);(7,5,3);(5,2,2);(5,9,2);(7,0,3);
-(3,4,0);(7,7,3);(1,3,2);(4,10,3)];;
-
-let m = calcul_score 231 l;;
-
-let i = draw_tetris m;;
-
-Printf.printf "\n\n\n%s\n\n\n" (I.to_string i);; *)
 
 
 
