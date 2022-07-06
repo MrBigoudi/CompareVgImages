@@ -12,3 +12,6 @@ let gen_matrix_gravity l = failwith "TODO";;
 
 (*Question 4*)
 let calcul_score s l = failwith "TODO";;
+
+(*Question 5*)
+let gen_list s = failwith "TODO";;

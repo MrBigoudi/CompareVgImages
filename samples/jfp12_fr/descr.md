@@ -223,6 +223,8 @@ Les couleurs des blocs sont les suivantes :
   
   I -> couleur rgb (0.004, 0.690, 0.945) 
 
+La grille, elle, sera noire.
+
 Chaques blocs a une longueur de 0.04 et on considèrera que l'épaisseur des bords d'un bloc est 1/10 de la longeur d'un composant.
 
 Realiser la fonction 
@@ -301,6 +303,7 @@ Réaliser la fonction
 
 ```Ocaml
   val calcul_score int -> (int*int*int) list -> (int array array)*int
+  calcul_score s l
 ```
 
 Qui, étant donné le nombre S et une liste de triplets (identique à celle de la question précédente)
@@ -349,3 +352,20 @@ Par exemple
     height="512"
   />
 </div>
+
+
+**Question 5 :** À VOUS DE JOUER!
+
+Voilà, votre moment de gloire arrivé : si on vous donne l’entier S, vous connaissez la séquence des
+pièces présentées par Tetris. C’est le moment d’appliquer votre stratégie démoniaque pour obtenir le meilleur score!
+
+Réaliser la fonction 
+
+```Ocaml
+  val gen_list int -> (int*int*int) list
+  gen_list s
+```
+
+qui étant donné un entier s construit une liste de triplet (de taille inférieure à 100) qui, mise en paramètre de la fonction calcul_score permet d'obtenir un score le plus élevé possible.
+
+Pour cet question, on comparera le score obtenue avec la liste que vous avez généré et celui d'une fonction gen_list crée pour l'occasion.

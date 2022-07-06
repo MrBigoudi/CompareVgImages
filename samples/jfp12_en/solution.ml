@@ -151,7 +151,7 @@ let place_piece piece m l c =
   let rec aux i j acc =match (i,j) with
     | (i,_) when i>down -> acc
     | (_,j) when j>right -> (aux (i+1) left acc)
-    | (i,j) when (l+i-up)>(l_matrix) || (c+j-left)>(c_matrix) -> m 
+    | (i,j) when (l+i-up)>=(l_matrix) || (c+j-left)>=(c_matrix) -> m 
     | (i,j) when (piece.(i)).(j)<=0 -> (aux i (j+1) acc)
     | (i,j) when (piece.(i)).(j)>0 && (m.(i+l-up)).(c+j-left)>0-> m
     | _ -> let cur = (piece.(i)).(j) in
@@ -194,7 +194,7 @@ let z_couleur = create_color 1. 0. 0.;;
 let t_couleur = create_color 0.439 0.188 0.627;;
 let o_couleur = create_color 1. 1. 0.004;;
 
-let grid_couleur = Color.v_srgb 0. 0. 0. ~a:0.5;;
+let grid_couleur = Color.black;;
 
 let line_subpath init_p xi yi xf yf =
   let p = 
@@ -286,7 +286,7 @@ let draw_tetris m =
             (aux (n+1) (I.blend new_image acc)) 
     | _ -> acc
   in 
-  let pieces = (aux 1 (I.const Color.white)) in
+  let pieces = (aux 1 (I.const Color.void)) in
     (I.blend grille pieces);;
 
 (*Question 3*)
@@ -325,10 +325,212 @@ let gen_matrix_gravity l =
   in (aux l 4 (copy_matrix m) (copy_matrix m));;
 
 
+(*Question 4*)
+let not_empty_lines m i_min i_max =
+  let c_max = Array.length m.(0) in
+  let rec aux i j = match (i,j) with
+    | (i,_) when i>=i_max -> false
+    | (_,j) when j>=c_max -> (aux (i+1) 0)
+    | (i,j) -> if (m.(i)).(j) <> 0 then true
+              else (aux i (j+1))
+  in (aux i_min 0);;
+
+let delete_line n m =
+  let c_max = Array.length (m.(0)) in 
+  let rec aux i j acc = 
+    (* Printf.printf "i:%d, j:%d\n" i j; *)
+    match (i,j) with
+    | ((-1),_) -> acc
+    | (_,j) when j>=c_max -> (aux (i-1) 0 acc)
+    | (0,_) -> (acc.(i)).(j) <- 0; (aux i (j+1) acc);
+    | _ -> (acc.(i)).(j) <- (acc.(i-1)).(j); 
+            (aux i (j+1) acc)
+  in (aux n 0 (copy_matrix m));;
+
+let line_complete n m = 
+  let c_max = Array.length (m.(0)) in 
+  let rec aux j = match j with
+    | j when j>=c_max -> true
+    | _ -> if (m.(n)).(j) == 0 then false
+            else (aux (j+1))
+  in (aux 0);;
+
+let update_completed_lines m cur_score =
+  let l_max = Array.length m in 
+  let rec aux i acc cpt score = 
+    match i with
+    | i when i>=l_max -> 
+      if cpt>=4 then (acc,(score+800))
+      else (acc,(cpt*100+score))
+    | _ -> if (line_complete i m) 
+            then
+              begin
+                (* Printf.printf "delete line\n"; *)
+                let acc = (delete_line i acc) in 
+                (* Printf.printf "done delete\n"; *)
+                if cpt>=4 then (aux (i+1) acc 0 (score+800))
+                  else (aux (i+1) acc (cpt+1) score);
+              end
+            else
+              (aux (i+1) acc 0 (cpt*100+score))
+  in (aux 0 (copy_matrix m) 0 cur_score);;
+    (* let rec while_complete_lines m1 m2 score =
+      let (m_after,score1) = (aux 0 m2 0 score) in
+        if matrice_equals m_after m1 then (m1,score)
+          else (while_complete_lines m_after m_after score1)
+    in (while_complete_lines (copy_matrix m) (copy_matrix m) cur_score);; *)
+
+let calcul_score s l = 
+  let l_max = 24 in
+  let c_max = 12 in
+  let m = (init_matrix l_max c_max) in
+  let t_sequence = (get_n_termes_T s (List.length l)) in
+  let score = 0 in
+  let rec aux t_seq list cur_l last_m acc score = 
+    (*if 4 first lines aren't empty*)
+    (* Printf.printf "not empty\n"; *)
+    if (not_empty_lines acc 0 4) then (acc,score)
+    else
+      begin
+        (* Printf.printf "aux\n"; *)
+        match (list,t_seq) with
+          | ([],_) -> (acc,score)
+          | (_,[]) -> failwith "Error calcul_score : t_sequence too short"
+          | ((p,c,r)::t, real_p::t2) -> 
+            (*wrong piece*)
+            if false (*p<>real_p*) 
+            then 
+              begin
+                (* Printf.printf "(p,c,r): (%d,%d,%d), real_p: %d\n" p c r real_p; *)
+                (acc,score)
+              end
+            else
+              if cur_l>=l_max then 
+                begin
+                  (* Printf.printf "update_completed1\n"; *)
+                  let (acc,score) = (update_completed_lines last_m score) in
+                    (* Printf.printf "update_completed1\n"; *)
+                    (aux t2 t 4 acc acc score)
+                end
+              else
+                begin
+                  (* Printf.printf "check_quad\n"; *)
+                  if (check_quadruplet p cur_l c l_max c_max) then
+                    begin 
+                      (* Printf.printf "check_quad\n"; *)
+                      (* Printf.printf "get_piece\n"; *)
+                      let piece = (get_piece_r p r) in 
+                      (* Printf.printf "get_piece\n"; *)
+                      (* Printf.printf "place_piece: %d, c: %d\n" cur_l c; *)
+                      (* print_matrice piece; *)
+                      (* print_matrice acc; *)
+                      let m = (place_piece piece acc cur_l c) in
+                      (* Printf.printf "place_piece\n"; *)
+                      if (matrix_equals m acc) 
+                        then 
+                          begin
+                            (* Printf.printf "update_completed2\n"; *)
+                            let (acc,score) = (update_completed_lines last_m score) in
+                              (* Printf.printf "update_completed2\n"; *)
+                              (aux t2 t 4 acc acc score)
+                          end
+                      else (aux (real_p::t2) ((p,c,r)::t) (cur_l+1) m acc score)
+                    end
+                  else begin Printf.printf "wrong quad\n"; (aux t2 t 4 acc acc score) end
+                end
+        end
+  in (aux t_sequence l 4 (copy_matrix m) (copy_matrix m) score);;
+
+(*Question 5*)
+(* get the value of a piece if placed on a certain column *)
+let get_column_value_r m1 piece p c =
+  let (left,right,up,down) = (get_pos piece) in
+  let l_max = Array.length m1 in
+  let c_max = Array.length (m1.(0)) in
+  let rec create_mat cur_l last_m last_l acc =
+    if cur_l>=l_max then (last_m,last_l)
+    else
+      begin
+        if (check_quadruplet p cur_l c l_max c_max) then
+          begin 
+            (* Printf.printf "quad ok\n"; *)
+            let m = (place_piece piece acc cur_l c) in
+              if (matrix_equals m acc) then (last_m,last_l)
+              else (create_mat (cur_l+1) m cur_l acc)
+          end
+        else 
+          (last_m,last_l)
+      end
+  in 
+  let (m,index) = (create_mat 4 (copy_matrix m1) 4 (copy_matrix m1))
+  in
+  if (index==(-1)) then (-1,-1,m1)
+  else
+  (* else
+    (* get the number of pieces that touche vertically a new placed piece *)
+    let rec get_nb_contact_vert i j acc =
+      (* Printf.printf "contact_vert : (i,j)=(%d,%d)\n" i j;  *)
+      match (i,j) with
+      | (_,j) when j>=c_max || j>=c+(right-left) -> acc
+      | (i,j) when i<0 || i<=index-(up-down) -> (get_nb_contact_vert index (j+(right-left)) acc)
+      | _ -> if (m.(i)).(j) == p then 
+                if j>=1 then
+                  if (m.(i)).(j-1)<>0 then (get_nb_contact_vert (i-1) j (acc+1))
+                  else (get_nb_contact_vert (i-1) j acc)
+                else (get_nb_contact_vert index (j+(right-left)) acc)
+              else (get_nb_contact_vert (i-1) (j+(right-left)) acc)
+    in
+    (* get the number of pieces that touche horizontally a new placed piece *)
+    let rec get_nb_contact_horiz j acc =
+      (* Printf.printf "contact_horiz : j=%d\n" j;  *)
+      match j with
+      | j when j>=c_max || j>=c+(right-left) -> acc
+      | _ -> if (m.(index)).(j) == p then
+                if (m.(index+1)).(j)<>0 then (get_nb_contact_horiz (j+1) (acc+1))
+                else (get_nb_contact_horiz (j+1) acc)
+              else (get_nb_contact_horiz (j+1) acc)
+    in  *)
+      (* if index<l_max-1 then 
+        ((get_nb_contact_vert index c 0)+(get_nb_contact_horiz c 0)+index-(up-down),index,m)
+      else
+        ((get_nb_contact_vert index c 0)+index+(right-left)-(up-down),index,m);; *)
+    (index-(up-down),index,m);;
 
 
+(* get the value of a piece if placed on a certain column *)
+let get_column_value m p c =
+  let rec best_rotation r max_i max res cur_m = 
+    (* Printf.printf "best_rotation : r=%d\n" r; *)
+    let piece = get_piece_r p r in 
+      match r with
+        | 4 -> (max,res,max_i,cur_m)
+        | _ -> let (new_value,index,new_m) = (get_column_value_r m piece p c) in
+                if index>max_i then (best_rotation (r+1) index new_value r new_m)
+                (* else if (index==max_i && new_value>max) then 
+                  (best_rotation (r+1) index new_value r new_m) *)
+                else (best_rotation (r+1) max_i max res cur_m)
+  in (best_rotation 0 (-1) 0 (-1) m);;
+
+let best_column m p =
+  let c_max = Array.length (m.(0)) in
+    let rec best_c cur_c max res_c res_r res_i res_m = 
+      (* Printf.printf "best_c : cur_c=%d\n" cur_c; *)
+      match cur_c with
+      | c when c>=c_max -> (res_c,res_r,res_i,res_m)
+      | c -> let (new_value,new_r,new_i,new_m) = (get_column_value m p c) in
+              if new_value>max then (best_c (c+1) new_value c new_r new_i new_m)
+              else (best_c (c+1) max res_c res_r res_i res_m)
+  in (best_c 0 (-1) 0 0 (-1) m);;
 
 
-
-
-
+let gen_list s = 
+  let t_list = get_n_termes_T s 100 in
+  let l_max = 24 in
+  let c_max = 12 in
+  let m = (init_matrix l_max c_max) in 
+  let rec aux t cur_m acc = match t with
+    | [] -> acc
+    | p::tl -> let (c,r,i,new_m) = (best_column cur_m p) in
+                if (i==(-1)) then (aux tl cur_m ([(p,c,r)]@acc))
+                else (aux tl new_m (acc@[(p,c,r)]))
+  in (aux t_list m []);;

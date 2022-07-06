@@ -223,6 +223,8 @@ Blocks colors will be as follow :
   
   I -> rgb color : (0.004, 0.690, 0.945)
 
+The grid will be black
+
 Each block will have a length of 0.04 and we'll consider that outline width of a block will be 1/10 of the block length. 
 
 Write the function
@@ -299,6 +301,7 @@ Write the function
 
 ```Ocaml
   val calcul_score int -> (int*int*int) list -> (int array array)*int
+  calcul_score s l
 ```
 
 Which, knowing the integer S and a list of triple of numbers (like the one from the last question) return a tuple of the final board and the final score.
@@ -320,14 +323,14 @@ For example
 ```OCaml
   let s = 231;;
 
-  let l = [(1,8,2);(3,7,0);(5,4,2);(3,1,2);(4,1,2);(4,10,3);(7,8,3);(7,6,3);(5,3,2);(2,0,3);(1,8,2);
-    (6,4,0);(1,0,2);(3,7,0);(5,0,2);(7,10,3);(4,5,2);(6,3,0);(3,9,0);(6,1,1);(6,7,1);(1,3,2);(1,4,2);
-    (5,0,3);(6,9,2);(4,2,3);(5,7,2);(2,0,3);(3,10,1);(3,5,1);(4,3,3);(6,8,0);(6,0,2);(7,6,3);(3,4,1);
-    (3,0,0);(2,9,0);(4,9,2);(6,2,0);(6,7,1);(7,5,3);(4,0,2);(7,3,3);(3,9,0);(3,0,0);(1,5,2);(1,8,2);
-    (6,6,1);(4,4,2);(4,2,2);(2,9,2);(1,5,2);(2,1,3);(7,10,3);(3,4,0);(7,8,3);(6,2,1);(6,0,3);(4,6,3);
-    (2,9,0);(5,3,2);(6,1,1);(6,7,0);(2,3,0);(2,9,0);(7,0,3);(4,7,2);(6,1,0);(2,4,0);(3,0,0);(7,10,3);
-    (3,7,0);(6,4,2);(1,1,2);(4,9,2);(3,6,0);(1,2,2);(6,0,3);(2,7,2);(7,5,3);(5,2,2);(5,9,2);(7,0,3);
-    (3,4,0);(7,7,3);(1,3,2);(4,10,3)];;
+  let l = [(7,8,2);(3,7,0);(4,4,2);(5,1,2);(1,1,2);(2,10,3);(4,8,3);(7,6,3);(5,3,2);(7,0,3);(6,8,2);
+          (1,4,0);(6,0,2);(7,7,0);(2,0,2);(2,10,3);(5,5,2);(7,3,0);(7,9,0);(7,1,1);(3,7,1);(2,3,2);
+          (1,4,2);(2,0,3);(3,9,2);(7,2,3);(1,7,2);(2,0,3);(7,10,1);(4,5,1);(3,3,3);(4,8,0);(6,0,2);
+          (7,6,3);(7,4,1);(1,0,0);(3,9,0);(7,9,2);(1,2,0);(4,7,1);(3,5,3);(7,0,2);(3,3,3);(2,9,0);
+          (1,0,0);(7,5,2);(3,8,2);(3,6,1);(4,4,2);(7,2,2);(3,9,2);(4,5,2);(2,1,3);(2,10,3);(2,4,0);
+          (1,8,3);(5,2,1);(4,0,3);(2,6,3);(1,9,0);(4,3,2);(3,1,1);(4,7,0);(2,3,0);(4,9,0);(7,0,3);
+          (3,7,2);(1,1,0);(6,4,0);(3,0,0);(2,10,3);(5,7,0);(3,4,2);(1,1,2);(4,9,2);(3,6,0);(1,2,2);
+          (6,0,3);(2,7,2);(7,5,3);(5,2,2);(5,9,2);(7,0,3);(3,4,0);(7,7,3);(1,3,2);(4,10,3)];;
 
   let (board,score) = (calcul_score s l);;
 
@@ -345,3 +348,18 @@ For example
     height="512"
   />
 </div>
+
+**Question 5 :** IT'S YOUR TURN!
+
+Now your moment of gloray has arrived : if we give you the S integer, you know the pieces sequence given by the Tetris. It's the moment to apply your evil strategy to get the best score!
+
+Write the function 
+
+```Ocaml
+  val gen_list int -> (int*int*int) list
+  gen_list s
+```
+
+which given an integer s, return a list of number triple (the list's size must be less or equal than 100) which, given to the function calcul_score, let you get a great score. 
+
+For this question, we'll compare the score obtained with the list you've generated and the one obtained by our own gen_list function.
