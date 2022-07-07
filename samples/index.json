@@ -26,8 +26,9 @@
 						"title": "Exercices in French",
 
 						"exercises": [ 
-								"CompareVgImages/samples/vgTutorial_fr", 
-								"CompareVgImages/samples/jfp12_fr"
+								"CompareVgImages/samples/vgTutorial_fr",
+								"CompareVgImages/samples/turtle_fr", 
+								"CompareVgImages/samples/jfp12_fr"								
 							]
 						},
 					"Exercices in English":
@@ -35,7 +36,8 @@
 						"title": "Exercices in English",
 
 						"exercises": [ 
-								"CompareVgImages/samples/vgTutorial_en", 
+								"CompareVgImages/samples/vgTutorial_en",
+								"CompareVgImages/samples/turtle_en",
 								"CompareVgImages/samples/jfp12_en"
 							]
 						}

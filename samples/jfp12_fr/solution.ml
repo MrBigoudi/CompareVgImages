@@ -401,7 +401,7 @@ let calcul_score s l =
           | (_,[]) -> failwith "Error calcul_score : t_sequence too short"
           | ((p,c,r)::t, real_p::t2) -> 
             (*wrong piece*)
-            if false (*p<>real_p*) 
+            if p<>real_p 
             then 
               begin
                 (* Printf.printf "(p,c,r): (%d,%d,%d), real_p: %d\n" p c r real_p; *)
