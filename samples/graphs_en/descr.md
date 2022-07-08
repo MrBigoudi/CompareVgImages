@@ -73,8 +73,9 @@ Which given the same arguments as the previous function plus a float representin
 
 ```OCaml
   let f n = n;;
-  let i = I.const (Color.red) |> I.cut (graph_f_int_hist f 10 0.1 0.1 0.05) 
-            in (I.blend i (Solution.draw_basis()));;
+  let i1 = (I.const Color.black) |> (I.cut (graph_f_int f 10 0.1 0.1)) in
+  let i2 = (I.const Color.red) |> (I.cut (graph_f_int_hist f 10 0.1 0.1 0.05)) in
+    (I.blend i2 (I.blend i1 (draw_basis())));;
 ```
 
 <div>
@@ -86,3 +87,13 @@ Which given the same arguments as the previous function plus a float representin
 </div>
 
 <em> Hint: try to first implement a function that returns the path of a rectangle knowing width and the position of it's top-left coordinates.
+
+**Question 4** : We'll now try to modify the previous functions to take floats number into accounts.
+
+Write a function 
+
+```OCaml
+  val graph_f_float : (float -> float) -> float -> float -> float -> float -> Vg.path
+```
+
+Which, given a function, a float that represents the bound of the maximum value we'll test and two floating values that represent the abscissa and ordinate scalings to make the graphs fit in the canvas and a float representing the space between two points, returns a path representing the function.
