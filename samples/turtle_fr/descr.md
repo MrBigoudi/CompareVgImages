@@ -18,9 +18,9 @@ Nous obtiendrons ici ces images via les fonctions suivantes sur les chemins `Vg.
 
   - `Vg.P.empty : Vg.path` donne un chemin avec uniquement le point origine et aucun tracé.
 
-  - `Vg.P.line : ?⁠rel:bool -> Gg.p2 -> path -> path` telle que `(Vg.P.line g p)` prolonge un chemin `p` en traçant une ligne entre le dernier point de ce chemin `p` et les coordonnées `(x,y)`.
+  - `Vg.P.line : ?⁠rel:bool -> Gg.p2 -> Vg.path -> Vg.path` telle que `(Vg.P.line g p)` prolonge un chemin `p` en traçant une ligne entre le dernier point de ce chemin `p` et les coordonnées `(x,y)`.
 
-  - `Vg.P.sub : ?⁠rel:bool -> Gg.p2 -> path -> path` fonctionne comme `Vg.P.line` sauf que le déplacement final au point indiqué se fait sans tracé.
+  - `Vg.P.sub : ?⁠rel:bool -> Gg.p2 -> Vg.path -> pVg.ath` fonctionne comme `Vg.P.line` sauf que le déplacement final au point indiqué se fait sans tracé.
 
 Par exemple une image avec un segment entre les points `(1.,0.)` et `(0.,1.)` peut s'obtenir ainsi :
 

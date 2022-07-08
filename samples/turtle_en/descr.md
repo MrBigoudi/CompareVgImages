@@ -18,10 +18,10 @@ We'll use here the following `Vg.path` functions :
 
   - `Vg.P.empty : Vg.path` give a path with only the origin
 
-  - `Vg.P.line : ?⁠rel:bool -> Gg.p2 -> path -> path` 
+  - `Vg.P.line : ?⁠rel:bool -> Gg.p2 -> Vg.path -> Vg.path` 
       `(Vg.P.line g p)` continue the path `p` drawing a line from the last point on the path `p` to the point of coordinates `(x,y)`.
 
-  - `Vg.P.sub : ?⁠rel:bool -> Gg.p2 -> path -> path` works like `Vg.P.line` but wihout drawing.
+  - `Vg.P.sub : ?⁠rel:bool -> Gg.p2 -> Vg.path -> Vg.path` works like `Vg.P.line` but wihout drawing.
 
 For example an image with a segment between points `(1.,0.)` and `(0.,1.)` can be obtained by doing :
 

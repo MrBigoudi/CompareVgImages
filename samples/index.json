@@ -38,6 +38,7 @@
 						"exercises": [ 
 								"CompareVgImages/samples/vgTutorial_en",
 								"CompareVgImages/samples/turtle_en",
+								"CompareVgImages/samples/graphs_en",
 								"CompareVgImages/samples/jfp12_en"
 							]
 						}

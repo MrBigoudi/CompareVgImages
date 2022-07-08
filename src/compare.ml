@@ -654,12 +654,14 @@ end
 
 (** Compare 2 Vg images. *)
 let image_equal ?(epsilon) ?(check_color=false) ?(allow_translations) i1 i2 =
-  if check_color then
-    let di1 = (ManipulateVg.decompose_color i1) in
-      let di2 = (ManipulateVg.decompose_color i2) in 
-        (ManipulateVg.compare_list_colors ?epsilon ?allow_translations di1 di2)
+  if I.equal i1 i2 then true
   else
-    let di1 = (ManipulateVg.decompose i1) in
-      let di2 = (ManipulateVg.decompose i2) in 
-        (ManipulateVg.compare_list_tuples ?epsilon ?allow_translations di1 di2);;
+    if check_color then
+      let di1 = (ManipulateVg.decompose_color i1) in
+        let di2 = (ManipulateVg.decompose_color i2) in 
+          (ManipulateVg.compare_list_colors ?epsilon ?allow_translations di1 di2)
+    else
+      let di1 = (ManipulateVg.decompose i1) in
+        let di2 = (ManipulateVg.decompose i2) in 
+          (ManipulateVg.compare_list_tuples ?epsilon ?allow_translations di1 di2);;
   
