@@ -2,8 +2,6 @@
 
 In these exercices we'll try to plot different types of graphs for functions using the Vg module. That's why you'll need a bit of Vg knowledge before trying these questions. For that, you can (must) do the tutorial available in the list of exercices.
 
-The basis will start at `x0`, `y0` and the maximum length of the axis will be respectively `x_max` and `y_max` so be carefull when testing funtions.
-
 ## First function
 
 **Question 1** : write the function
@@ -31,19 +29,19 @@ to place your function's graph on top of this basis.
   />
 </div>
 
-**Question 2** : We'll start by writing a function `graph_f_int` to plot graphs of funtion from positive integers to positive integers.
+**Question 2** : We'll start by writing a function `graph_f_int` to plot graphs of funtion from integers to integers.
 
 ```OCaml
-  val graph_f_int : (int -> int) -> int -> float -> float -> Vg.path
+  val graph_f_int : (int -> int) -> (int*int) -> float -> float -> Vg.path
 ```
 
-Which, given a function, an integer that represents the bound of the maximum value we'll test and two floating values that represent the abscissa and ordinate scalings to make the graphs fit in the canvas, returns a path representing the function.
+Which, given a function, a tuple of integers that represents the bounds of the values we'll test and two floating values that represent the abscissa and ordinate scalings to make the graphs fit in the canvas, returns a path representing the function.
 
 For example :
 
 ```OCaml
   let f n = n;;
-  let i = I.const (Color.red) |> I.cut (graph_f_int f 10 0.1 0.1) 
+  let i = I.const (Color.red) |> I.cut (graph_f_int f (-10,10) 0.1 0.1) 
             in (I.blend i (Solution.draw_basis()));;
 ```
 
@@ -66,15 +64,15 @@ which add a small dot at position (x,y) in an existing path.
 **Question 3** : We'll try now to implement a function `graph_f_int_hist` to plot an histogram. 
 
 ```OCaml
-  val graph_f_int_hist : (int -> int) -> int -> float -> float -> float -> Vg.path
+  val graph_f_int_hist : (int -> int) -> (int -> int) -> float -> float -> float -> Vg.path
 ```
 
 Which given the same arguments as the previous function plus a float representing the width of the segments returns a path representing the histogram.
 
 ```OCaml
   let f n = n;;
-  let i1 = (I.const Color.black) |> (I.cut (graph_f_int f 10 0.1 0.1)) in
-  let i2 = (I.const Color.red) |> (I.cut (graph_f_int_hist f 10 0.1 0.1 0.05)) in
+  let i1 = (I.const Color.black) |> (I.cut (graph_f_int f (-10,10) 0.1 0.1)) in
+  let i2 = (I.const Color.red) |> (I.cut (graph_f_int_hist f (-10,10) 0.1 0.1 0.05)) in
     (I.blend i2 (I.blend i1 (draw_basis())));;
 ```
 
@@ -97,3 +95,4 @@ Write a function
 ```
 
 Which, given a function, a float that represents the bound of the maximum value we'll test and two floating values that represent the abscissa and ordinate scalings to make the graphs fit in the canvas and a float representing the space between two points, returns a path representing the function.
+If a point is undefind it should not be ploted.

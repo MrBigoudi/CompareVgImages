@@ -1,12 +1,12 @@
 (* Question 1 *)
 let x_axis p = 
-  let line a = Vg.P.line (Gg.P2.v x_max y_origin) (Vg.P.sub (Gg.P2.v x_origin y_origin) a) in
+  let line a = Vg.P.line (Gg.P2.v x_max y_origin) (Vg.P.sub (Gg.P2.v x_min y_origin) a) in
   let arrow1 a = Vg.P.line (Gg.P2.v x_max y_origin) (Vg.P.sub (Gg.P2.v (x_max-.arrow_length) (y_origin-.arrow_length)) a) in
   let arrow2 a = Vg.P.line (Gg.P2.v x_max y_origin) (Vg.P.sub (Gg.P2.v (x_max-.arrow_length) (y_origin+.arrow_length)) a) in
   p |> line |> arrow1 |> arrow2;;
 
 let y_axis p = 
-  let line a = Vg.P.line (Gg.P2.v x_origin y_max) (Vg.P.sub (Gg.P2.v x_origin y_origin) a) in
+  let line a = Vg.P.line (Gg.P2.v x_origin y_max) (Vg.P.sub (Gg.P2.v x_origin y_min) a) in
   let arrow1 a = Vg.P.line (Gg.P2.v x_origin y_max) (Vg.P.sub (Gg.P2.v (x_origin-.arrow_length) (y_max-.arrow_length)) a) in
   let arrow2 a = Vg.P.line (Gg.P2.v x_origin y_max) (Vg.P.sub (Gg.P2.v (x_origin+.arrow_length) (y_max-.arrow_length)) a) in
   p |> line |> arrow1 |> arrow2;;
@@ -19,14 +19,17 @@ let draw_basis () =
 
 
 (* Question 2 *)
-let graph_f_int f n x_scale y_scale = 
-  let rec create_path cpt p = match cpt with
-    | -1 -> p
-    | _ -> let y = y_origin+.y_scale*.(float_of_int (f cpt)) in
-        let x = x_origin+.x_scale*.(float_of_int cpt) in
-        let new_p = (dot x y p dot_width_int) in
-        (create_path (cpt-1) new_p)
-  in P.empty |> (create_path (n-1));;
+let graph_f_int f bounds x_scale y_scale = 
+  let (min,max) = bounds in
+    if min>max then failwith "Invalid bounds exception"
+    else
+    let rec create_path cpt p = match cpt with
+      | cpt when cpt>max -> p
+      | _ -> let y = y_origin+.y_scale*.(float_of_int (f cpt)) in
+          let x = x_origin+.x_scale*.(float_of_int cpt) in
+          let new_p = (dot x y p dot_width_int) in
+            (create_path (cpt+1) new_p)
+    in P.empty |> (create_path min);;
 
 
 (* Question 3 *)
@@ -39,26 +42,36 @@ let rectangle x y w p =
     P.line ~rel (P2.v (-.w) 0.) |>
     P.close;;
 
-let graph_f_int_hist f n x_scale y_scale w =
-  let rec create_path cpt p = match cpt with
-    | -1 -> p
-    | _ -> let y = y_origin+.y_scale*.(float_of_int (f cpt)) in
-        let x = x_origin+.x_scale*.(float_of_int cpt) in
-        let new_p = (rectangle (x-.(w/.2.)) y w p) in
-        (create_path (cpt-1) new_p)
-  in P.empty |> (create_path (n-1));;
+let graph_f_int_hist f bounds x_scale y_scale w =
+  let (min,max) = bounds in
+    if min>max then failwith "Invalid bounds exception"
+    else
+    let rec create_path cpt p = match cpt with
+      | cpt when cpt>max -> p
+      | _ -> let y = y_origin+.y_scale*.(float_of_int (f cpt)) in
+          let x = x_origin+.x_scale*.(float_of_int cpt) in
+          let new_p = (rectangle (x-.(w/.2.)) y w p) in
+          (create_path (cpt+1) new_p)
+    in P.empty |> (create_path min);;
 
 
-(* Question 3 *)
-let graph_f_float f max x_scale y_scale a = 
-  let rec create_path cur p = match cur with
-    | cur when cur > max -> p
-    | _ -> let y = y_origin+.y_scale*.(f cur) in
-        let x = x_origin+.x_scale*.cur in
-        let new_p = (dot x y p dot_width_float) in
-        (create_path (cur+.a) new_p)
-  in P.empty |> (create_path 0.);;
+(* Question 4 *)
+let graph_f_float f bounds x_scale y_scale a = 
+  let (min,max) = bounds in
+    if min>max then failwith "Invalid bounds exception"
+    else
+      let rec create_path cur p = 
+        match cur with
+        | cur when cur > max -> p
+        | _ -> 
+              let y = try y_origin+.y_scale*.(f cur) with _ -> Stdlib.infinity in
+                if y<Stdlib.infinity then
+                  let x = x_origin+.x_scale*.cur in
+                  let new_p = (dot x y p dot_width_float) in
+                    (create_path (cur+.a) new_p)
+                else (create_path (cur+.a) p)
+      in P.empty |> (create_path min);;
 
 let f x = sqrt x;;
-let i1 = (I.const Color.black) |> (I.cut (graph_f_float f 10. 0.1 0.1 0.001)) in
+let i1 = (I.const Color.black) |> (I.cut (graph_f_float f (-10.,10.) 0.1 0.1 0.001)) in
   (I.blend i1 (draw_basis()));;
