@@ -44,6 +44,24 @@ let q3 () =
       [(f0,(-10,10),0.1,0.1,0.05)];;
 
 
+let q4 () =
+  Assume.compatible "graph_f_float" [%ty : (float -> float) -> (float*float) -> float -> float -> float -> Vg.path ];
+  let module Code = struct
+    let graph_f_float = Get.value "graph_f_float" [%ty : (float -> float) -> (float*float) -> float -> float -> float -> Vg.path ]
+  end in
+  let f0 x = x in
+  let f1 x = sqrt x in
+  let f2 x = 1./.x in
+  let f3 x = x*.x in
+  let f4 x = 1. in
+  Check.expr5 
+    [%code (fun f bounds x y w -> let i = I.const (Color.red) |> I.cut (Code.graph_f_float f bounds x y w) 
+                            in (I.blend i (Solution.draw_basis())))]
+    [%ty : (float -> float) -> (float*float) -> float -> float -> float -> Vg.image ]
+      ~equal: (Compare.image_equal ~check_color)
+      ~testers: [ Autotest.(tester (tuple5 (oneof [f0;f1;f2;f3;f4]) (tuple2 (float 0 10) (float 10 100)) (float 0 1) (float 0 1) (float 0 1))) ]
+      [(f1,(-10.,10.),0.1,0.1,0.001)];;
+
 (** set result *)
 let () =
-  Result.set (Result.questions [q1;q2;q3]);;
+  Result.set (Result.questions [q1;q2;q3;q4]);;

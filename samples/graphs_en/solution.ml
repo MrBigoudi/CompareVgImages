@@ -21,31 +21,31 @@ let draw_basis () =
 (* Question 2 *)
 let graph_f_int f bounds x_scale y_scale = 
   let (min,max) = bounds in
-    if min>max then failwith "Invalid bounds exception"
-    else
+  if min>max then failwith "Invalid bounds exception"
+  else
     let rec create_path cpt p = match cpt with
       | cpt when cpt>max -> p
       | _ -> let y = y_origin+.y_scale*.(float_of_int (f cpt)) in
           let x = x_origin+.x_scale*.(float_of_int cpt) in
           let new_p = (dot x y p dot_width_int) in
-            (create_path (cpt+1) new_p)
+          (create_path (cpt+1) new_p)
     in P.empty |> (create_path min);;
 
 
 (* Question 3 *)
 let rectangle x y w p =
   let rel = true in
-    p |>
-    P.sub (P2.v x y) |>
-    P.line ~rel (P2.v w 0.) |>
-    P.line ~rel (P2.v 0. (y_origin-.y)) |>
-    P.line ~rel (P2.v (-.w) 0.) |>
-    P.close;;
+  p |>
+  P.sub (P2.v x y) |>
+  P.line ~rel (P2.v w 0.) |>
+  P.line ~rel (P2.v 0. (y_origin-.y)) |>
+  P.line ~rel (P2.v (-.w) 0.) |>
+  P.close;;
 
 let graph_f_int_hist f bounds x_scale y_scale w =
   let (min,max) = bounds in
-    if min>max then failwith "Invalid bounds exception"
-    else
+  if min>max then failwith "Invalid bounds exception"
+  else
     let rec create_path cpt p = match cpt with
       | cpt when cpt>max -> p
       | _ -> let y = y_origin+.y_scale*.(float_of_int (f cpt)) in
@@ -55,23 +55,21 @@ let graph_f_int_hist f bounds x_scale y_scale w =
     in P.empty |> (create_path min);;
 
 
-(* Question 4 *)
+(* Question 4 *) 
 let graph_f_float f bounds x_scale y_scale a = 
+  let wrong_number = 0.4242424242 in
+  let epsilon = 1e-10 in
   let (min,max) = bounds in
-    if min>max then failwith "Invalid bounds exception"
-    else
-      let rec create_path cur p = 
-        match cur with
-        | cur when cur > max -> p
-        | _ -> 
-              let y = try y_origin+.y_scale*.(f cur) with _ -> Stdlib.infinity in
-                if y<Stdlib.infinity then
-                  let x = x_origin+.x_scale*.cur in
-                  let new_p = (dot x y p dot_width_float) in
-                    (create_path (cur+.a) new_p)
-                else (create_path (cur+.a) p)
-      in P.empty |> (create_path min);;
-
-let f x = sqrt x;;
-let i1 = (I.const Color.black) |> (I.cut (graph_f_float f (-10.,10.) 0.1 0.1 0.001)) in
-  (I.blend i1 (draw_basis()));;
+  if min>max then failwith "Invalid bounds exception"
+  else
+    let rec create_path cur p = 
+      match cur with
+      | cur when cur > max -> p
+      | _ -> 
+          let y = (try y_origin+.y_scale*.(f cur) with _ -> wrong_number) in 
+          if (y>wrong_number-.epsilon)||(y<wrong_number+.epsilon) then
+            let x = x_origin+.x_scale*.cur in
+            let new_p = (dot x y p dot_width_float) in
+            (create_path (cur+.a) new_p)
+          else (create_path (cur+.a) p)
+    in P.empty |> (create_path min);;
