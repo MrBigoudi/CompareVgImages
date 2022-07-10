@@ -131,9 +131,10 @@ If a point is undefind it should not be ploted.
   let bounds = (-10.,10.);;
   let scale = (0.1,0.1);;
   let space = 0.001;;
-  let width = 0.05;;
-  let i = I.const (Color.red) |> I.cut (graph_integral f bounds scale space) 
-            in (I.blend i (draw_basis()));;
+  let width = 0.001;;
+  let i1 = I.const (Color.red) |> I.cut (graph_integral f bounds scale space width) in
+  let i2 = I.const (Color.black) |> I.cut (graph_f_float f bounds scale space) in
+    (I.blend i2 (I.blend i1 (draw_basis())));;
 ```
 
 <div>
@@ -143,3 +144,5 @@ If a point is undefind it should not be ploted.
     height="512"
   />
 </div>
+
+**Question 6** : Write a function that, instead of taking just one function as an argument takes a list of function and returns the path to draw each of these functions

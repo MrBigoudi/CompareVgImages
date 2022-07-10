@@ -43,7 +43,7 @@ let rectangle x y w p =
   P.line ~rel (P2.v (-.w) 0.) |>
   P.close;;
 
-let graph_f_int_hist f bounds scale w =
+let graph_f_int_hist f bounds scale width =
   let (min,max) = bounds in
   let (x_scale,y_scale) = scale in
   if min>max then failwith "Invalid bounds exception"
@@ -52,13 +52,13 @@ let graph_f_int_hist f bounds scale w =
       | cpt when cpt>max -> p
       | _ -> let y = y_origin+.y_scale*.(float_of_int (f cpt)) in
           let x = x_origin+.x_scale*.(float_of_int cpt) in
-          let new_p = (rectangle (x-.(w/.2.)) y w p) in
+          let new_p = (rectangle (x-.(width/.2.)) y width p) in
           (create_path (cpt+1) new_p)
     in P.empty |> (create_path min);;
 
 
 (* Question 4 *) 
-let graph_f_float f bounds scale a = 
+let graph_f_float f bounds scale space = 
   let wrong_number = 0.4242424242 in
   let epsilon = 1e-10 in
   let (min,max) = bounds in
@@ -73,6 +73,27 @@ let graph_f_float f bounds scale a =
           if (y>wrong_number-.epsilon)||(y<wrong_number+.epsilon) then
             let x = x_origin+.x_scale*.cur in
             let new_p = (dot x y p dot_width_float) in
-            (create_path (cur+.a) new_p)
-          else (create_path (cur+.a) p)
+            (create_path (cur+.space) new_p)
+          else (create_path (cur+.space) p)
+    in P.empty |> (create_path min);;
+
+
+(* Question 5*)
+let graph_integral f bounds scale space width =
+  let wrong_number = 0.4242424242 in
+  let epsilon = 1e-10 in
+  let (min,max) = bounds in
+  let (x_scale,y_scale) = scale in
+  if min>max then failwith "Invalid bounds exception"
+  else
+    let rec create_path cur p = 
+      match cur with
+      | cur when cur > max -> p
+      | _ -> 
+          let y = (try y_origin+.y_scale*.(f cur) with _ -> wrong_number) in 
+          if (y>wrong_number-.epsilon)||(y<wrong_number+.epsilon) then
+            let x = x_origin+.x_scale*.cur in
+            let new_p = (rectangle (x-.(width/.2.)) y width p) in
+            (create_path (cur+.space) new_p)
+          else (create_path (cur+.space) p)
     in P.empty |> (create_path min);;
