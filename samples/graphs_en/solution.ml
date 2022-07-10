@@ -19,8 +19,9 @@ let draw_basis () =
 
 
 (* Question 2 *)
-let graph_f_int f bounds x_scale y_scale = 
+let graph_f_int f bounds scale = 
   let (min,max) = bounds in
+  let (x_scale,y_scale) = scale in
   if min>max then failwith "Invalid bounds exception"
   else
     let rec create_path cpt p = match cpt with
@@ -42,8 +43,9 @@ let rectangle x y w p =
   P.line ~rel (P2.v (-.w) 0.) |>
   P.close;;
 
-let graph_f_int_hist f bounds x_scale y_scale w =
+let graph_f_int_hist f bounds scale w =
   let (min,max) = bounds in
+  let (x_scale,y_scale) = scale in
   if min>max then failwith "Invalid bounds exception"
   else
     let rec create_path cpt p = match cpt with
@@ -56,10 +58,11 @@ let graph_f_int_hist f bounds x_scale y_scale w =
 
 
 (* Question 4 *) 
-let graph_f_float f bounds x_scale y_scale a = 
+let graph_f_float f bounds scale a = 
   let wrong_number = 0.4242424242 in
   let epsilon = 1e-10 in
   let (min,max) = bounds in
+  let (x_scale,y_scale) = scale in
   if min>max then failwith "Invalid bounds exception"
   else
     let rec create_path cur p = 
