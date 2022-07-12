@@ -83,22 +83,6 @@ let q5 () =
       ~testers: [ Autotest.(tester (tuple5 (oneof [f0;f1;f2;f3;f4]) (tuple2 (float 0 10) (float 10 100)) (tuple2 (float 0 1) (float 0 1)) (float 0 1) (float 0 1))) ]
       [(f1,(-10.,10.),(0.1,0.1),0.001,0.001)];;
 
-let q6 () =
-  Assume.compatible "graph_multiple" [%ty : (float -> float) list -> (Gg.color) list -> Vg.image ];
-  let f0 x = x in
-  let f1 x = sqrt x in
-  let f2 x = 1./.x in
-  let f3 x = x*.x in
-  let f4 x = 1. in
-  let c1 = Color.red in
-  let c2 = Color.green in
-  let c3 = Color.blue in
-  Check.name2 "graph_multiple" [%ty : (float -> float) list -> (Gg.color) list -> Vg.image ]
-      ~equal: (Compare.image_equal ~check_color)
-      ~testers: [ Autotest.(tester (tuple2 (list ~length:(nat 4) (oneof [f0;f1;f2;f3;f4])) (list ~length:(int 4 5) (oneof [c1;c2;c3])))) ]
-      [([f1;f2;f0],[c1;c2;c3])];;
-
-      
 (** set result *)
 let () =
-  Result.set (Result.questions [q1;q2;q3;q4;q5;q6]);;
+  Result.set (Result.questions [q1;q2;q3;q4;q5]);;

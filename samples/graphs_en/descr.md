@@ -2,8 +2,6 @@
 
 In these exercices we'll try to plot different types of graphs for functions using the Vg module. That's why you'll need a bit of Vg knowledge before trying these questions. For that, you can (must) do the tutorial available in the list of exercices.
 
-## First function
-
 **Question 1** : write the function
 
 ```OCaml
@@ -89,7 +87,7 @@ Which given the same arguments as the previous function plus a float representin
   />
 </div>
 
-<em> Hint: try to first implement a function that returns the path of a rectangle knowing width and the position of it's top-left coordinates.
+<em> Hint: try to first implement a function that returns the path of a rectangle knowing its width and the position of it's top-left coordinates.
 
 **Question 4** : We'll now try to modify the previous functions to take floats number into accounts.
 
@@ -100,7 +98,7 @@ Write a function
 ```
 
 Which, given a function, a tuple of floats representing the bound of the maximum value we'll test, another tuple of of floating values representing the abscissa and ordinate scalings to make the graphs fit in the canvas and a float representing the space between two points, returns a path representing the function.
-If a point is undefind it should not be ploted.
+If a point is undefind (or if it's image is greater than ```Ocaml infinity``` or lesser than ```OCaml (-1.*.infinity))``` it should not be ploted.
 
 ```OCaml
   let f x = sqrt x;;
@@ -113,7 +111,7 @@ If a point is undefind it should not be ploted.
 
 <div>
   <img src="/icons/images/exercices/graphs/graph_f_float.png" 
-    alt="test graph_f_int_hist" 
+    alt="test graph_f_float" 
     width="768" 
     height="512"
   />
@@ -139,10 +137,37 @@ If a point is undefind it should not be ploted.
 
 <div>
   <img src="/icons/images/exercices/graphs/graph_integral.png" 
-    alt="test graph_f_int_hist" 
+    alt="test graph_integral" 
     width="768" 
     height="512"
   />
 </div>
 
-**Question 6** : Write a function that, instead of taking just one function as an argument takes a list of function and returns the path to draw each of these functions
+**Question 6** : Write a function `graph_multiple` which taking a list of functions from float to float and a list of colors returns an image representing a graphs with all these functions.
+
+All these functions will be plotted with :
+  - bounds = (-10.,10.)
+  - scale = (0.1,0.1)
+  - space = 0.001
+
+The basis should be plotted in black.
+
+If the list of colors is shorter than the list of functions, an exception should be raised.
+
+```OCaml
+  val graph_multiple : (float -> float) list -> Gg.color list -> Vg.image
+```
+
+```OCaml
+  let f_list = [(fun x -> sqrt x);(fun x -> 1./.x);(fun x -> x)];;
+  let colors = [Color.red; Color.green; Color.blue];;
+  let i = (graph_multiple f_list colors);;
+```
+
+<div>
+  <img src="/icons/images/exercices/graphs/graph_multiple.png" 
+    alt="test graph_multiple" 
+    width="768" 
+    height="512"
+  />
+</div>
