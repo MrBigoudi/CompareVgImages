@@ -42,7 +42,7 @@ val epsilon : float
 (** {2 Tokens}*)
 
 
-(** Tokens for translation. *)
+(** Tokens for transformations. *)
 
 type tr_token =
   | Move of (float*float) (** Move token. *)

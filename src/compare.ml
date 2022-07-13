@@ -2,7 +2,7 @@ open Vg;;
 open Gg;;
 
 
-(** Tokens for translation. *)
+(** Tokens for transformations. *)
 type tr_token =
   | Move of (float*float) (** Move token. *)
   | Rot of float (** Rotation token. *)
