@@ -70,7 +70,7 @@ Par exemple: pour afficher deux points rouges de rayon 0.01 aux coordonnées (0.
 ```OCaml
 let red = create_color 1.0 0. 0. 1. ;; 
 let p = 
-  let rel = true indoc_
+  let rel = true in
   P.empty |>
   P.sub (P2.v 0.1 0.5) |>
     P.circle ~rel (P2.v 0. 0.) 0.01 |>

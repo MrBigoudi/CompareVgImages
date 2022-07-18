@@ -1,6 +1,6 @@
 # Exercice JFP 12
 
-Ceci est la transcription en LearnOCaml du sujet de la 12eme iteration de la Journée Franciliene de Programmation ayant eu lieu en Mai 2022.
+Ceci est la transcription en LearnOCaml du sujet de la 12eme itération de la Journée Francilienne de Programmation ayant eu lieu en Mai 2022.
 
 Avant de suivre cet exercice, il est conseillé (obligatoire) d'avoir fait le tutoriel Vg.
 

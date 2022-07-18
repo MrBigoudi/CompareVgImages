@@ -70,7 +70,7 @@ For example: to draw two red dots of radius 0.01 at coordinates (0.1,0.5) and (0
 ```OCaml
 let red = create_color 1.0 0. 0. 1. ;; 
 let p = 
-  let rel = true indoc_
+  let rel = true in
   P.empty |>
   P.sub (P2.v 0.1 0.5) |>
     P.circle ~rel (P2.v 0. 0.) 0.01 |>

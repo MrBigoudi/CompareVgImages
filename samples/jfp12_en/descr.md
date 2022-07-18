@@ -1,6 +1,6 @@
 # JFP 12 Exercice
 
-This is the LearnOCaml transcription of the 12th editioon of the JFP (Journée Franciliene de Programmation) which took place in May 2022.
+This is the LearnOCaml transcription of the 12th editioon of the JFP (Journée Francilienne de Programmation) which took place in May 2022.
 
 Before trying this exercice, it is recommended (mandatory) to complete the Vg tutorial.
 
